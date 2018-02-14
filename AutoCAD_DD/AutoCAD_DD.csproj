@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E2515054-C85C-4A74-9994-5337F993FA49}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AutoCAD_DD</RootNamespace>
+    <AssemblyName>AutoCAD_DD</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AcCoreMgd">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Autodesk\ObjectARX SDK\inc\AcCoreMgd.dll</HintPath>
+    </Reference>
+    <Reference Include="AcCui">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Autodesk\ObjectARX SDK\inc\AcCui.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="AcDbMgd">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Autodesk\ObjectARX SDK\inc\AcDbMgd.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="acdbmgdbrep">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Autodesk\ObjectARX SDK\inc\acdbmgdbrep.dll</HintPath>
+    </Reference>
+    <Reference Include="AcDx">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Autodesk\ObjectARX SDK\inc\AcDx.dll</HintPath>
+    </Reference>
+    <Reference Include="AcMgd">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Autodesk\ObjectARX SDK\inc\AcMgd.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="AcMr">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Autodesk\ObjectARX SDK\inc\AcMr.dll</HintPath>
+    </Reference>
+    <Reference Include="AcTcMgd">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Autodesk\ObjectARX SDK\inc\AcTcMgd.dll</HintPath>
+    </Reference>
+    <Reference Include="AcWindows">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Autodesk\ObjectARX SDK\inc\AcWindows.dll</HintPath>
+    </Reference>
+    <Reference Include="AdWindows">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Autodesk\ObjectARX SDK\inc\AdWindows.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Autodesk.AutoCAD.Interop">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Autodesk\ObjectARX SDK\inc-x64\Autodesk.AutoCAD.Interop.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Autodesk.AutoCAD.Interop.Common">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Autodesk\ObjectARX SDK\inc-x64\Autodesk.AutoCAD.Interop.Common.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Class1.cs" />
+    <Compile Include="CreateFigures.cs" />
+    <Compile Include="PluginN1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PluginN1.Designer.cs">
+      <DependentUpon>PluginN1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PluginN2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PluginN2.Designer.cs">
+      <DependentUpon>PluginN2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="PluginN1.resx">
+      <DependentUpon>PluginN1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PluginN2.resx">
+      <DependentUpon>PluginN2.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
