@@ -7,8 +7,8 @@
     <ProjectGuid>{E2515054-C85C-4A74-9994-5337F993FA49}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AutoCAD_DD</RootNamespace>
-    <AssemblyName>AutoCAD_DD</AssemblyName>
+    <RootNamespace>SectionConverterPlugin</RootNamespace>
+    <AssemblyName>SectionConverterPlugin</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
@@ -88,29 +88,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Main.cs" />
     <Compile Include="CreateFigures.cs" />
-    <Compile Include="PluginN1.cs">
+    <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PluginN1.Designer.cs">
-      <DependentUpon>PluginN1.cs</DependentUpon>
+    <Compile Include="Forms\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PluginN2.cs">
+    <Compile Include="Forms\AxisPointInfoInputForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PluginN2.Designer.cs">
-      <DependentUpon>PluginN2.cs</DependentUpon>
+    <Compile Include="Forms\AxisPointInfoInputForm.Designer.cs">
+      <DependentUpon>AxisPointInfoInputForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="PluginN1.resx">
-      <DependentUpon>PluginN1.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PluginN2.resx">
-      <DependentUpon>PluginN2.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\AxisPointInfoInputForm.resx">
+      <DependentUpon>AxisPointInfoInputForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

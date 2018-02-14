@@ -1,4 +1,4 @@
-﻿namespace AutoCAD_DD
+﻿namespace SectionConverterPlugin
 {
     partial class PluginN1
     {
@@ -46,8 +46,6 @@
             this.label8 = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.textBoxCount = new System.Windows.Forms.TextBox();
             this.textBoxName_3 = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.SuspendLayout();
@@ -195,7 +193,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(162, 391);
+            this.button3.Location = new System.Drawing.Point(162, 365);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 18;
@@ -211,23 +209,6 @@
             this.label9.Size = new System.Drawing.Size(100, 13);
             this.label9.TabIndex = 19;
             this.label9.Text = "Блок с описанием";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(26, 372);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(105, 13);
-            this.label10.TabIndex = 20;
-            this.label10.Text = "Количество блоков";
-            // 
-            // textBoxCount
-            // 
-            this.textBoxCount.Location = new System.Drawing.Point(137, 365);
-            this.textBoxCount.Name = "textBoxCount";
-            this.textBoxCount.Size = new System.Drawing.Size(100, 20);
-            this.textBoxCount.TabIndex = 21;
-            this.textBoxCount.Text = "0";
             // 
             // textBoxName_3
             // 
@@ -253,8 +234,6 @@
             this.ClientSize = new System.Drawing.Size(349, 446);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.textBoxName_3);
-            this.Controls.Add(this.textBoxCount);
-            this.Controls.Add(this.label10);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.label8);
@@ -300,8 +279,6 @@
         public System.Windows.Forms.TextBox txtZ;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.TextBox textBoxCount;
         private System.Windows.Forms.TextBox textBoxName_3;
         private System.Windows.Forms.Label label11;
     }

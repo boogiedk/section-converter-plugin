@@ -17,12 +17,11 @@ using Autodesk.AutoCAD.EditorInput;
 
 using acad = Autodesk.AutoCAD.ApplicationServices.Application;
 
-namespace AutoCAD_DD
+namespace SectionConverterPlugin
 {
     public partial class PluginN1 : Form
     {
         Point3d point;
-        int count = 0;
 
         public PluginN1()
         {
@@ -39,9 +38,10 @@ namespace AutoCAD_DD
 
         private void button2_Click(object sender, EventArgs e) // Circle 
         {
-            CreateFigures f = new CreateFigures();
-            f.CreateCircle();
-        } 
+            MessageBox.Show("Not Implemented");
+            //CreateFigures f = new CreateFigures();
+            //f.CreateCircle();
+        }
 
         private void button1_Click(object sender, MouseEventArgs e) // Get point 
         {
@@ -58,25 +58,21 @@ namespace AutoCAD_DD
 
         private void button2_Click_1(object sender, EventArgs e) // create block 
         {
-            CreateFigures f = new CreateFigures();
-            f.CreateBlock(textBoxName.Text, textBoxDesc.Text);
-        } 
+            MessageBox.Show("Not Implemented");
+            //CreateFigures f = new CreateFigures();
+            //f.CreateAxisPointMarkBlock(textBoxName.Text, textBoxDesc.Text);
+        }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            count = Int32.Parse(textBoxCount.Text);
+            Func<string> GetAnyIniqueBlockName = () => DateTime.Now.Ticks.ToString();
+            var document = Autodesk.AutoCAD.ApplicationServices
+                .Application.DocumentManager.MdiActiveDocument;
 
-            for (int i=0;i<=count;i++)
-            {
-                PluginN2 desc = new PluginN2(); // вызываем окно с textbox'ом для описания
-                desc.ShowDialog();
-
-
-                CreateFigures createf = new CreateFigures(); // вызываем метод создающий блок
-                createf.CreateBlock(textBoxName_3.Text+ " " + i.ToString(), desc.Description);
-            }
+            new CreateFigures().CreateAxisPointMarkBlocks(
+                document, 
+                GetAnyIniqueBlockName);
         }
     }
-    
 }
 
