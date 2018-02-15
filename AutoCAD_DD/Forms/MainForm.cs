@@ -21,14 +21,12 @@ namespace SectionConverterPlugin
 {
     public partial class PluginN1 : Form
     {
-        Point3d point;
-
         public PluginN1()
         {
             InitializeComponent();
         }
 
-        [CommandMethod("Test")]
+        [CommandMethod("test")]
         public void Test()
         {
             DialogResult result = acad.ShowModalDialog(this);
@@ -36,33 +34,7 @@ namespace SectionConverterPlugin
                 acad.ShowAlertDialog("{point.X}\n{point.Y}\n{point.Z}");
         }
 
-        private void button2_Click(object sender, EventArgs e) // Circle 
-        {
-            MessageBox.Show("Not Implemented");
-            //CreateFigures f = new CreateFigures();
-            //f.CreateCircle();
-        }
-
-        private void button1_Click(object sender, MouseEventArgs e) // Get point 
-        {
-            var editor = acad.DocumentManager.MdiActiveDocument.Editor;
-            var ptRes = editor.GetPoint("\nPick a point: ");
-            if (ptRes.Status == PromptStatus.OK)
-            {
-                point = ptRes.Value;
-                txtX.Text = point.X.ToString();
-                txtY.Text = point.Y.ToString();
-                txtZ.Text = point.Z.ToString();
-            }
-        }
-
-        private void button2_Click_1(object sender, EventArgs e) // create block 
-        {
-            MessageBox.Show("Not Implemented");
-            //CreateFigures f = new CreateFigures();
-            //f.CreateAxisPointMarkBlock(textBoxName.Text, textBoxDesc.Text);
-        }
-
+   
         private void button3_Click(object sender, EventArgs e)
         {
             Func<string> GetAnyIniqueBlockName = () => DateTime.Now.Ticks.ToString();

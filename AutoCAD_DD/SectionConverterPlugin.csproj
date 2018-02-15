@@ -36,6 +36,7 @@
   <ItemGroup>
     <Reference Include="AcCoreMgd">
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Autodesk\ObjectARX SDK\inc\AcCoreMgd.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="AcCui">
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Autodesk\ObjectARX SDK\inc\AcCui.dll</HintPath>
@@ -50,6 +51,7 @@
     </Reference>
     <Reference Include="AcDx">
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Autodesk\ObjectARX SDK\inc\AcDx.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="AcMgd">
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Autodesk\ObjectARX SDK\inc\AcMgd.dll</HintPath>
@@ -57,6 +59,7 @@
     </Reference>
     <Reference Include="AcMr">
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Autodesk\ObjectARX SDK\inc\AcMr.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="AcTcMgd">
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Autodesk\ObjectARX SDK\inc\AcTcMgd.dll</HintPath>
