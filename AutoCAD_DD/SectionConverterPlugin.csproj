@@ -91,6 +91,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LoadingExternalDrawlings.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="CreateFigures.cs" />
     <Compile Include="Forms\MainForm.cs">

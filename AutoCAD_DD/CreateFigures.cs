@@ -25,25 +25,22 @@ namespace SectionConverterPlugin
                 Point3d coords;
                 string description;
 
-              //  #region Request point data from user
+                #region Request point data from user
 
                 // запрашиваем координаты вставки блока
                 //TODO:
                 // вынести в отдельный метод запрос точки для стандартизации этого запроса
-                var getPointAcadDialogResult = documentEditor.GetPoint("Pick a point:");
+                //var getPointAcadDialogResult = documentEditor.GetPoint("Pick a point:");
 
-                if (getPointAcadDialogResult.Status != PromptStatus.OK)
-                {
-                    exitRequested = true;
-                    break;
-                }
-                coords = getPointAcadDialogResult.Value;
+                //if (getPointAcadDialogResult.Status != PromptStatus.OK)
+                //{
+                //    exitRequested = true;
+                //    break;
+                //}
+                //coords = getPointAcadDialogResult.Value;
 
-                // Запрашиваем описание к точке
-                var axisPointInfoInputForm = new AxisPointInfoInputForm();
-                var inputFormDialogResult = axisPointInfoInputForm.ShowDialog();
-
-                description = axisPointInfoInputForm.Description;
+                coords = GetAxisPoint(document);
+                description = SetDescriptionForObject();
 
                 if (description == null)
                 {
@@ -51,7 +48,7 @@ namespace SectionConverterPlugin
                     break;
                 }
 
-              //  #endregion
+                #endregion
 
                 AddAxisPointMarkBlock(
                     documentDatabase,
@@ -81,9 +78,7 @@ namespace SectionConverterPlugin
                     documentDatabase.BlockTableId,
                     OpenMode.ForWrite);
 
-                // получение уникального имени
-                // TODO: 
-                // можно ввести ограничение на число попыток
+
                 string blockName;
 
                 do
@@ -114,47 +109,86 @@ namespace SectionConverterPlugin
 
                 #endregion
 
-                #region Create block's primitives
-
-                // создаем полилинию
-                Polyline poly = new Polyline();
-                poly.SetDatabaseDefaults();
-                poly.AddVertexAt(0, new Point2d(-50, -125), 0, 0, 0);
-                poly.AddVertexAt(1, new Point2d(-50, 105), 0, 0, 0);
-                poly.AddVertexAt(2, new Point2d(-20, 125), 0, 0, 0);
-                poly.AddVertexAt(3, new Point2d(20, 125), 0, 0, 0);
-                poly.AddVertexAt(4, new Point2d(50, 105), 0, 0, 0);
-                poly.AddVertexAt(5, new Point2d(50, -125), 0, 0, 0);
-                poly.AddVertexAt(6, new Point2d(-50, -125), 0, 0, 0);
-
-                // добавляем полилинию в определение блока и в транзакцию
-                block.AppendEntity(poly);
-                transaction.AddNewlyCreatedDBObject(poly, true);
-
-                // создаем окружность
-                Circle circle = new Circle();
-                circle.SetDatabaseDefaults();
-                circle.Center = new Point3d(0, 90, 0);
-                circle.Radius = 15;
-
-                // добавляем окружность в определение блока и в транзакцию
-                block.AppendEntity(circle);
-                transaction.AddNewlyCreatedDBObject(circle, true);
-
-                // создаем текст
-                DBText text = new DBText();
-                text.Position = new Point3d(-25, -95, 0);
-                text.Height = 25;
-                text.TextString = description;
-
-                // добавляем текст в определение блока и в транзакцию
-                block.AppendEntity(text);
-                transaction.AddNewlyCreatedDBObject(text, true);
-
-                #endregion
+                AddBlock(
+                    documentDatabase,
+                    documentEditor,
+                    transaction,
+                    blockTable,
+                    block,
+                    description);
 
                 transaction.Commit();
             }
+        }
+
+        public void AddBlock(
+            Database documentDatabase,
+             Editor documentEditor,
+             Transaction transaction,
+             BlockTable blockTable,
+             BlockTableRecord block,
+             string discription)
+        {
+            //TODO: лямда выражения - изучить
+            Action<Entity> AppendEntity = e =>
+            {
+                block.AppendEntity(e);
+                transaction.AddNewlyCreatedDBObject(e, true);
+            };
+
+            // создаем полилинию
+            Polyline poly = new Polyline();
+            poly.SetDatabaseDefaults();
+            poly.AddVertexAt(0, new Point2d(-50, -125), 0, 0, 0);
+            poly.AddVertexAt(1, new Point2d(-50, 105), 0, 0, 0);
+            poly.AddVertexAt(2, new Point2d(-20, 125), 0, 0, 0);
+            poly.AddVertexAt(3, new Point2d(20, 125), 0, 0, 0);
+            poly.AddVertexAt(4, new Point2d(50, 105), 0, 0, 0);
+            poly.AddVertexAt(5, new Point2d(50, -125), 0, 0, 0);
+            poly.AddVertexAt(6, new Point2d(-50, -125), 0, 0, 0);
+
+            // добавляем полилинию в определение блока и в транзакцию
+            AppendEntity(poly);
+
+            // создаем окружность
+            Circle circle = new Circle();
+            circle.SetDatabaseDefaults();
+            circle.Center = new Point3d(0, 90, 0);
+            circle.Radius = 15;
+
+            // добавляем окружность в определение блока и в транзакцию
+            AppendEntity(circle);
+
+            // создаем текст
+            DBText text = new DBText();
+            text.Position = new Point3d(-25, -95, 0);
+            text.Height = 25;
+            text.TextString = discription;
+
+            // добавляем текст в определение блока и в транзакцию
+            AppendEntity(text);
+        }
+
+        //TODO: 
+        // вставить проверку на корректный ввод точки
+        public Point3d GetAxisPoint(
+            Document document)
+        {
+            Point3d coords;
+            var documentEditor = document.Editor;
+
+            var getPointAcadDialogResult = documentEditor.GetPoint("\nPick a point:");
+
+            coords = getPointAcadDialogResult.Value;
+
+            return coords;
+        }
+
+        public string SetDescriptionForObject()
+        {
+            var axisPointInfoInputForm = new AxisPointInfoInputForm();
+            var inputFormDialogResult = axisPointInfoInputForm.ShowDialog();
+            return axisPointInfoInputForm.Description;
         }
     }
 }
