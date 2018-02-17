@@ -91,6 +91,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AcadTools.cs" />
+    <Compile Include="Description.cs" />
     <Compile Include="LoadingExternalDrawlings.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="CreateFigures.cs" />
@@ -100,11 +102,11 @@
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\AxisPointInfoInputForm.cs">
+    <Compile Include="Forms\StationInputForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\AxisPointInfoInputForm.Designer.cs">
-      <DependentUpon>AxisPointInfoInputForm.cs</DependentUpon>
+    <Compile Include="Forms\StationInputForm.Designer.cs">
+      <DependentUpon>StationInputForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -112,8 +114,8 @@
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AxisPointInfoInputForm.resx">
-      <DependentUpon>AxisPointInfoInputForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\StationInputForm.resx">
+      <DependentUpon>StationInputForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

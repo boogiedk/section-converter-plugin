@@ -1,6 +1,6 @@
 ﻿namespace SectionConverterPlugin
 {
-    partial class AxisPointInfoInputForm
+    partial class StationInputForm
     {
         /// <summary>
         /// Required designer variable.
@@ -35,6 +35,7 @@
             // 
             // btn_Ok
             // 
+            this.btn_Ok.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btn_Ok.Location = new System.Drawing.Point(83, 123);
             this.btn_Ok.Name = "btn_Ok";
             this.btn_Ok.Size = new System.Drawing.Size(75, 23);
@@ -61,16 +62,19 @@
             this.tb_Description.TabIndex = 2;
             this.tb_Description.Text = " ";
             // 
-            // AxisPointInfoInputForm
+            // StationInputForm
             // 
+            this.AcceptButton = this.btn_Ok;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(246, 158);
             this.Controls.Add(this.tb_Description);
             this.Controls.Add(this.lbl_Description);
             this.Controls.Add(this.btn_Ok);
-            this.Name = "AxisPointInfoInputForm";
-            this.Text = "Ввод информации о точке";
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "StationInputForm";
+            this.Text = "Пикет";
             this.ResumeLayout(false);
             this.PerformLayout();
 

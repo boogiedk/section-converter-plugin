@@ -9,11 +9,11 @@ using System.Windows.Forms;
 
 namespace SectionConverterPlugin
 {
-    public partial class AxisPointInfoInputForm : Form
+    public partial class StationInputForm : Form
     {
         private string _description;
 
-        public AxisPointInfoInputForm()
+        public StationInputForm()
         {
             InitializeComponent();
         }

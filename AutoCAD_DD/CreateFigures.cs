@@ -10,7 +10,7 @@ using Autodesk.AutoCAD.EditorInput;
 
 namespace SectionConverterPlugin
 {
-    class CreateFigures
+    public partial class CreateFigures
     {
         public void CreateAxisPointMarkBlocks(
             Document document,
@@ -23,30 +23,30 @@ namespace SectionConverterPlugin
             while (!exitRequested)
             {
                 Point3d coords;
-                string description;
 
                 #region Request point data from user
 
                 // запрашиваем координаты вставки блока
                 //TODO:
                 // вынести в отдельный метод запрос точки для стандартизации этого запроса
-                //var getPointAcadDialogResult = documentEditor.GetPoint("Pick a point:");
+                var getPointAcadDialogResult = documentEditor.GetPoint("Pick a point:");
 
-                //if (getPointAcadDialogResult.Status != PromptStatus.OK)
-                //{
-                //    exitRequested = true;
-                //    break;
-                //}
-                //coords = getPointAcadDialogResult.Value;
-
-                coords = GetAxisPoint(document);
-                description = SetDescriptionForObject();
-
-                if (description == null)
+                if (getPointAcadDialogResult.Status != PromptStatus.OK)
                 {
                     exitRequested = true;
                     break;
                 }
+               // coords = getPointAcadDialogResult.Value;
+
+                coords = GetAxisPoint(document);
+       
+                //Description.Description = SetDescriptionForObject();
+
+                //if (Description.Description == null)
+                //{
+                //    exitRequested = true;
+                //    break;
+                //}
 
                 #endregion
 
@@ -54,8 +54,7 @@ namespace SectionConverterPlugin
                     documentDatabase,
                     documentEditor,
                     GetAnyIniqueBlockName,
-                    coords,
-                    description);
+                    coords);
             }
         }
 
@@ -63,8 +62,7 @@ namespace SectionConverterPlugin
             Database documentDatabase,
             Editor documentEditor,
             Func<string> GetAnyIniqueBlockName,
-            Point3d coords,
-            string description)
+            Point3d coords)
         {
             using (var transaction =
                     documentDatabase.TransactionManager.StartTransaction())
@@ -114,20 +112,18 @@ namespace SectionConverterPlugin
                     documentEditor,
                     transaction,
                     blockTable,
-                    block,
-                    description);
+                    block);
 
                 transaction.Commit();
             }
         }
 
         public void AddBlock(
-            Database documentDatabase,
+             Database documentDatabase,
              Editor documentEditor,
              Transaction transaction,
              BlockTable blockTable,
-             BlockTableRecord block,
-             string discription)
+             BlockTableRecord block)
         {
             //TODO: лямда выражения - изучить
             Action<Entity> AppendEntity = e =>
@@ -163,7 +159,7 @@ namespace SectionConverterPlugin
             DBText text = new DBText();
             text.Position = new Point3d(-25, -95, 0);
             text.Height = 25;
-            text.TextString = discription;
+       //     text.TextString = Description.Description;
 
             // добавляем текст в определение блока и в транзакцию
             AppendEntity(text);
@@ -171,8 +167,7 @@ namespace SectionConverterPlugin
 
         //TODO: 
         // вставить проверку на корректный ввод точки
-        public Point3d GetAxisPoint(
-            Document document)
+        public Point3d GetAxisPoint(Document document)
         {
             Point3d coords;
             var documentEditor = document.Editor;
@@ -186,9 +181,45 @@ namespace SectionConverterPlugin
 
         public string SetDescriptionForObject()
         {
-            var axisPointInfoInputForm = new AxisPointInfoInputForm();
+            var axisPointInfoInputForm = new StationInputForm();
             var inputFormDialogResult = axisPointInfoInputForm.ShowDialog();
             return axisPointInfoInputForm.Description;
+        }
+
+        public void CreateAxisPoint(Document document)
+        {
+            // Получение текущего документа и базы данных
+            Database database = document.Database;
+
+            // Старт транзакции
+            using (Transaction transaction = database.TransactionManager.StartTransaction())
+            {
+                // Открытие таблицы Блоков для чтения
+                BlockTable blocktable;
+                blocktable = transaction.GetObject(database.BlockTableId,
+                                               OpenMode.ForRead) as BlockTable;
+                // Открытие записи таблицы Блоков для записи
+                BlockTableRecord blockTableRecord;
+                blockTableRecord = transaction.GetObject(blocktable[BlockTableRecord.ModelSpace],
+                                            OpenMode.ForWrite) as BlockTableRecord;
+
+                // Создание точки с в пространстве Модели
+                Point3d coords = GetAxisPoint(document);
+                var acPoint = new DBPoint(new Point3d(coords.X, coords.Y, coords.Z));
+                acPoint.SetDatabaseDefaults();
+
+                // Установка стиля для всех объектов точек в чертеже
+                database.Pdmode = 35;
+                database.Pdsize = 20;
+
+                // Добавление нового объекта в запись таблицы блоков и в транзакцию
+                blockTableRecord.AppendEntity(acPoint);
+                transaction.AddNewlyCreatedDBObject(acPoint, true);
+
+                // Сохранение нового объекта в базе данных
+                transaction.Commit();
+
+            }
         }
     }
 }
