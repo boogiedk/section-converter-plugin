@@ -60,14 +60,12 @@ namespace SectionConverterPlugin
             }
         }
 
-
         static public void InsertBlock()
         {
             Document doc = Application.DocumentManager.MdiActiveDocument;
             using (Database OpenDb = new Database(false, true))
             {
-                OpenDb.ReadDwgFile("c:\\test.dwg",
-                    FileShare.ReadWrite, true, "");
+                OpenDb.ReadDwgFile("c:\\test.dwg",FileShare.ReadWrite, true, "");
 
                 ObjectIdCollection ids = new ObjectIdCollection();
                 using (Transaction tr = OpenDb.TransactionManager.StartTransaction())
@@ -76,17 +74,14 @@ namespace SectionConverterPlugin
                     BlockTable bt;
                     bt = (BlockTable)tr.GetObject(OpenDb.BlockTableId,OpenMode.ForRead);
 
-                    if (bt.Has("636544821624451378"))
+                    if (bt.Has("123"))
                     {
-                        ids.Add(bt["636544821624451378"]);
+                        ids.Add(bt["123"]);
                     }
                     tr.Commit();
                 }
-
-                // Если нашли – добавим блок
                 if (ids.Count != 0)
                 {
-                    // Получаем текущую базу чертежа
                     Database destdb = doc.Database;
                     IdMapping iMap = new IdMapping();
                     destdb.WblockCloneObjects(ids, destdb.BlockTableId,iMap,DuplicateRecordCloning.Replace, false);

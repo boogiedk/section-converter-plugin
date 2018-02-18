@@ -35,10 +35,8 @@
             this.btn_execute = new System.Windows.Forms.Button();
             this.lbl_import = new System.Windows.Forms.Label();
             this.txb_fileName = new System.Windows.Forms.TextBox();
-            this.txb_dataBaseName = new System.Windows.Forms.TextBox();
             this.txb_blockName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
@@ -82,7 +80,7 @@
             // 
             // btn_execute
             // 
-            this.btn_execute.Location = new System.Drawing.Point(155, 166);
+            this.btn_execute.Location = new System.Drawing.Point(168, 138);
             this.btn_execute.Name = "btn_execute";
             this.btn_execute.Size = new System.Drawing.Size(75, 23);
             this.btn_execute.TabIndex = 22;
@@ -106,16 +104,9 @@
             this.txb_fileName.Size = new System.Drawing.Size(100, 20);
             this.txb_fileName.TabIndex = 24;
             // 
-            // txb_dataBaseName
-            // 
-            this.txb_dataBaseName.Location = new System.Drawing.Point(143, 113);
-            this.txb_dataBaseName.Name = "txb_dataBaseName";
-            this.txb_dataBaseName.Size = new System.Drawing.Size(100, 20);
-            this.txb_dataBaseName.TabIndex = 25;
-            // 
             // txb_blockName
             // 
-            this.txb_blockName.Location = new System.Drawing.Point(143, 140);
+            this.txb_blockName.Location = new System.Drawing.Point(143, 112);
             this.txb_blockName.Name = "txb_blockName";
             this.txb_blockName.Size = new System.Drawing.Size(100, 20);
             this.txb_blockName.TabIndex = 26;
@@ -125,27 +116,18 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(12, 89);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(64, 13);
+            this.label1.Size = new System.Drawing.Size(101, 13);
             this.label1.TabIndex = 27;
-            this.label1.Text = "Имя файла";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 116);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(98, 13);
-            this.label2.TabIndex = 28;
-            this.label2.Text = "Имя базы данных";
+            this.label1.Text = "Путь и имя файла:";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 143);
+            this.label3.Location = new System.Drawing.Point(12, 115);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(62, 13);
+            this.label3.Size = new System.Drawing.Size(65, 13);
             this.label3.TabIndex = 29;
-            this.label3.Text = "Имя блока";
+            this.label3.Text = "Имя блока:";
             // 
             // PluginN1
             // 
@@ -153,10 +135,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(265, 201);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txb_blockName);
-            this.Controls.Add(this.txb_dataBaseName);
             this.Controls.Add(this.txb_fileName);
             this.Controls.Add(this.lbl_import);
             this.Controls.Add(this.btn_execute);
@@ -181,10 +161,8 @@
         private System.Windows.Forms.Button btn_execute;
         private System.Windows.Forms.Label lbl_import;
         private System.Windows.Forms.TextBox txb_fileName;
-        private System.Windows.Forms.TextBox txb_dataBaseName;
         private System.Windows.Forms.TextBox txb_blockName;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
     }
 }

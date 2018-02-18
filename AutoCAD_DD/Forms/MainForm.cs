@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
 using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.DatabaseServices;
@@ -50,7 +51,7 @@ namespace SectionConverterPlugin
 
             var document = Autodesk.AutoCAD.ApplicationServices
                .Application.DocumentManager.MdiActiveDocument;
-            
+
             var a = new CreateFigures();
 
             while (a.CreateAxisPointBlock(document, GetAnyIniqueBlockName)) { };
@@ -64,4 +65,3 @@ namespace SectionConverterPlugin
         }
     }
 }
-
