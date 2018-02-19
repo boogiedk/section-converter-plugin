@@ -16,7 +16,6 @@ namespace SectionConverterPlugin
             // Почитать про NLog
             // Почитать про XML комментарии/документацию
             // Поискать список шорткатов на хабре
-            MessageBox.Show("Hello!");
         }
 
         /// <summary>

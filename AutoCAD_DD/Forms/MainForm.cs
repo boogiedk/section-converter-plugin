@@ -63,5 +63,15 @@ namespace SectionConverterPlugin
         {
 
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var document = Autodesk.AutoCAD.ApplicationServices
+              .Application.DocumentManager.MdiActiveDocument;
+
+            var a = new CreateFigures();
+
+            while (a.CreateAxisPointTest(document)) { };
+        }
     }
 }
