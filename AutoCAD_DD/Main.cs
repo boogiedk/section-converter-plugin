@@ -1,5 +1,12 @@
-﻿using Autodesk.AutoCAD.Runtime;
+﻿using System;
+using Autodesk.AutoCAD.ApplicationServices;
+using Autodesk.Windows;
+using System.Windows.Media.Imaging;
+using Autodesk.AutoCAD.Runtime;
 using System.Windows.Forms;
+
+using acadApp = Autodesk.AutoCAD.ApplicationServices.Application;
+
 
 namespace SectionConverterPlugin
 {
@@ -10,12 +17,15 @@ namespace SectionConverterPlugin
         /// </summary>
         public void Initialize()
         {
-            // TODO:
-            // ПРОЧИТАТЬ ПРО ОТЛИЧИЕ ССЫЛОЧНЫХ ТИПОВ ДАННЫХ ОТ ВЕЩЕСТВЕННЫХ (class vs struct)
-            // Заменить на нормальное приветствие
-            // Почитать про NLog
-            // Почитать про XML комментарии/документацию
-            // Поискать список шорткатов на хабре
+            acadApp.Idle += StartPluginHandler;
+        }
+
+        private void StartPluginHandler(object sender, EventArgs e)
+        {
+           acadApp.Idle -= StartPluginHandler;
+
+            BuildRibbonItem buildRibbonItem = new BuildRibbonItem();
+            buildRibbonItem.BuildRibbonTab();
         }
 
         /// <summary>

@@ -115,6 +115,7 @@ namespace SectionConverterPlugin
 
             return result;
         }
+
         #endregion
 
         #region Acad Points Templates
@@ -149,7 +150,7 @@ namespace SectionConverterPlugin
             // создаем текст
             var text = new MText();
             text.Location = new Point3d(-25, -95, 0);
-            text.Contents = "#mark_axisPoint";
+            text.Contents = "axisPoint_";
 
             // добавляем текст в определение блока
             entities.Add(text);
@@ -160,7 +161,6 @@ namespace SectionConverterPlugin
 
             return block;
         }
-
         public BlockTableRecord GetAxisPointTeplate(Database database)
         {
 
@@ -172,6 +172,12 @@ namespace SectionConverterPlugin
             database.Pdmode = 35;
             database.Pdsize = 20;
 
+            // создаем текст
+            var text = new MText();
+            text.Location = new Point3d(20, 0, 0);
+            text.Contents = "#mark_axisPoint";
+
+            entities.Add(text);
             entities.Add(dbPoint);
 
             var point = CreateNewBlock(database);
@@ -181,11 +187,10 @@ namespace SectionConverterPlugin
             return point;
 
         }
+
         #endregion
 
-        #region helper methods
-
-        #region block methods
+        #region Block methods
 
         public BlockTableRecord CreateNewBlock(
             Database documentDatabase)
@@ -334,6 +339,7 @@ namespace SectionConverterPlugin
 
             return entities;
         }
+
         public void SetBlockEntities(
             BlockTableRecord block,
             List<Entity> entities)
@@ -369,210 +375,266 @@ namespace SectionConverterPlugin
                 transaction.Commit();
             }
         }
-
-        public bool CreateAxisPointBlock(
-          Document document,
-          Func<string> GetAnyIniqueBlockName)
-        {
-            bool result = false;
-
-            var database = document.Database;
-            var editor = document.Editor;
-
-            Point3d blockPosition = new Point3d(double.NaN, double.NaN, double.NaN);
-            if (!GetPointAcadDialog(editor, out blockPosition)) return result;
-
-            double station = double.NaN;
-            if (!GetStationDialog(out station)) return result;
-
-            var block = GetAxisPointBlockTemplate(database);
-            SetBlockName(block, "axisPoint_" + GetBlockName(block));
-            SetBlockPosition(block, blockPosition);
-
-            //testcode
-            //var lst = GetBlockEntities(block);
-            //MessageBox.Show(GetMText(lst, "#mark_axisPoint").Text.ToString());
-
-
-            result = true;
-
-            return result;
-        }
-
-
         #endregion
 
-        #region point methods
-        public BlockTableRecord CreateNewPoint(
-            Database documentDatabase)
-        {
-            BlockTableRecord point = null;
+        //#region point methods
+        //public BlockTableRecord CreateNewPoint(
+        //    Database documentDatabase)
+        //{
+        //    BlockTableRecord point = null;
 
-            using (var transaction =
-                    documentDatabase.TransactionManager.StartTransaction())
-            {
-                // открываем таблицу блоков на запись
-                var blockTable = (BlockTable)transaction.GetObject(
-                    documentDatabase.BlockTableId,
-                    OpenMode.ForWrite);
+        //    using (var transaction =
+        //            documentDatabase.TransactionManager.StartTransaction())
+        //    {
+        //        // открываем таблицу блоков на запись
+        //        var blockTable = (BlockTable)transaction.GetObject(
+        //            documentDatabase.BlockTableId,
+        //            OpenMode.ForWrite);
 
-                // открываем пространство модели на запись
-                BlockTableRecord modelSpaceTableRecord = (BlockTableRecord)transaction.GetObject(
-                    blockTable[BlockTableRecord.ModelSpace],
-                    OpenMode.ForWrite);
+        //        // открываем пространство модели на запись
+        //        BlockTableRecord modelSpaceTableRecord = (BlockTableRecord)transaction.GetObject(
+        //            blockTable[BlockTableRecord.ModelSpace],
+        //            OpenMode.ForWrite);
 
-                transaction.Commit();
-            }
+        //        transaction.Commit();
+        //    }
 
-            return point;
-        }
+        //    return point;
+        //}
 
-        public Point3d GetPointPosition(
-            BlockTableRecord point)
-        {
-            Database documentDatabase = point.Database;
-            Point3d position = new Point3d(double.NaN, double.NaN, double.NaN);
+        //public Point3d GetPointPosition(
+        //    BlockTableRecord point)
+        //{
+        //    Database documentDatabase = point.Database;
+        //    Point3d position = new Point3d(double.NaN, double.NaN, double.NaN);
 
-            using (var transaction =
-                    documentDatabase.TransactionManager.StartTransaction())
-            {
-                // открываем таблицу блоков на запись
-                var blockTable = (BlockTable)transaction.GetObject(
-                    documentDatabase.BlockTableId,
-                    OpenMode.ForRead);
+        //    using (var transaction =
+        //            documentDatabase.TransactionManager.StartTransaction())
+        //    {
+        //        // открываем таблицу блоков на запись
+        //        var blockTable = (BlockTable)transaction.GetObject(
+        //            documentDatabase.BlockTableId,
+        //            OpenMode.ForRead);
 
-                var blockReference = (BlockReference)transaction.GetObject(
-                    point.GetBlockReferenceIds(true, true)[0],
-                    OpenMode.ForRead);
+        //        var blockReference = (BlockReference)transaction.GetObject(
+        //            point.GetBlockReferenceIds(true, true)[0],
+        //            OpenMode.ForRead);
 
-                position = blockReference.Position;
+        //        position = blockReference.Position;
 
-                transaction.Commit();
+        //        transaction.Commit();
 
-                return position;
-            }
-        }
+        //        return position;
+        //    }
+        //}
 
-        public void SetPointPosition(
-            BlockTableRecord point,
-            Point3d position)
-        {
-            Database documentDatabase = point.Database;
+        //public void SetPointPosition(
+        //    BlockTableRecord point,
+        //    Point3d position)
+        //{
+        //    Database documentDatabase = point.Database;
 
-            using (var transaction =
-                    documentDatabase.TransactionManager.StartTransaction())
-            {
-                // открываем таблицу блоков на запись
-                var blockTable = (BlockTable)transaction.GetObject(
-                    documentDatabase.BlockTableId,
-                    OpenMode.ForWrite);
+        //    using (var transaction =
+        //            documentDatabase.TransactionManager.StartTransaction())
+        //    {
+        //        // открываем таблицу блоков на запись
+        //        var blockTable = (BlockTable)transaction.GetObject(
+        //            documentDatabase.BlockTableId,
+        //            OpenMode.ForWrite);
 
-                var blockTableRecord = (BlockTableRecord)transaction.GetObject(
-                    point.Id,
-                    OpenMode.ForWrite);
+        //        var blockTableRecord = (BlockTableRecord)transaction.GetObject(
+        //            point.Id,
+        //            OpenMode.ForWrite);
 
-                transaction.Commit();
-            }
-        }
+        //        transaction.Commit();
+        //    }
+        //}
 
-        public List<Entity> GetPointEntities(
-            BlockTableRecord point)
-        {
-            Database documentDatabase = point.Database;
-            List<Entity> entities = new List<Entity>();
+        //public List<Entity> GetPointEntities(
+        //    BlockTableRecord point)
+        //{
+        //    Database documentDatabase = point.Database;
+        //    List<Entity> entities = new List<Entity>();
 
-            using (var transaction =
-                    documentDatabase.TransactionManager.StartTransaction())
-            {
+        //    using (var transaction =
+        //            documentDatabase.TransactionManager.StartTransaction())
+        //    {
 
-                var blockTable = (BlockTable)transaction.GetObject(
-                    documentDatabase.BlockTableId,
-                    OpenMode.ForRead);
+        //        var blockTable = (BlockTable)transaction.GetObject(
+        //            documentDatabase.BlockTableId,
+        //            OpenMode.ForRead);
 
-                foreach (var entityID in point)
-                {
-                    var entity = (Entity)transaction.GetObject(
-                    entityID,
-                    OpenMode.ForRead);
+        //        foreach (var entityID in point)
+        //        {
+        //            var entity = (Entity)transaction.GetObject(
+        //            entityID,
+        //            OpenMode.ForRead);
 
-                    entities.Add(entity);
-                }
+        //            entities.Add(entity);
+        //        }
 
-                transaction.Commit();
-            }
+        //        transaction.Commit();
+        //    }
 
-            return entities;
-        }
+        //    return entities;
+        //}
 
-        public void SetPointEntities(
-            BlockTableRecord point,
-            List<Entity> entities)
-        {
-            Database documentDatabase = point.Database;
+        //public void SetPointEntities(
+        //    BlockTableRecord point,
+        //    List<Entity> entities)
+        //{
+        //    Database documentDatabase = point.Database;
 
-            using (var transaction =
-                    documentDatabase.TransactionManager.StartTransaction())
-            {
-                var blockTable = (BlockTable)transaction.GetObject(
-                    documentDatabase.BlockTableId,
-                    OpenMode.ForWrite);
+        //    using (var transaction =
+        //            documentDatabase.TransactionManager.StartTransaction())
+        //    {
+        //        var blockTable = (BlockTable)transaction.GetObject(
+        //            documentDatabase.BlockTableId,
+        //            OpenMode.ForWrite);
 
-                var blockTableRecord = (BlockTableRecord)transaction.GetObject(
-                  point.Id,
-                    OpenMode.ForWrite);
+        //        var blockTableRecord = (BlockTableRecord)transaction.GetObject(
+        //          point.Id,
+        //            OpenMode.ForWrite);
 
-                foreach (var entity in entities)
-                {
-                    blockTableRecord.AppendEntity(entity);
+        //        foreach (var entity in entities)
+        //        {
+        //            blockTableRecord.AppendEntity(entity);
 
-                    try
-                    {
-                        transaction.AddNewlyCreatedDBObject(entity, true);
-                    }
-                    catch
-                    {
-                        // well, already created. ok.
-                    }
-                }
+        //            try
+        //            {
+        //                var text = new DBText();
+        //                text.Position = new Point3d(0, 0, 0);
+        //                text.TextString = "#mark_axisPoint";
 
-                transaction.Commit();
-            }
-        }
+        //                transaction.AddNewlyCreatedDBObject(entity, true);
+        //            }
+        //            catch
+        //            {
+        //                // well, already created. ok.
+        //            }
+        //        }
 
-        public bool CreateAxisPointTest(Document document)
-        {
-            bool result = false;
+        //        transaction.Commit();
+        //    }
+        //}
 
-            var database = document.Database;
-            var editor = document.Editor;
+        //public bool CreateAxisPointTest(Document document)
+        //{
+        //    bool result = false;
 
-            Point3d pointPosition = new Point3d(double.NaN, double.NaN, double.NaN);
-            if (!GetPointAcadDialog(editor, out pointPosition)) return result;
+        //    var database = document.Database;
+        //    var editor = document.Editor;
 
-            var block = GetAxisPointTeplate(database);
+        //    Point3d pointPosition = new Point3d(double.NaN, double.NaN, double.NaN);
+        //    if (!GetPointAcadDialog(editor, out pointPosition)) return result;
 
-            SetBlockPosition(block, pointPosition);
+        //    double station = double.NaN;
+        //    if (!GetStationDialog(out station)) return result;
 
-            result = true;
+        //    var block = GetAxisPointTeplate(database);
 
-            return result;
-        }
+        //    SetBlockPosition(block, pointPosition);
 
-        #endregion
+        //    result = true;
 
-        public MText GetMText(List<Entity> entities, string startWith)
+        //    return result;
+        //}
+
+        //#endregion
+
+        public MText GetAnyMText(List<Entity> entities, string startWith = "")
         {
             var mtexts = entities
                 .Select(e => e as MText)
                 .Where(e => e != null);
 
-            return mtexts.First(mt => mt.Text.StartsWith(startWith));
+            return startWith == "" ?
+                mtexts.First() : 
+                mtexts.First(mt => mt.Text.StartsWith(startWith));
+        }
+        public void ApplyFunction(Entity entity, Action<Entity> Function)
+        {
+            var documentDatabase = entity.Database;
+
+            using (var transaction =
+                    documentDatabase.TransactionManager.StartTransaction())
+            {
+                var entityOpened = (Entity)transaction.GetObject(
+                    entity.Id,
+                    OpenMode.ForWrite);
+
+                Function(entityOpened);
+
+                transaction.Commit();
+            }
         }
 
-        #endregion
+        private string FormatStation(double station)
+        {
+            return String.Format("ПК {0:00}+{1:00.00}", 
+                station / 100,
+                station % 100);
+        }
 
+        private void SetTextParams(
+            BlockTableRecord block, 
+            string paramsTextPrefix,
+            Func<string> GetParamsText)
+        {
+            ApplyFunction(
+                GetAnyMText(GetBlockEntities(block), paramsTextPrefix),
+                e =>
+                {
+                    var text = (MText)e;
+                    text.Contents = GetParamsText();
+                });
+        }
 
+        private BlockTableRecord CreateBlockFromTemplate(
+            BlockTableRecord blockTemplate, 
+            string namePrefix, 
+            Point3d position,
+            Database database)
+        {
+            var block = GetAxisPointBlockTemplate(database);
+            SetBlockName(block, namePrefix + GetBlockName(block));
+            SetBlockPosition(block, position);
 
+            return block;
+        }
+
+        public bool CreateAxisPointBlock(Document document)
+        {
+            bool result = false;
+
+            var blockNamePrefix = "axisPoint_";
+            var paramsTextPrefix = blockNamePrefix;
+
+            var database = document.Database;
+            var editor = document.Editor;
+
+            // Get data dialogs
+            var blockPosition = new Point3d(double.NaN, double.NaN, double.NaN);
+            if (!GetPointAcadDialog(editor, out blockPosition)) return result;
+
+            double station = double.NaN;
+            if (!GetStationDialog(out station)) return result;
+
+            // block creation
+            var block = CreateBlockFromTemplate(
+                GetAxisPointBlockTemplate(database),
+                blockNamePrefix,
+                blockPosition,
+                database);
+
+            SetTextParams(
+                block, 
+                paramsTextPrefix, () => FormatStation(station));
+
+            result = true;
+
+            return result;
+        }
     }
 }
 

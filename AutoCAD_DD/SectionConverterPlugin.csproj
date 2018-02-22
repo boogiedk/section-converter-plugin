@@ -48,6 +48,7 @@
     </Reference>
     <Reference Include="acdbmgdbrep">
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Autodesk\ObjectARX SDK\inc\acdbmgdbrep.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="AcDx">
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Autodesk\ObjectARX SDK\inc\AcDx.dll</HintPath>
@@ -79,6 +80,8 @@
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Autodesk\ObjectARX SDK\inc-x64\Autodesk.AutoCAD.Interop.Common.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -89,11 +92,12 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AcadTools.cs" />
+    <Compile Include="BuildRibbonItem.cs" />
     <Compile Include="Description.cs" />
-    <Compile Include="LoadingExternalDrawlings.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="CreateFigures.cs" />
     <Compile Include="Forms\MainForm.cs">
@@ -118,6 +122,9 @@
       <DependentUpon>StationInputForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resource\16x16.png" />
+    <Resource Include="Resource\32x32.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

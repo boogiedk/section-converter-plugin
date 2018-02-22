@@ -18,14 +18,13 @@ namespace SectionConverterPlugin
             InitializeComponent();
         }
 
-        [CommandMethod("test")]
-        public void Test()
+        [CommandMethod("RunPlugin")]
+        public void RunPlugin()
         {
             DialogResult result = acad.ShowModalDialog(this);
             if (result == DialogResult.OK)
-                acad.ShowAlertDialog("{point.X}\n{point.Y}\n{point.Z}");
+                acad.ShowAlertDialog("");
         }
-
 
         private void button3_Click(object sender, EventArgs e)
         {
@@ -53,8 +52,7 @@ namespace SectionConverterPlugin
                .Application.DocumentManager.MdiActiveDocument;
 
             var a = new CreateFigures();
-
-            while (a.CreateAxisPointBlock(document, GetAnyIniqueBlockName)) { };
+            while (a.CreateAxisPointBlock(document)) { };
 
             //LoadingExternalDrawlings.InsertBlock();
         }
@@ -71,7 +69,54 @@ namespace SectionConverterPlugin
 
             var a = new CreateFigures();
 
-            while (a.CreateAxisPointTest(document)) { };
+            while (a.CreateAxisPointBlock(document)) { };
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            // Get the current document and database
+
+            var document = Autodesk.AutoCAD.ApplicationServices
+               .Application.DocumentManager.MdiActiveDocument;
+            var database = document.Database;
+
+            // Start a transaction
+            using (Transaction acTrans = document.TransactionManager.StartTransaction())
+            {
+                // Open the Block table for read
+                BlockTable acBlkTbl;
+                acBlkTbl = acTrans.GetObject(database.BlockTableId,
+                                                OpenMode.ForRead) as BlockTable;
+
+                // Open the Block table record Model space for write
+                BlockTableRecord acBlkTblRec;
+                acBlkTblRec = acTrans.GetObject(acBlkTbl[BlockTableRecord.ModelSpace],
+                                                OpenMode.ForWrite) as BlockTableRecord;
+
+                // Create a single-line text object
+                using (DBText acText = new DBText())
+                {
+                    acText.Position = new Point3d(2, 2, 0);
+                    acText.Height = 0.5;
+                    acText.TextString = "Hello, World.";
+
+                    acBlkTblRec.AppendEntity(acText);
+                    acTrans.AddNewlyCreatedDBObject(acText, true);
+                }
+
+                // Save the changes and dispose of the transaction
+                acTrans.Commit();
+            }
+        }
+
+        private void btn_update_Click(object sender, EventArgs e)
+        {
+              // Перерисовка чертежа
+              acad.UpdateScreen();
+              acad.DocumentManager.MdiActiveDocument.Editor.UpdateScreen();
+              // Регенерация чертежа
+              acad.DocumentManager.MdiActiveDocument.Editor.Regen();
+              this.Hide();
         }
     }
 }
