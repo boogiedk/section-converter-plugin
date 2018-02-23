@@ -132,10 +132,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resource\16x16.png" />
-    <Resource Include="Resource\32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resource\point.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
