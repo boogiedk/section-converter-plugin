@@ -29,11 +29,9 @@
         private void InitializeComponent()
         {
             this.label9 = new System.Windows.Forms.Label();
-            this.btn_createpoint = new System.Windows.Forms.Button();
-            this.lbl_point = new System.Windows.Forms.Label();
             this.btn_execute = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btn_Height = new System.Windows.Forms.Button();
+            this.btn_Bottom = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.btn_update = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -47,25 +45,6 @@
             this.label9.TabIndex = 19;
             this.label9.Text = "Создать блок с описанием: ";
             // 
-            // btn_createpoint
-            // 
-            this.btn_createpoint.Location = new System.Drawing.Point(168, 33);
-            this.btn_createpoint.Name = "btn_createpoint";
-            this.btn_createpoint.Size = new System.Drawing.Size(75, 23);
-            this.btn_createpoint.TabIndex = 20;
-            this.btn_createpoint.Text = "Создать";
-            this.btn_createpoint.UseVisualStyleBackColor = true;
-            this.btn_createpoint.Click += new System.EventHandler(this.btn_createpoint_Click);
-            // 
-            // lbl_point
-            // 
-            this.lbl_point.AutoSize = true;
-            this.lbl_point.Location = new System.Drawing.Point(11, 38);
-            this.lbl_point.Name = "lbl_point";
-            this.lbl_point.Size = new System.Drawing.Size(99, 13);
-            this.lbl_point.TabIndex = 21;
-            this.lbl_point.Text = "Создать отметку: ";
-            // 
             // btn_execute
             // 
             this.btn_execute.Location = new System.Drawing.Point(168, 4);
@@ -76,25 +55,25 @@
             this.btn_execute.UseVisualStyleBackColor = true;
             this.btn_execute.Click += new System.EventHandler(this.btn_execute_Click);
             // 
-            // button1
+            // btn_Height
             // 
-            this.button1.Location = new System.Drawing.Point(2, 188);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 30;
-            this.button1.Text = "Point 1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btn_Height.Location = new System.Drawing.Point(2, 188);
+            this.btn_Height.Name = "btn_Height";
+            this.btn_Height.Size = new System.Drawing.Size(75, 23);
+            this.btn_Height.TabIndex = 30;
+            this.btn_Height.Text = "Point Height";
+            this.btn_Height.UseVisualStyleBackColor = true;
+            this.btn_Height.Click += new System.EventHandler(this.btn_Height_Click);
             // 
-            // button2
+            // btn_Bottom
             // 
-            this.button2.Location = new System.Drawing.Point(83, 188);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 31;
-            this.button2.Text = "Point 2";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btn_Bottom.Location = new System.Drawing.Point(83, 188);
+            this.btn_Bottom.Name = "btn_Bottom";
+            this.btn_Bottom.Size = new System.Drawing.Size(75, 23);
+            this.btn_Bottom.TabIndex = 31;
+            this.btn_Bottom.Text = "Point Bottom";
+            this.btn_Bottom.UseVisualStyleBackColor = true;
+            this.btn_Bottom.Click += new System.EventHandler(this.btn_Bottom_Click);
             // 
             // button3
             // 
@@ -107,13 +86,12 @@
             // 
             // btn_update
             // 
-            this.btn_update.Location = new System.Drawing.Point(168, 107);
+            this.btn_update.Location = new System.Drawing.Point(168, 113);
             this.btn_update.Name = "btn_update";
             this.btn_update.Size = new System.Drawing.Size(75, 23);
             this.btn_update.TabIndex = 33;
             this.btn_update.Text = "Обновить";
             this.btn_update.UseVisualStyleBackColor = true;
-            this.btn_update.Click += new System.EventHandler(this.btn_update_Click);
             // 
             // PluginN1
             // 
@@ -122,11 +100,9 @@
             this.ClientSize = new System.Drawing.Size(249, 270);
             this.Controls.Add(this.btn_update);
             this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btn_Bottom);
+            this.Controls.Add(this.btn_Height);
             this.Controls.Add(this.btn_execute);
-            this.Controls.Add(this.lbl_point);
-            this.Controls.Add(this.btn_createpoint);
             this.Controls.Add(this.label9);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "PluginN1";
@@ -139,11 +115,9 @@
 
         #endregion
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Button btn_createpoint;
-        private System.Windows.Forms.Label lbl_point;
         private System.Windows.Forms.Button btn_execute;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btn_Height;
+        private System.Windows.Forms.Button btn_Bottom;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button btn_update;
     }

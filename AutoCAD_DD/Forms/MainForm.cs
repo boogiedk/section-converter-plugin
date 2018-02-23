@@ -54,7 +54,6 @@ namespace SectionConverterPlugin
             var a = new CreateFigures();
             while (a.CreateAxisPointBlock(document)) { };
 
-            //LoadingExternalDrawlings.InsertBlock();
         }
 
         private void PluginN1_Load(object sender, EventArgs e)
@@ -62,61 +61,72 @@ namespace SectionConverterPlugin
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btn_Height_Click(object sender, EventArgs e)
         {
-            var document = Autodesk.AutoCAD.ApplicationServices
-              .Application.DocumentManager.MdiActiveDocument;
-
-            var a = new CreateFigures();
-
-            while (a.CreateAxisPointBlock(document)) { };
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            // Get the current document and database
+            Func<string> GetAnyIniqueBlockName = () => DateTime.Now.Ticks.ToString();
 
             var document = Autodesk.AutoCAD.ApplicationServices
                .Application.DocumentManager.MdiActiveDocument;
-            var database = document.Database;
 
-            // Start a transaction
-            using (Transaction acTrans = document.TransactionManager.StartTransaction())
-            {
-                // Open the Block table for read
-                BlockTable acBlkTbl;
-                acBlkTbl = acTrans.GetObject(database.BlockTableId,
-                                                OpenMode.ForRead) as BlockTable;
+            var a = new CreateFigures();
+          //  while (a.CreateAxisPointMark(document)) { };
+        }
 
-                // Open the Block table record Model space for write
-                BlockTableRecord acBlkTblRec;
-                acBlkTblRec = acTrans.GetObject(acBlkTbl[BlockTableRecord.ModelSpace],
-                                                OpenMode.ForWrite) as BlockTableRecord;
+        private void btn_Bottom_Click(object sender, EventArgs e)
+        {
 
-                // Create a single-line text object
-                using (DBText acText = new DBText())
-                {
-                    acText.Position = new Point3d(2, 2, 0);
-                    acText.Height = 0.5;
-                    acText.TextString = "Hello, World.";
-
-                    acBlkTblRec.AppendEntity(acText);
-                    acTrans.AddNewlyCreatedDBObject(acText, true);
-                }
-
-                // Save the changes and dispose of the transaction
-                acTrans.Commit();
-            }
         }
 
         private void btn_update_Click(object sender, EventArgs e)
         {
-              // Перерисовка чертежа
-              acad.UpdateScreen();
-              acad.DocumentManager.MdiActiveDocument.Editor.UpdateScreen();
-              // Регенерация чертежа
-              acad.DocumentManager.MdiActiveDocument.Editor.Regen();
+            new CreateFigures().UpdateCurrentScreen();
               this.Hide();
         }
+
+        [CommandMethod("buildaxis")]
+        public void buildaxis()
+        {
+            Func<string> GetAnyIniqueBlockName = () => DateTime.Now.Ticks.ToString();
+
+            var document = Autodesk.AutoCAD.ApplicationServices
+               .Application.DocumentManager.MdiActiveDocument;
+
+            var a = new CreateFigures();
+            while (a.CreateAxisPointBlock(document)) { };
+        }
+        [CommandMethod("buildheight")]
+        public void buildheight()
+        {
+            Func<string> GetAnyIniqueBlockName = () => DateTime.Now.Ticks.ToString();
+
+            var document = Autodesk.AutoCAD.ApplicationServices
+               .Application.DocumentManager.MdiActiveDocument;
+
+            var a = new CreateFigures();
+            while (a.CreateHeightPointBlock(document)) { };
+        }
+        [CommandMethod("buildbottom")]
+        public void buildbottom()
+        {
+            Func<string> GetAnyIniqueBlockName = () => DateTime.Now.Ticks.ToString();
+
+            var document = Autodesk.AutoCAD.ApplicationServices
+               .Application.DocumentManager.MdiActiveDocument;
+
+            var a = new CreateFigures();
+            while (a.CreateBottomPointBlock(document)) { };
+        }
+        [CommandMethod("buildtop")]
+        public void buildtop()
+        {
+            Func<string> GetAnyIniqueBlockName = () => DateTime.Now.Ticks.ToString();
+
+            var document = Autodesk.AutoCAD.ApplicationServices
+               .Application.DocumentManager.MdiActiveDocument;
+
+            var a = new CreateFigures();
+            while (a.CreateTopPointBlock(document)) { };
+        }
+
     }
 }

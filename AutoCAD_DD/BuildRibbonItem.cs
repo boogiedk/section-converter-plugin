@@ -2,8 +2,12 @@
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.Windows;
 using System.Windows.Media.Imaging;
-using acadApp = Autodesk.AutoCAD.ApplicationServices.Application;
+using Autodesk.AutoCAD.Windows.Data;
+using System.Drawing;
+using System.IO;
 
+using acadApp = Autodesk.AutoCAD.ApplicationServices.Application;
+using System.Drawing.Imaging;
 
 namespace SectionConverterPlugin
 {
@@ -11,11 +15,19 @@ namespace SectionConverterPlugin
     {
         string tabTitleName = "Selection Converter Plugin";
         string tabID = "RibbonPluginStart";
-        string command = "RunPlugin";
+        string commandStart = "RunPlugin";
+
+        #region command
+
+        string buildheight = "buildheight";
+        string buildbottom = "buildbottom";
+        string buildtop = "buildtop";
+        string buildaxis = "buildaxis";
+
+        #endregion
 
         void ComponentManager_ItemInitialized(object sender, RibbonItemEventArgs e)
         {
-            // Проверяем, что лента загружена
             if (ComponentManager.Ribbon != null)
             {
                 BuildRibbonTab();
@@ -78,13 +90,12 @@ namespace SectionConverterPlugin
             if (e.Name.Equals("WSCURRENT")) BuildRibbonTab();
         }
 
-        void CreateRibbonTab()
+        public void CreateRibbonTab()
         {
             try
             {
                 var ribbonControl = ComponentManager.Ribbon;
 
-                // добавляем свою вкладку
                 var ribbonTab = new RibbonTab();
                 ribbonTab.Title = tabTitleName;
                 ribbonTab.Id = tabID;
@@ -104,76 +115,79 @@ namespace SectionConverterPlugin
         {
             try
             {
-                RibbonToolTip ribbonToolTip;
+                RibbonControl ribbonControl = ComponentManager.Ribbon;
 
-                var ribbonPanelSource = new RibbonPanelSource();
-                ribbonPanelSource.Title = "Start Plugin";
+                // create Ribbon panels
+                Autodesk.Windows.RibbonPanelSource ribbonPanelSourceMain = new RibbonPanelSource();
+                    ribbonPanelSourceMain.Title = "Главная панель";
+                    RibbonPanel mainPanel = new RibbonPanel();
+                    mainPanel.Source = ribbonPanelSourceMain;
+                    ribbonTab.Panels.Add(mainPanel);
 
-                // теперь саму панель
-                var ribbonPanel = new RibbonPanel();
-                ribbonPanel.Source = ribbonPanelSource;
-                ribbonTab.Panels.Add(ribbonPanel);
+                #region axis
+                RibbonButton ribbonButtonAxis = new RibbonButton();
+                ribbonButtonAxis.Text = "Создать Axis";
+                ribbonButtonAxis.ShowText = true;
+                ribbonButtonAxis.ShowImage = true;
 
-                #region create split button
-
-                // создаем split button
-                RibbonSplitButton ribbonSplitButton = new RibbonSplitButton();
-                ribbonSplitButton.Text = "RibbonSplitButton";
-                // Ориентация кнопки
-                ribbonSplitButton.Orientation = System.Windows.Controls.Orientation.Vertical;
-                // Размер кнопки
-                ribbonSplitButton.Size = RibbonItemSize.Large;
-                // Показывать текст
-                ribbonSplitButton.ShowText = true;
-                // Стиль кнопки
-                ribbonSplitButton.ListButtonStyle = Autodesk.Private.Windows.RibbonListButtonStyle.SplitButton;
-                ribbonSplitButton.ResizeStyle = RibbonItemResizeStyles.NoResize;
-                ribbonSplitButton.ListStyle = RibbonSplitButtonListStyle.List;
-                /* Далее создаем две кнопки и добавляем их
-                 * не в панель, а в RibbonSplitButton
-                 */
+                Bitmap imgAxis = Properties.Resources.point;
+                ribbonButtonAxis.LargeImage = GetBitmap(imgAxis);
+                ribbonButtonAxis.Orientation = System.Windows.Controls.Orientation.Vertical;
+                ribbonButtonAxis.Size = RibbonItemSize.Large;
+                ribbonButtonAxis.CommandHandler = new RibbonCommandHandler();
+                ribbonButtonAxis.CommandParameter = buildaxis;
                 #endregion
 
-                #region Кнопка №1
-                // Создаем новый экземпляр подсказки
-                ribbonToolTip = new RibbonToolTip();
-                // Отключаем вызов справки (в данном примере её нету)
-                ribbonToolTip.IsHelpEnabled = false;
-                // Создаем кнопку
-                RibbonButton ribbonButton = new RibbonButton();
-                ribbonButton.CommandParameter = ribbonToolTip.Command = command;
-                // Имя кнопки
-                ribbonButton.Name = "Run Plugin";
-                // Создаем новый (собственный) обработчик команд (см.ниже)
-                ribbonButton.CommandHandler = new RibbonCommandHandler();
+                #region height
+                RibbonButton ribbonButtonHeight = new RibbonButton();
+                    ribbonButtonHeight.Text = "Создать Height";
+                    ribbonButtonHeight.ShowText = true;
+                    ribbonButtonHeight.ShowImage = true;
 
-                // Ориентация кнопки
-                ribbonButton.Orientation = System.Windows.Controls.Orientation.Horizontal;
-                // Размер кнопки
-                ribbonButton.Size = RibbonItemSize.Large;
-                /* Т.к. используем размер кнопки Large, то добавляем
-                 * большое изображение с помощью специальной функции (см.ниже)
-                 */
-                ribbonButton.LargeImage = LoadImage("32x32");
-                // Показывать картинку
-                ribbonButton.ShowImage = true;
-                // Показывать текст
-                ribbonButton.ShowText = true;
-                // Заполняем содержимое всплывающей подсказки
-                ribbonToolTip.Content = "Press to button for start plugin";
-                // Подключаем подсказку к кнопке
-                ribbonButton.ToolTip = ribbonToolTip;
-                // Добавляем кнопку в RibbonSplitButton
-                ribbonSplitButton.Items.Add(ribbonButton);
 
+                    Bitmap imgHeight = Properties.Resources.point;
+                    ribbonButtonHeight.LargeImage = GetBitmap(imgHeight);
+                    ribbonButtonHeight.Orientation = System.Windows.Controls.Orientation.Vertical;
+                    ribbonButtonHeight.Size = RibbonItemSize.Large;
+                    ribbonButtonHeight.CommandHandler = new RibbonCommandHandler();
+                ribbonButtonHeight.CommandParameter = buildheight;
                 #endregion
 
-                ribbonSplitButton.Current = ribbonButton;
+                #region buttom
+                RibbonButton ribbonButtonButtom = new RibbonButton();
+                    ribbonButtonButtom.Text = "Создать Bottom";
+                    ribbonButtonButtom.ShowText = true;
+                    ribbonButtonButtom.ShowImage = true;
 
-                ribbonPanelSource.Items.Add(ribbonSplitButton);
-                RibbonRowPanel ribRowPanel = new RibbonRowPanel();
-                ribbonPanelSource.Items.Add(ribRowPanel);
-            }
+                Bitmap imgButtom = Properties.Resources.point;
+                ribbonButtonButtom.LargeImage = GetBitmap(imgHeight);
+                ribbonButtonButtom.Orientation = System.Windows.Controls.Orientation.Vertical;
+                ribbonButtonButtom.Size = RibbonItemSize.Large;
+                ribbonButtonButtom.CommandHandler = new RibbonCommandHandler();
+                ribbonButtonButtom.CommandParameter = buildbottom;
+                #endregion
+
+                #region top
+                RibbonButton ribbonButtonTop = new RibbonButton();
+                ribbonButtonTop.Text = "Создать Top";
+                ribbonButtonTop.ShowText = true;
+                ribbonButtonTop.ShowImage = true;
+
+                Bitmap imgTop = Properties.Resources.point;
+                ribbonButtonTop.LargeImage = GetBitmap(imgHeight);
+                ribbonButtonTop.Orientation = System.Windows.Controls.Orientation.Vertical;
+                ribbonButtonTop.Size = RibbonItemSize.Large;
+                ribbonButtonTop.CommandHandler = new RibbonCommandHandler();
+                ribbonButtonTop.CommandParameter = buildtop;
+                #endregion
+
+                ribbonPanelSourceMain.Items.Add(ribbonButtonAxis);
+                ribbonPanelSourceMain.Items.Add(ribbonButtonHeight);
+                ribbonPanelSourceMain.Items.Add(ribbonButtonButtom);
+                ribbonPanelSourceMain.Items.Add(ribbonButtonTop);
+
+                ribbonTab.IsActive = true;
+                }
             catch (System.Exception ex)
             {
                 Autodesk.AutoCAD.ApplicationServices.Application.
@@ -184,7 +198,20 @@ namespace SectionConverterPlugin
         BitmapImage LoadImage(string ImageName)
         {
             return new BitmapImage(
-                new Uri("C:\\Users\\boogie\\Documents\\Visual Studio 2017\\Projects\\AutoCAD_DD\\AutoCAD_DD\\Resource\\" + ImageName + ".png"));
+                new Uri("pack://application:,,,/AutoCAD_DD;component/" + ImageName + ".png"));
+        }
+
+        public BitmapImage GetBitmap(Bitmap image)
+        {
+            var stream = new MemoryStream();
+
+            image.Save(stream, ImageFormat.Png);
+            BitmapImage bmp = new BitmapImage();
+            bmp.BeginInit();
+            bmp.StreamSource = stream;
+            bmp.EndInit();
+            return bmp;
+
         }
 
         class RibbonCommandHandler : System.Windows.Input.ICommand

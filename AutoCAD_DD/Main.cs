@@ -24,8 +24,7 @@ namespace SectionConverterPlugin
         {
            acadApp.Idle -= StartPluginHandler;
 
-            BuildRibbonItem buildRibbonItem = new BuildRibbonItem();
-            buildRibbonItem.BuildRibbonTab();
+            new BuildRibbonItem().CreateRibbonTab();
         }
 
         /// <summary>
