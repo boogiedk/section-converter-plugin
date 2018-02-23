@@ -98,6 +98,12 @@
     <Compile Include="AcadTools.cs" />
     <Compile Include="BuildRibbonItem.cs" />
     <Compile Include="Description.cs" />
+    <Compile Include="Forms\InPutAxisData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\InPutAxisData.Designer.cs">
+      <DependentUpon>InPutAxisData.cs</DependentUpon>
+    </Compile>
     <Compile Include="Main.cs" />
     <Compile Include="CreateFigures.cs" />
     <Compile Include="Forms\MainForm.cs">
@@ -120,6 +126,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Forms\InPutAxisData.resx">
+      <DependentUpon>InPutAxisData.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -129,6 +138,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

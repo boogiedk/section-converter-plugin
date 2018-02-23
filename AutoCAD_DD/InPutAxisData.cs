@@ -9,11 +9,11 @@ using System.Windows.Forms;
 
 namespace SectionConverterPlugin
 {
-    public partial class StationInputForm : Form
+    public partial class InPutAxisData : Form
     {
         private string _description;
 
-        public StationInputForm()
+        public InPutAxisData()
         {
             InitializeComponent();
         }
@@ -27,11 +27,6 @@ namespace SectionConverterPlugin
         {
             _description = tb_Description.Text;
             this.Close();
-        }
-
-        private void StationInputForm_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace SectionConverterPlugin
 {
-    partial class StationInputForm
+    partial class InPutAxisData
     {
         /// <summary>
         /// Required designer variable.
@@ -75,7 +75,6 @@
             this.MinimizeBox = false;
             this.Name = "StationInputForm";
             this.Text = "Пикет";
-            this.Load += new System.EventHandler(this.StationInputForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

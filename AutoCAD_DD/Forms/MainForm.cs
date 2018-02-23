@@ -127,6 +127,11 @@ namespace SectionConverterPlugin
             var a = new CreateFigures();
             while (a.CreateTopPointBlock(document)) { };
         }
-
+        [CommandMethod("axisdata")]
+        public void axisdata()
+        {
+            Forms.InPutAxisData test = new Forms.InPutAxisData();
+            test.ShowDialog();
+        }
     }
 }
