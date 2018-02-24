@@ -5,17 +5,15 @@ using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.EditorInput;
 using System.Collections.Generic;
-using System.Collections;
 using System.Linq;
 
-using acadApp = Autodesk.AutoCAD.ApplicationServices.Application;
 
-//using ACadAppServices = Autodesk.AutoCAD.ApplicationServices;
-//var editor = acad.DocumentManager.MdiActiveDocument.Editor;
+using Color=Autodesk.AutoCAD.Colors.Color;
+using acadApp = Autodesk.AutoCAD.ApplicationServices.Application;
 
 namespace SectionConverterPlugin
 {
-    public partial class CreateFigures
+    public class AcadTools
     {
         #region Temporal Methods
 
@@ -68,8 +66,6 @@ namespace SectionConverterPlugin
                 return result;
             }
 
-            // TODO:
-            // Переместить в диалог
             station = Convert.ToDouble(dialogForm.Description);
             result = true;
 
@@ -88,8 +84,6 @@ namespace SectionConverterPlugin
                 return result;
             }
 
-            // TODO:
-            // Переместить в диалог
             height = Convert.ToDouble(dialogForm.Description);
             result = true;
 
@@ -107,61 +101,36 @@ namespace SectionConverterPlugin
             DBPoint dbPoint = new DBPoint(new Point3d(0, 0, 0));
             //dbPoint.SetDatabaseDefaults();
 
-            documentDatabase.Pdmode = 35;
-            documentDatabase.Pdsize = 20;
+            dbPoint.Color = Color.FromRgb(255, 66, 41);
             entities.Add(dbPoint);
-
-            //// создаем полилинию
-            //var poly = new Polyline();
-            //poly.SetDatabaseDefaults();
-            //poly.AddVertexAt(0, new Point2d(-50, -125), 0, 0, 0);
-            //poly.AddVertexAt(1, new Point2d(-50, 105), 0, 0, 0);
-            //poly.AddVertexAt(2, new Point2d(-20, 125), 0, 0, 0);
-            //poly.AddVertexAt(3, new Point2d(20, 125), 0, 0, 0);
-            //poly.AddVertexAt(4, new Point2d(50, 105), 0, 0, 0);
-            //poly.AddVertexAt(5, new Point2d(50, -125), 0, 0, 0);
-            //poly.AddVertexAt(6, new Point2d(-50, -125), 0, 0, 0);
-            //
-            //// добавляем полилинию в определение блока
-            //entities.Add(poly);
-            //
-            //// создаем окружность
-            //var circle = new Circle();
-            //circle.SetDatabaseDefaults();
-            //circle.Center = new Point3d(0, 90, 0);
-            //circle.Radius = 15;
-            //
-            //// добавляем окружность в определение блока
-            //entities.Add(circle);
-
-            // создаем текст
+         
             var text = new MText();
-            text.Location = new Point3d(0, 0, 0);
+            text.Location = new Point3d(300, 0, 0);
+            text.TextHeight = 200;
             text.Contents = "axisPoint_";
-
-            // добавляем текст в определение блока
             entities.Add(text);
 
             var block = CreateNewBlock(documentDatabase);
-
             SetBlockEntities(block, entities);
 
             return block;
         }
+
         public BlockTableRecord GetHeightPointTemplate(Database documentDatabase)
         {
             var entities = new List<Entity>();
 
-            DBPoint dbPoint = new DBPoint(new Point3d(0, 0, 0));
+            var dbPoint = new DBPoint(new Point3d(0, 0, 0));
             //dbPoint.SetDatabaseDefaults();
 
-            documentDatabase.Pdmode = 35;
-            documentDatabase.Pdsize = 20;
+            dbPoint.Color = Color.FromRgb(31, 207, 75);
             entities.Add(dbPoint);
 
+
             var text = new MText();
-            text.Location = new Point3d(0, 0, 0);
-            text.Contents = "axisPoint_";
+            text.Location = new Point3d(300, 0, 0);
+            text.TextHeight = 200;
+            text.Contents = "heightPoint_";
             entities.Add(text);
 
             var block = CreateNewBlock(documentDatabase);
@@ -169,6 +138,7 @@ namespace SectionConverterPlugin
 
             return block;
         }
+
         public BlockTableRecord GetBottomPointTemplate(Database documentDatabase)
         {
             var entities = new List<Entity>();
@@ -176,8 +146,7 @@ namespace SectionConverterPlugin
             DBPoint dbPoint = new DBPoint(new Point3d(0, 0, 0));
             //dbPoint.SetDatabaseDefaults();
 
-            documentDatabase.Pdmode = 35;
-            documentDatabase.Pdsize = 20;
+            dbPoint.Color = Color.FromRgb(207, 31, 207);
             entities.Add(dbPoint);
 
             var block = CreateNewBlock(documentDatabase);
@@ -185,6 +154,7 @@ namespace SectionConverterPlugin
 
             return block;
         }
+
         public BlockTableRecord GetTopPointTemplate(Database documentDatabase)
         {
             var entities = new List<Entity>();
@@ -192,8 +162,7 @@ namespace SectionConverterPlugin
             DBPoint dbPoint = new DBPoint(new Point3d(0, 0, 0));
             //dbPoint.SetDatabaseDefaults();
 
-            documentDatabase.Pdmode = 35;
-            documentDatabase.Pdsize = 20;
+            dbPoint.Color = Color.FromRgb(0, 0, 0);
             entities.Add(dbPoint);
 
             var block = CreateNewBlock(documentDatabase);
@@ -209,12 +178,12 @@ namespace SectionConverterPlugin
         public BlockTableRecord CreateNewBlock(
             Database documentDatabase)
         {
+           
             BlockTableRecord block = null;
 
             using (var transaction =
                     documentDatabase.TransactionManager.StartTransaction())
             {
-                // открываем таблицу блоков на запись
                 var blockTable = (BlockTable)transaction.GetObject(
                     documentDatabase.BlockTableId,
                     OpenMode.ForWrite);
@@ -227,17 +196,14 @@ namespace SectionConverterPlugin
                 var blockTableID = blockTable.Add(block);
                 transaction.AddNewlyCreatedDBObject(block, true);
 
-                // открываем пространство модели на запись
                 BlockTableRecord modelSpaceTableRecord = (BlockTableRecord)transaction.GetObject(
                     blockTable[BlockTableRecord.ModelSpace],
                     OpenMode.ForWrite);
 
-                // создаем новое вхождение блока, используя ранее сохраненный ID определения блока
                 BlockReference blockReference = new BlockReference(
                     new Point3d(0, 0, 0),
                     blockTableID);
 
-                // добавляем созданное вхождение блока на пространство модели и в транзакцию
                 modelSpaceTableRecord.AppendEntity(blockReference);
                 transaction.AddNewlyCreatedDBObject(blockReference, true);
 
@@ -256,7 +222,6 @@ namespace SectionConverterPlugin
             using (var transaction =
                     documentDatabase.TransactionManager.StartTransaction())
             {
-                // открываем таблицу блоков на запись
                 var blockTable = (BlockTable)transaction.GetObject(
                     documentDatabase.BlockTableId,
                     OpenMode.ForRead);
@@ -281,7 +246,6 @@ namespace SectionConverterPlugin
             using (var transaction =
                     documentDatabase.TransactionManager.StartTransaction())
             {
-                // открываем таблицу блоков на запись
                 var blockTable = (BlockTable)transaction.GetObject(
                     documentDatabase.BlockTableId,
                     OpenMode.ForWrite);
@@ -310,7 +274,6 @@ namespace SectionConverterPlugin
             using (var transaction =
                     documentDatabase.TransactionManager.StartTransaction())
             {
-                // открываем таблицу блоков на запись
                 var blockTable = (BlockTable)transaction.GetObject(
                     documentDatabase.BlockTableId,
                     OpenMode.ForWrite);
@@ -334,7 +297,6 @@ namespace SectionConverterPlugin
             using (var transaction =
                     documentDatabase.TransactionManager.StartTransaction())
             {
-                // открываем таблицу блоков на запись
                 var blockTable = (BlockTable)transaction.GetObject(
                     documentDatabase.BlockTableId,
                     OpenMode.ForRead);
@@ -363,7 +325,6 @@ namespace SectionConverterPlugin
             using (var transaction =
                     documentDatabase.TransactionManager.StartTransaction())
             {
-                // открываем таблицу блоков на запись
                 var blockTable = (BlockTable)transaction.GetObject(
                     documentDatabase.BlockTableId,
                     OpenMode.ForWrite);
@@ -390,6 +351,7 @@ namespace SectionConverterPlugin
             }
         }
         #endregion
+   
 
         public MText GetAnyMText(List<Entity> entities, string startWith = "")
         {
@@ -464,8 +426,6 @@ namespace SectionConverterPlugin
             SetTextParams(
                 block,
                 paramsTextPrefix, () => FormatStation(station));
-
-            result = true;
 
             UpdateCurrentScreen();
             return result;
@@ -551,12 +511,60 @@ namespace SectionConverterPlugin
 
         public void UpdateCurrentScreen()
         {
-            // Перерисовка чертежа
+            //   redrawing the drawing
             //   acadApp.UpdateScreen();
             //   acadApp.DocumentManager.MdiActiveDocument.Editor.UpdateScreen();
 
-            // Регенерация чертежа
+            //   regeneration of the drawing
             acadApp.DocumentManager.MdiActiveDocument.Editor.Regen();
+        }
+
+        public void CreateLayersForPluginTool(Document document)
+        {
+            var database = document.Database;
+
+            using (var documentlock = document.LockDocument())
+            {
+                using (var transaction = database.TransactionManager.StartTransaction())
+                {
+                    var layerTable = transaction.GetObject(database.LayerTableId, OpenMode.ForWrite) as LayerTable;
+
+                    var layerTableRecord = new LayerTableRecord();
+                    layerTableRecord.Name = "plugin_layer";
+   
+                    ObjectId plugin_layer = layerTable.Add(layerTableRecord);
+                    
+                    transaction.AddNewlyCreatedDBObject(layerTableRecord, true);
+
+                    transaction.Commit();
+                }
+            }
+        }
+
+        public void ChangeCurrentLayers()
+        {
+            var document = Autodesk.AutoCAD.ApplicationServices
+   .Application.DocumentManager.MdiActiveDocument;
+            var database = document.Database;
+
+            using (var transaction = database.TransactionManager.StartTransaction())
+            {
+                var layerTable = transaction.GetObject(database.LayerTableId, OpenMode.ForRead) as LayerTable;
+
+                if (database.Clayer == layerTable["0"])
+                    database.Clayer = layerTable["plugin_layer"];
+                else
+                    database.Clayer = layerTable["0"];
+
+                transaction.Commit();
+            }
+        }
+
+        public void DefaultPdMode(Document document)
+        {
+            var database = document.Database;
+            database.Pdmode = 35;
+            database.Pdsize = 200;
         }
     }
 }

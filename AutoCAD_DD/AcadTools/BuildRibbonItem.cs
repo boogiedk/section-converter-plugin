@@ -15,7 +15,6 @@ namespace SectionConverterPlugin
     {
         string tabTitleName = "Selection Converter Plugin";
         string tabID = "RibbonPluginStart";
-        string commandStart = "RunPlugin";
 
         #region command
 
@@ -23,6 +22,8 @@ namespace SectionConverterPlugin
         string buildbottom = "buildbottom";
         string buildtop = "buildtop";
         string buildaxis = "buildaxis";
+
+        string showPointStyleDialog = "_ptype";
 
         #endregion
 
@@ -130,7 +131,7 @@ namespace SectionConverterPlugin
                 ribbonButtonAxis.ShowText = true;
                 ribbonButtonAxis.ShowImage = true;
 
-                Bitmap imgAxis = Properties.Resources.point;
+                Bitmap imgAxis = Properties.Resources.pointRed;
                 ribbonButtonAxis.LargeImage = GetBitmap(imgAxis);
                 ribbonButtonAxis.Orientation = System.Windows.Controls.Orientation.Vertical;
                 ribbonButtonAxis.Size = RibbonItemSize.Large;
@@ -145,7 +146,7 @@ namespace SectionConverterPlugin
                     ribbonButtonHeight.ShowImage = true;
 
 
-                    Bitmap imgHeight = Properties.Resources.point;
+                Bitmap imgHeight = Properties.Resources.pointGreen;
                     ribbonButtonHeight.LargeImage = GetBitmap(imgHeight);
                     ribbonButtonHeight.Orientation = System.Windows.Controls.Orientation.Vertical;
                     ribbonButtonHeight.Size = RibbonItemSize.Large;
@@ -159,8 +160,8 @@ namespace SectionConverterPlugin
                     ribbonButtonButtom.ShowText = true;
                     ribbonButtonButtom.ShowImage = true;
 
-                Bitmap imgButtom = Properties.Resources.point;
-                ribbonButtonButtom.LargeImage = GetBitmap(imgHeight);
+                Bitmap imgButtom = Properties.Resources.pointPurple;
+                ribbonButtonButtom.LargeImage = GetBitmap(imgButtom);
                 ribbonButtonButtom.Orientation = System.Windows.Controls.Orientation.Vertical;
                 ribbonButtonButtom.Size = RibbonItemSize.Large;
                 ribbonButtonButtom.CommandHandler = new RibbonCommandHandler();
@@ -173,18 +174,34 @@ namespace SectionConverterPlugin
                 ribbonButtonTop.ShowText = true;
                 ribbonButtonTop.ShowImage = true;
 
-                Bitmap imgTop = Properties.Resources.point;
-                ribbonButtonTop.LargeImage = GetBitmap(imgHeight);
+                Bitmap imgTop = Properties.Resources.pointBlack;
+                ribbonButtonTop.LargeImage = GetBitmap(imgTop);
                 ribbonButtonTop.Orientation = System.Windows.Controls.Orientation.Vertical;
                 ribbonButtonTop.Size = RibbonItemSize.Large;
                 ribbonButtonTop.CommandHandler = new RibbonCommandHandler();
                 ribbonButtonTop.CommandParameter = buildtop;
                 #endregion
 
+                #region point style dialog
+                RibbonButton ribbonButtonPointStyle = new RibbonButton();
+                ribbonButtonPointStyle.Text = "Point Style Dialog";
+                ribbonButtonPointStyle.ShowText = true;
+                ribbonButtonPointStyle.ShowImage = true;
+
+                Bitmap imgPointStyle = Properties.Resources.settings;
+                ribbonButtonPointStyle.LargeImage = GetBitmap(imgPointStyle);
+                ribbonButtonPointStyle.Orientation = System.Windows.Controls.Orientation.Vertical;
+                ribbonButtonPointStyle.Size = RibbonItemSize.Large;
+                ribbonButtonPointStyle.CommandHandler = new RibbonCommandHandler();
+                ribbonButtonPointStyle.CommandParameter = showPointStyleDialog;
+                #endregion
+
                 ribbonPanelSourceMain.Items.Add(ribbonButtonAxis);
                 ribbonPanelSourceMain.Items.Add(ribbonButtonHeight);
                 ribbonPanelSourceMain.Items.Add(ribbonButtonButtom);
                 ribbonPanelSourceMain.Items.Add(ribbonButtonTop);
+
+                ribbonPanelSourceMain.Items.Add(ribbonButtonPointStyle);
 
                 ribbonTab.IsActive = true;
                 }
@@ -220,11 +237,12 @@ namespace SectionConverterPlugin
             {
                 return true;
             }
+
             public event EventHandler CanExecuteChanged;
 
             public void Execute(object parameter)
             {
-                Document doc = acadApp.DocumentManager.MdiActiveDocument;
+                Document document = acadApp.DocumentManager.MdiActiveDocument;
 
                 if (parameter is RibbonButton)
                 {

@@ -95,23 +95,17 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AcadTools.cs" />
-    <Compile Include="BuildRibbonItem.cs" />
+    <Compile Include="AcadTools\AcadTools.cs" />
+    <Compile Include="AcadTools\BuildRibbonItem.cs" />
+    <Compile Include="AcadTools\ConsoleCommand.cs" />
     <Compile Include="Description.cs" />
-    <Compile Include="Forms\InPutAxisData.cs">
+    <Compile Include="Forms\InputAxisDataForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\InPutAxisData.Designer.cs">
-      <DependentUpon>InPutAxisData.cs</DependentUpon>
+    <Compile Include="Forms\InputAxisDataForm.Designer.cs">
+      <DependentUpon>InputAxisDataForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Main.cs" />
-    <Compile Include="CreateFigures.cs" />
-    <Compile Include="Forms\MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\StationInputForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -126,11 +120,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Forms\InPutAxisData.resx">
-      <DependentUpon>InPutAxisData.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\InputAxisDataForm.resx">
+      <DependentUpon>InputAxisDataForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\StationInputForm.resx">
       <DependentUpon>StationInputForm.cs</DependentUpon>
@@ -142,7 +133,19 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resource\point.png" />
+    <None Include="Resources\Image\pointGreen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Image\pointBlack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Image\pointRed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Image\pointPurple.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Image\settings.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

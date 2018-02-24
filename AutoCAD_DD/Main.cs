@@ -22,9 +22,13 @@ namespace SectionConverterPlugin
 
         private void StartPluginHandler(object sender, EventArgs e)
         {
-           acadApp.Idle -= StartPluginHandler;
+            var document = Autodesk.AutoCAD.ApplicationServices
+               .Application.DocumentManager.MdiActiveDocument;
+
+            acadApp.Idle -= StartPluginHandler;
 
             new BuildRibbonItem().CreateRibbonTab();
+            new AcadTools().CreateLayersForPluginTool(document);
         }
 
         /// <summary>
