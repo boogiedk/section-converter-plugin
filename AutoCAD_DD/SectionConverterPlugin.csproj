@@ -98,20 +98,20 @@
     <Compile Include="AcadTools\AcadTools.cs" />
     <Compile Include="AcadTools\BuildRibbonItem.cs" />
     <Compile Include="AcadTools\ConsoleCommand.cs" />
+    <Compile Include="CustomControls\RegExedTextBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CustomControls\RegExedTextBox.Designer.cs">
+      <DependentUpon>RegExedTextBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Description.cs" />
-    <Compile Include="Forms\InputAxisDataForm.cs">
+    <Compile Include="Forms\InputStationDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\InputAxisDataForm.Designer.cs">
-      <DependentUpon>InputAxisDataForm.cs</DependentUpon>
+    <Compile Include="Forms\InputStationDialog.Designer.cs">
+      <DependentUpon>InputStationDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Main.cs" />
-    <Compile Include="Forms\StationInputForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\StationInputForm.Designer.cs">
-      <DependentUpon>StationInputForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -120,11 +120,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Forms\InputAxisDataForm.resx">
-      <DependentUpon>InputAxisDataForm.cs</DependentUpon>
+    <EmbeddedResource Include="CustomControls\RegExedTextBox.resx">
+      <DependentUpon>RegExedTextBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\StationInputForm.resx">
-      <DependentUpon>StationInputForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\InputStationDialog.resx">
+      <DependentUpon>InputStationDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

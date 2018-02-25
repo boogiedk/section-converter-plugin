@@ -73,7 +73,7 @@ namespace SectionConverterPlugin
         [CommandMethod("axisdata")]
         public void axisdata()
         {
-            Forms.InputAxisDataForm test = new Forms.InputAxisDataForm();
+            Forms.InputStationDialog test = new Forms.InputStationDialog();
             test.ShowDialog();
         }
     }

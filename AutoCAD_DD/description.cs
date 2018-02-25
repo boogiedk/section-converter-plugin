@@ -8,7 +8,6 @@ namespace SectionConverterPlugin
 {
     public struct Description
     {
-       // public string Description { get; set; }
         public double Value { get; set; }
     }
 }

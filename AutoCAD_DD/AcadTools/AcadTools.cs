@@ -10,6 +10,7 @@ using System.Linq;
 
 using Color=Autodesk.AutoCAD.Colors.Color;
 using acadApp = Autodesk.AutoCAD.ApplicationServices.Application;
+using SectionConverterPlugin.Forms;
 
 namespace SectionConverterPlugin
 {
@@ -58,7 +59,7 @@ namespace SectionConverterPlugin
             bool result = false;
             station = Double.NaN;
 
-            var dialogForm = new StationInputForm();
+            var dialogForm = new InputStationDialog();
             var dialogResult = dialogForm.ShowDialog();
 
             if (dialogResult != DialogResult.OK)
@@ -66,7 +67,7 @@ namespace SectionConverterPlugin
                 return result;
             }
 
-            station = Convert.ToDouble(dialogForm.Description);
+            station = dialogForm.Station;
             result = true;
 
             return result;
@@ -76,7 +77,7 @@ namespace SectionConverterPlugin
             bool result = false;
             height = Double.NaN;
 
-            var dialogForm = new StationInputForm();
+            var dialogForm = new InputStationDialog();
             var dialogResult = dialogForm.ShowDialog();
 
             if (dialogResult != DialogResult.OK)
@@ -84,7 +85,7 @@ namespace SectionConverterPlugin
                 return result;
             }
 
-            height = Convert.ToDouble(dialogForm.Description);
+            height = dialogForm.Station;
             result = true;
 
             return result;
@@ -106,6 +107,7 @@ namespace SectionConverterPlugin
          
             var text = new MText();
             text.Location = new Point3d(300, 0, 0);
+            text.Attachment = AttachmentPoint.MiddleLeft;
             text.TextHeight = 200;
             text.Contents = "axisPoint_";
             entities.Add(text);
@@ -129,6 +131,7 @@ namespace SectionConverterPlugin
 
             var text = new MText();
             text.Location = new Point3d(300, 0, 0);
+            text.Attachment = AttachmentPoint.MiddleCenter;
             text.TextHeight = 200;
             text.Contents = "heightPoint_";
             entities.Add(text);
@@ -382,9 +385,12 @@ namespace SectionConverterPlugin
 
         private string FormatStation(double station)
         {
-            return String.Format("ПК {0:00}+{1:00.00}",
-                station / 100,
-                station % 100);
+            var sign = Math.Sign(station);
+            var abs = Math.Abs(station);
+
+            return String.Format("ПК {0:00}+{1:00.000}",
+                sign * (abs / 100),
+                abs % 100);
         }
 
         private void SetTextParams(
