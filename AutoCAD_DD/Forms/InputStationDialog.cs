@@ -22,12 +22,11 @@ namespace SectionConverterPlugin.Forms
 
             InitializeComponent();
 
-            //Regex doublePattern = new Regex(@"^[-\+]?\d+([,\.]\d+)?$");
-            regExedTb_NumberOne.SetRegExp(new Regex(@"^[-\+]?\d+$"));
-            regExedTb_NumberTwo.SetRegExp(new Regex(@"^\d{1,2}([,\.]\d+)?$"));
+            retb_firstDouble.SetRegExp(new Regex(@"^[-\+]?\d+$"));
+            retb_secondDouble.SetRegExp(new Regex(@"^\d{1,2}([,\.]\d+)?$"));
 
-            regExedTb_NumberOne.Value = "0";
-            regExedTb_NumberTwo.Value = "0";
+            retb_firstDouble.Value = "0";
+            retb_secondDouble.Value = "0";
 
             this.Enabled = true;
         }
@@ -39,8 +38,8 @@ namespace SectionConverterPlugin.Forms
 
         private void UpdateStation()
         {
-            var stationValueHundredsString = regExedTb_NumberOne.Value;
-            var stationValueUnitsString = regExedTb_NumberTwo.Value;
+            var stationValueHundredsString = retb_firstDouble.Value;
+            var stationValueUnitsString = retb_secondDouble.Value;
 
             // skip for initialization
             if (stationValueHundredsString == null ||

@@ -77,7 +77,7 @@ namespace SectionConverterPlugin
             bool result = false;
             height = Double.NaN;
 
-            var dialogForm = new InputStationDialog();
+            var dialogForm = new InputHeightDialog();
             var dialogResult = dialogForm.ShowDialog();
 
             if (dialogResult != DialogResult.OK)
@@ -85,7 +85,7 @@ namespace SectionConverterPlugin
                 return result;
             }
 
-            height = dialogForm.Station;
+            height = dialogForm.Height;
             result = true;
 
             return result;
@@ -131,7 +131,7 @@ namespace SectionConverterPlugin
 
             var text = new MText();
             text.Location = new Point3d(300, 0, 0);
-            text.Attachment = AttachmentPoint.MiddleCenter;
+            text.Attachment = AttachmentPoint.MiddleLeft;
             text.TextHeight = 200;
             text.Contents = "heightPoint_";
             entities.Add(text);
@@ -393,6 +393,13 @@ namespace SectionConverterPlugin
                 abs % 100);
         }
 
+        private string FormatHeight(double height)
+        {
+            var sign = Math.Sign(height);
+
+            return String.Format("{0000,000}"+"м", height);
+        }
+
         private void SetTextParams(
             BlockTableRecord block,
             string paramsTextPrefix,
@@ -433,7 +440,9 @@ namespace SectionConverterPlugin
                 block,
                 paramsTextPrefix, () => FormatStation(station));
 
+            result = true;
             UpdateCurrentScreen();
+
             return result;
         }
         public bool CreateHeightPointBlock(Document document)
@@ -451,7 +460,7 @@ namespace SectionConverterPlugin
             if (!GetPointAcadDialog(editor, out blockPosition)) return result;
 
             double height = double.NaN;
-            if (!GetStationDialog(out height)) return result;
+            if (!GetHeightDialog(out height)) return result;
 
             // block creation
             var block = GetHeightPointTemplate(database);
@@ -460,7 +469,7 @@ namespace SectionConverterPlugin
 
             SetTextParams(
                 block,
-                paramsTextPrefix, () => FormatStation(height));
+                paramsTextPrefix, () => FormatHeight(height));
 
             result = true;
 

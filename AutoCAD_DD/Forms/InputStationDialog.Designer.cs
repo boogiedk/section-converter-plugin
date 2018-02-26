@@ -32,8 +32,8 @@
             this.lbl_plus = new System.Windows.Forms.Label();
             this.lbl_input = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.regExedTb_NumberOne = new CivilToolsGUI.CustomControls.RegExedTextBox();
-            this.regExedTb_NumberTwo = new CivilToolsGUI.CustomControls.RegExedTextBox();
+            this.retb_firstDouble = new CivilToolsGUI.CustomControls.RegExedTextBox();
+            this.retb_secondDouble = new CivilToolsGUI.CustomControls.RegExedTextBox();
             this.btn_Ok = new System.Windows.Forms.Button();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1.SuspendLayout();
@@ -81,10 +81,10 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.regExedTb_NumberOne, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.retb_firstDouble, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.lbl_prefix, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.lbl_plus, 2, 0);
-            this.tableLayoutPanel1.Controls.Add(this.regExedTb_NumberTwo, 3, 0);
+            this.tableLayoutPanel1.Controls.Add(this.retb_secondDouble, 3, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 33);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -93,31 +93,31 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(298, 24);
             this.tableLayoutPanel1.TabIndex = 9;
             // 
-            // regExedTb_NumberOne
+            // retb_firstDouble
             // 
-            this.regExedTb_NumberOne.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.regExedTb_NumberOne.Enabled = false;
-            this.regExedTb_NumberOne.Location = new System.Drawing.Point(40, 5);
-            this.regExedTb_NumberOne.Margin = new System.Windows.Forms.Padding(0);
-            this.regExedTb_NumberOne.MatchOnKeyInput = false;
-            this.regExedTb_NumberOne.Name = "regExedTb_NumberOne";
-            this.regExedTb_NumberOne.Size = new System.Drawing.Size(100, 20);
-            this.regExedTb_NumberOne.TabIndex = 7;
-            this.regExedTb_NumberOne.Value = null;
-            this.regExedTb_NumberOne.ValueChanged += new System.EventHandler(this.regExedTb_NumberOne_ValueChanged);
+            this.retb_firstDouble.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.retb_firstDouble.Enabled = false;
+            this.retb_firstDouble.Location = new System.Drawing.Point(40, 5);
+            this.retb_firstDouble.Margin = new System.Windows.Forms.Padding(0);
+            this.retb_firstDouble.MatchOnKeyInput = false;
+            this.retb_firstDouble.Name = "retb_firstDouble";
+            this.retb_firstDouble.Size = new System.Drawing.Size(100, 20);
+            this.retb_firstDouble.TabIndex = 7;
+            this.retb_firstDouble.Value = null;
+            this.retb_firstDouble.ValueChanged += new System.EventHandler(this.regExedTb_NumberOne_ValueChanged);
             // 
-            // regExedTb_NumberTwo
+            // retb_secondDouble
             // 
-            this.regExedTb_NumberTwo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.regExedTb_NumberTwo.Enabled = false;
-            this.regExedTb_NumberTwo.Location = new System.Drawing.Point(160, 5);
-            this.regExedTb_NumberTwo.Margin = new System.Windows.Forms.Padding(0);
-            this.regExedTb_NumberTwo.MatchOnKeyInput = false;
-            this.regExedTb_NumberTwo.Name = "regExedTb_NumberTwo";
-            this.regExedTb_NumberTwo.Size = new System.Drawing.Size(100, 20);
-            this.regExedTb_NumberTwo.TabIndex = 8;
-            this.regExedTb_NumberTwo.Value = null;
-            this.regExedTb_NumberTwo.ValueChanged += new System.EventHandler(this.regExedTb_NumberTwo_ValueChanged);
+            this.retb_secondDouble.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.retb_secondDouble.Enabled = false;
+            this.retb_secondDouble.Location = new System.Drawing.Point(160, 5);
+            this.retb_secondDouble.Margin = new System.Windows.Forms.Padding(0);
+            this.retb_secondDouble.MatchOnKeyInput = false;
+            this.retb_secondDouble.Name = "retb_secondDouble";
+            this.retb_secondDouble.Size = new System.Drawing.Size(100, 20);
+            this.retb_secondDouble.TabIndex = 8;
+            this.retb_secondDouble.Value = null;
+            this.retb_secondDouble.ValueChanged += new System.EventHandler(this.regExedTb_NumberTwo_ValueChanged);
             // 
             // btn_Ok
             // 
@@ -157,12 +157,13 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(304, 202);
             this.Controls.Add(this.tableLayoutPanel3);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "InputStationDialog";
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.RightToLeftLayout = true;
-            this.Text = " Ввод информации";
+            this.Text = "Ввод информации";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel3.ResumeLayout(false);
@@ -175,8 +176,8 @@
         private System.Windows.Forms.Label lbl_prefix;
         private System.Windows.Forms.Label lbl_plus;
         private System.Windows.Forms.Label lbl_input;
-        private CivilToolsGUI.CustomControls.RegExedTextBox regExedTb_NumberOne;
-        private CivilToolsGUI.CustomControls.RegExedTextBox regExedTb_NumberTwo;
+        private CivilToolsGUI.CustomControls.RegExedTextBox retb_firstDouble;
+        private CivilToolsGUI.CustomControls.RegExedTextBox retb_secondDouble;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Button btn_Ok;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;

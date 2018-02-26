@@ -104,12 +104,17 @@
     <Compile Include="CustomControls\RegExedTextBox.Designer.cs">
       <DependentUpon>RegExedTextBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="Description.cs" />
     <Compile Include="Forms\InputStationDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\InputStationDialog.Designer.cs">
       <DependentUpon>InputStationDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\InputHeightDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\InputHeightDialog.Designer.cs">
+      <DependentUpon>InputHeightDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -125,6 +130,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\InputStationDialog.resx">
       <DependentUpon>InputStationDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\InputHeightDialog.resx">
+      <DependentUpon>InputHeightDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

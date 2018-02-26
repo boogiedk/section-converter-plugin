@@ -5,9 +5,10 @@ using System.Windows.Media.Imaging;
 using Autodesk.AutoCAD.Windows.Data;
 using System.Drawing;
 using System.IO;
+using System.Drawing.Imaging;
 
 using acadApp = Autodesk.AutoCAD.ApplicationServices.Application;
-using System.Drawing.Imaging;
+
 
 namespace SectionConverterPlugin
 {
@@ -15,6 +16,7 @@ namespace SectionConverterPlugin
     {
         string tabTitleName = "Selection Converter Plugin";
         string tabID = "RibbonPluginStart";
+        string lastCommand;
 
         #region command
 
@@ -118,7 +120,6 @@ namespace SectionConverterPlugin
             {
                 RibbonControl ribbonControl = ComponentManager.Ribbon;
 
-                // create Ribbon panels
                 Autodesk.Windows.RibbonPanelSource ribbonPanelSourceMain = new RibbonPanelSource();
                     ribbonPanelSourceMain.Title = "Главная панель";
                     RibbonPanel mainPanel = new RibbonPanel();
@@ -136,6 +137,7 @@ namespace SectionConverterPlugin
                 ribbonButtonAxis.Orientation = System.Windows.Controls.Orientation.Vertical;
                 ribbonButtonAxis.Size = RibbonItemSize.Large;
                 ribbonButtonAxis.CommandHandler = new RibbonCommandHandler();
+                lastCommand = buildaxis;
                 ribbonButtonAxis.CommandParameter = buildaxis;
                 #endregion
 
@@ -151,6 +153,7 @@ namespace SectionConverterPlugin
                     ribbonButtonHeight.Orientation = System.Windows.Controls.Orientation.Vertical;
                     ribbonButtonHeight.Size = RibbonItemSize.Large;
                     ribbonButtonHeight.CommandHandler = new RibbonCommandHandler();
+                lastCommand = buildheight;
                 ribbonButtonHeight.CommandParameter = buildheight;
                 #endregion
 
@@ -165,6 +168,7 @@ namespace SectionConverterPlugin
                 ribbonButtonButtom.Orientation = System.Windows.Controls.Orientation.Vertical;
                 ribbonButtonButtom.Size = RibbonItemSize.Large;
                 ribbonButtonButtom.CommandHandler = new RibbonCommandHandler();
+                lastCommand = buildbottom;
                 ribbonButtonButtom.CommandParameter = buildbottom;
                 #endregion
 
@@ -180,6 +184,7 @@ namespace SectionConverterPlugin
                 ribbonButtonTop.Size = RibbonItemSize.Large;
                 ribbonButtonTop.CommandHandler = new RibbonCommandHandler();
                 ribbonButtonTop.CommandParameter = buildtop;
+                lastCommand = buildtop;
                 #endregion
 
                 #region point style dialog

@@ -11,6 +11,7 @@ namespace SectionConverterPlugin
         public void Buildaxis()
         {
             Func<string> GetAnyIniqueBlockName = () => DateTime.Now.Ticks.ToString();
+
             var document = Autodesk.AutoCAD.ApplicationServices
                .Application.DocumentManager.MdiActiveDocument;
 
@@ -19,7 +20,6 @@ namespace SectionConverterPlugin
 
             var a = new AcadTools();
             while (a.CreateAxisPointBlock(document)) { };
-
             new AcadTools().ChangeCurrentLayers();
         }
         [CommandMethod("buildheight")]
@@ -68,13 +68,6 @@ namespace SectionConverterPlugin
             while (a.CreateTopPointBlock(document)) { };
 
             new AcadTools().ChangeCurrentLayers();
-        }
-
-        [CommandMethod("axisdata")]
-        public void axisdata()
-        {
-            Forms.InputStationDialog test = new Forms.InputStationDialog();
-            test.ShowDialog();
         }
     }
 }
