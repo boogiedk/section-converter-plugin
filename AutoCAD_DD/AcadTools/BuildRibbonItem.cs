@@ -14,9 +14,8 @@ namespace SectionConverterPlugin
 {
     class BuildRibbonItem
     {
-        string tabTitleName = "Selection Converter Plugin";
+        string tabTitleName = "Конвертер разрезов";
         string tabID = "RibbonPluginStart";
-        string lastCommand;
 
         #region command
 
@@ -24,6 +23,8 @@ namespace SectionConverterPlugin
         string buildbottom = "buildbottom";
         string buildtop = "buildtop";
         string buildaxis = "buildaxis";
+
+        string listatt = "LISTATT";
 
         string showPointStyleDialog = "_ptype";
 
@@ -128,22 +129,21 @@ namespace SectionConverterPlugin
 
                 #region axis
                 RibbonButton ribbonButtonAxis = new RibbonButton();
-                ribbonButtonAxis.Text = "Создать Axis";
+                ribbonButtonAxis.Text = "Ось";
                 ribbonButtonAxis.ShowText = true;
                 ribbonButtonAxis.ShowImage = true;
 
-                Bitmap imgAxis = Properties.Resources.pointRed;
+                Bitmap imgAxis = Properties.Resources.pointPurple;
                 ribbonButtonAxis.LargeImage = GetBitmap(imgAxis);
                 ribbonButtonAxis.Orientation = System.Windows.Controls.Orientation.Vertical;
                 ribbonButtonAxis.Size = RibbonItemSize.Large;
                 ribbonButtonAxis.CommandHandler = new RibbonCommandHandler();
-                lastCommand = buildaxis;
                 ribbonButtonAxis.CommandParameter = buildaxis;
                 #endregion
 
                 #region height
                 RibbonButton ribbonButtonHeight = new RibbonButton();
-                    ribbonButtonHeight.Text = "Создать Height";
+                    ribbonButtonHeight.Text = "Отметка";
                     ribbonButtonHeight.ShowText = true;
                     ribbonButtonHeight.ShowImage = true;
 
@@ -153,43 +153,54 @@ namespace SectionConverterPlugin
                     ribbonButtonHeight.Orientation = System.Windows.Controls.Orientation.Vertical;
                     ribbonButtonHeight.Size = RibbonItemSize.Large;
                     ribbonButtonHeight.CommandHandler = new RibbonCommandHandler();
-                lastCommand = buildheight;
                 ribbonButtonHeight.CommandParameter = buildheight;
                 #endregion
 
-                #region buttom
+                #region bottom
                 RibbonButton ribbonButtonButtom = new RibbonButton();
-                    ribbonButtonButtom.Text = "Создать Bottom";
+                    ribbonButtonButtom.Text = "Низ полотна";
                     ribbonButtonButtom.ShowText = true;
                     ribbonButtonButtom.ShowImage = true;
 
-                Bitmap imgButtom = Properties.Resources.pointPurple;
+                Bitmap imgButtom = Properties.Resources.pointBlack;
                 ribbonButtonButtom.LargeImage = GetBitmap(imgButtom);
                 ribbonButtonButtom.Orientation = System.Windows.Controls.Orientation.Vertical;
                 ribbonButtonButtom.Size = RibbonItemSize.Large;
                 ribbonButtonButtom.CommandHandler = new RibbonCommandHandler();
-                lastCommand = buildbottom;
                 ribbonButtonButtom.CommandParameter = buildbottom;
                 #endregion
 
                 #region top
                 RibbonButton ribbonButtonTop = new RibbonButton();
-                ribbonButtonTop.Text = "Создать Top";
+                ribbonButtonTop.Text = "Вверх полотна";
                 ribbonButtonTop.ShowText = true;
                 ribbonButtonTop.ShowImage = true;
 
-                Bitmap imgTop = Properties.Resources.pointBlack;
+                Bitmap imgTop = Properties.Resources.pointRed;
                 ribbonButtonTop.LargeImage = GetBitmap(imgTop);
                 ribbonButtonTop.Orientation = System.Windows.Controls.Orientation.Vertical;
                 ribbonButtonTop.Size = RibbonItemSize.Large;
                 ribbonButtonTop.CommandHandler = new RibbonCommandHandler();
                 ribbonButtonTop.CommandParameter = buildtop;
-                lastCommand = buildtop;
                 #endregion
+
+                //#region list
+                //RibbonButton listAttributes = new RibbonButton();
+                //listAttributes.Text = "Показать атрибуты блоков";
+                //listAttributes.ShowText = true;
+                //listAttributes.ShowImage = true;
+
+                //Bitmap imglist = Properties.Resources.pointPurple;
+                //listAttributes.LargeImage = GetBitmap(imgButtom);
+                //listAttributes.Orientation = System.Windows.Controls.Orientation.Vertical;
+                //listAttributes.Size = RibbonItemSize.Large;
+                //listAttributes.CommandHandler = new RibbonCommandHandler();
+                //listAttributes.CommandParameter = listatt;
+                //#endregion
 
                 #region point style dialog
                 RibbonButton ribbonButtonPointStyle = new RibbonButton();
-                ribbonButtonPointStyle.Text = "Point Style Dialog";
+                ribbonButtonPointStyle.Text = "Настройка точек";
                 ribbonButtonPointStyle.ShowText = true;
                 ribbonButtonPointStyle.ShowImage = true;
 
@@ -205,6 +216,7 @@ namespace SectionConverterPlugin
                 ribbonPanelSourceMain.Items.Add(ribbonButtonHeight);
                 ribbonPanelSourceMain.Items.Add(ribbonButtonButtom);
                 ribbonPanelSourceMain.Items.Add(ribbonButtonTop);
+               // ribbonPanelSourceMain.Items.Add(listAttributes);
 
                 ribbonPanelSourceMain.Items.Add(ribbonButtonPointStyle);
 
@@ -215,9 +227,11 @@ namespace SectionConverterPlugin
                 Autodesk.AutoCAD.ApplicationServices.Application.
                   DocumentManager.MdiActiveDocument.Editor.WriteMessage(ex.Message);
             }
-        }
 
-        BitmapImage LoadImage(string ImageName)
+        }
+    
+
+    BitmapImage LoadImage(string ImageName)
         {
             return new BitmapImage(
                 new Uri("pack://application:,,,/AutoCAD_DD;component/" + ImageName + ".png"));
@@ -251,11 +265,33 @@ namespace SectionConverterPlugin
 
                 if (parameter is RibbonButton)
                 {
+                    TurnOffInputPoint();
                     RibbonButton button = parameter as RibbonButton;
                     acadApp.DocumentManager.MdiActiveDocument.SendStringToExecute(
                         button.CommandParameter + " ", true, false, true);
                 }
             }
+
+            public void TurnOffInputPoint()
+            {
+                Document doc = acadApp.DocumentManager.MdiActiveDocument;
+                string esc = "\x03";
+
+                string cmds = (string)acadApp.GetSystemVariable("CMDNAMES");
+
+                if (cmds.Length > 1)
+
+                {
+                    int cmdNum = cmds.Split(new char[] { '\'' }).Length;
+
+
+                    for (int i = 0; i < cmdNum; i++)
+
+                        esc += '\x03';
+                    doc.SendStringToExecute(esc + "", true, false, true);
+                }
+            }
+
         }
     }
 }

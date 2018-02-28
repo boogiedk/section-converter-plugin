@@ -1,7 +1,16 @@
-﻿using Autodesk.AutoCAD.Runtime;
-using System;
+﻿using System;
+using System.Windows.Forms;
+using Autodesk.AutoCAD.DatabaseServices;
+using Autodesk.AutoCAD.Geometry;
+using Autodesk.AutoCAD.ApplicationServices;
+using Autodesk.AutoCAD.EditorInput;
+using System.Collections.Generic;
+using System.Linq;
+using SectionConverterPlugin.Forms;
 
 using acadApp = Autodesk.AutoCAD.ApplicationServices.Application;
+using Autodesk.AutoCAD.Runtime;
+
 
 namespace SectionConverterPlugin
 {
@@ -15,8 +24,9 @@ namespace SectionConverterPlugin
             var document = Autodesk.AutoCAD.ApplicationServices
                .Application.DocumentManager.MdiActiveDocument;
 
+            new AcadTools().CreateLayersForPluginTool(document);
             new AcadTools().ChangeCurrentLayers();
-            new AcadTools().DefaultPdMode(document);
+            new AcadTools().SetDefaultPdMode(document);
 
             var a = new AcadTools();
             while (a.CreateAxisPointBlock(document)) { };
@@ -30,8 +40,9 @@ namespace SectionConverterPlugin
             var document = Autodesk.AutoCAD.ApplicationServices
                .Application.DocumentManager.MdiActiveDocument;
 
+            new AcadTools().CreateLayersForPluginTool(document);
             new AcadTools().ChangeCurrentLayers();
-            new AcadTools().DefaultPdMode(document);
+            new AcadTools().SetDefaultPdMode(document);
 
             var a = new AcadTools();
             while (a.CreateHeightPointBlock(document)) { };
@@ -45,8 +56,9 @@ namespace SectionConverterPlugin
             var document = Autodesk.AutoCAD.ApplicationServices
                .Application.DocumentManager.MdiActiveDocument;
 
+            new AcadTools().CreateLayersForPluginTool(document);
             new AcadTools().ChangeCurrentLayers();
-            new AcadTools().DefaultPdMode(document);
+            new AcadTools().SetDefaultPdMode(document);
 
             var a = new AcadTools();
             while (a.CreateBottomPointBlock(document)) { };
@@ -61,8 +73,9 @@ namespace SectionConverterPlugin
             var document = Autodesk.AutoCAD.ApplicationServices
                .Application.DocumentManager.MdiActiveDocument;
 
+            new AcadTools().CreateLayersForPluginTool(document);
             new AcadTools().ChangeCurrentLayers();
-            new AcadTools().DefaultPdMode(document);
+            new AcadTools().SetDefaultPdMode(document);
 
             var a = new AcadTools();
             while (a.CreateTopPointBlock(document)) { };
@@ -71,3 +84,4 @@ namespace SectionConverterPlugin
         }
     }
 }
+

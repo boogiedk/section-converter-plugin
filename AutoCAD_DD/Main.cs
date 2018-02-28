@@ -27,8 +27,8 @@ namespace SectionConverterPlugin
 
             acadApp.Idle -= StartPluginHandler;
 
-            new BuildRibbonItem().CreateRibbonTab();
             new AcadTools().CreateLayersForPluginTool(document);
+            new BuildRibbonItem().CreateRibbonTab();
         }
 
         /// <summary>
@@ -36,7 +36,6 @@ namespace SectionConverterPlugin
         /// </summary>
         public void Terminate()
         {
-            MessageBox.Show("Goodbye!");
         }
     }
 }

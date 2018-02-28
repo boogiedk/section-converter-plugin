@@ -6,11 +6,11 @@ using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.EditorInput;
 using System.Collections.Generic;
 using System.Linq;
-
-
-using Color=Autodesk.AutoCAD.Colors.Color;
-using acadApp = Autodesk.AutoCAD.ApplicationServices.Application;
 using SectionConverterPlugin.Forms;
+using Autodesk.AutoCAD.Interop;
+
+using Color = Autodesk.AutoCAD.Colors.Color;
+using acadApp = Autodesk.AutoCAD.ApplicationServices.Application;
 
 namespace SectionConverterPlugin
 {
@@ -91,6 +91,25 @@ namespace SectionConverterPlugin
             return result;
         }
 
+        public bool GetPointNumberDialog(out int pointNumber)
+        {
+            bool result = false;
+            pointNumber = 0;
+
+            var dialogForm = new InputPointNumberDialog();
+            var dialogResult = dialogForm.ShowDialog();
+
+            if (dialogResult != DialogResult.OK)
+            {
+                return result;
+            }
+
+            pointNumber = dialogForm.PointNumber;
+            result = true;
+
+            return result;
+        }
+
         #endregion
 
         #region Acad Points Templates
@@ -104,11 +123,11 @@ namespace SectionConverterPlugin
 
             dbPoint.Color = Color.FromRgb(255, 66, 41);
             entities.Add(dbPoint);
-         
+
             var text = new MText();
-            text.Location = new Point3d(300, 0, 0);
+            text.Location = new Point3d(80, 0, 0);
             text.Attachment = AttachmentPoint.MiddleLeft;
-            text.TextHeight = 200;
+            text.TextHeight = 50;
             text.Contents = "axisPoint_";
             entities.Add(text);
 
@@ -130,9 +149,9 @@ namespace SectionConverterPlugin
 
 
             var text = new MText();
-            text.Location = new Point3d(300, 0, 0);
+            text.Location = new Point3d(80, 0, 0);
             text.Attachment = AttachmentPoint.MiddleLeft;
-            text.TextHeight = 200;
+            text.TextHeight = 50;
             text.Contents = "heightPoint_";
             entities.Add(text);
 
@@ -152,6 +171,14 @@ namespace SectionConverterPlugin
             dbPoint.Color = Color.FromRgb(207, 31, 207);
             entities.Add(dbPoint);
 
+            var text = new MText();
+            text.Location = new Point3d(80, 0, 0);
+            text.Attachment = AttachmentPoint.MiddleLeft;
+            text.TextHeight = 50;
+            text.Contents = "bottomPoint_";
+            entities.Add(text);
+
+
             var block = CreateNewBlock(documentDatabase);
             SetBlockEntities(block, entities);
 
@@ -168,6 +195,13 @@ namespace SectionConverterPlugin
             dbPoint.Color = Color.FromRgb(0, 0, 0);
             entities.Add(dbPoint);
 
+            var text = new MText();
+            text.Location = new Point3d(80, 0, 0);
+            text.Attachment = AttachmentPoint.MiddleLeft;
+            text.TextHeight = 50;
+            text.Contents = "topPoint_";
+            entities.Add(text);
+
             var block = CreateNewBlock(documentDatabase);
             SetBlockEntities(block, entities);
 
@@ -181,7 +215,7 @@ namespace SectionConverterPlugin
         public BlockTableRecord CreateNewBlock(
             Database documentDatabase)
         {
-           
+
             BlockTableRecord block = null;
 
             using (var transaction =
@@ -354,7 +388,6 @@ namespace SectionConverterPlugin
             }
         }
         #endregion
-   
 
         public MText GetAnyMText(List<Entity> entities, string startWith = "")
         {
@@ -395,9 +428,12 @@ namespace SectionConverterPlugin
 
         private string FormatHeight(double height)
         {
-            var sign = Math.Sign(height);
+            return String.Format("{0000,000}" + "м", height);
+        }
 
-            return String.Format("{0000,000}"+"м", height);
+        private string FormatPointNumber(int pointNumber)
+        {
+            return String.Format("{00000}", pointNumber);
         }
 
         private void SetTextParams(
@@ -417,6 +453,8 @@ namespace SectionConverterPlugin
         public bool CreateAxisPointBlock(Document document)
         {
             bool result = false;
+
+            CreateLayersForPluginTool(document);
 
             var blockNamePrefix = "axisPoint_";
             var paramsTextPrefix = blockNamePrefix;
@@ -448,6 +486,8 @@ namespace SectionConverterPlugin
         public bool CreateHeightPointBlock(Document document)
         {
             bool result = false;
+
+            CreateLayersForPluginTool(document);
 
             var blockNamePrefix = "heightPoint_";
             var paramsTextPrefix = blockNamePrefix;
@@ -481,42 +521,63 @@ namespace SectionConverterPlugin
         {
             bool result = false;
 
+            CreateLayersForPluginTool(document);
+
             var blockNamePrefix = "bottomPoint_";
+            var paramsTextPrefix = blockNamePrefix;
 
             var database = document.Database;
             var editor = document.Editor;
 
             // Get data dialogs
             var blockPosition = new Point3d(double.NaN, double.NaN, double.NaN);
-            if (!GetPointAcadDialog(editor, out blockPosition)) return result;       
+            if (!GetPointAcadDialog(editor, out blockPosition)) return result;
 
+            int pointNumber = 0;
+            if (!GetPointNumberDialog(out pointNumber)) return result;
+            
             // block creation
             var block = GetBottomPointTemplate(database);
             SetBlockName(block, blockNamePrefix + GetBlockName(block));
             SetBlockPosition(block, blockPosition);
+
+            SetTextParams(
+               block,
+               paramsTextPrefix, () => FormatPointNumber(pointNumber));
 
             result = true;
 
             UpdateCurrentScreen();
             return result;
         }
+
         public bool CreateTopPointBlock(Document document)
         {
             bool result = false;
 
+            CreateLayersForPluginTool(document);
+
             var blockNamePrefix = "topPoint_";
+            var paramsTextPrefix = blockNamePrefix;
 
             var database = document.Database;
             var editor = document.Editor;
 
             // Get data dialogs
             var blockPosition = new Point3d(double.NaN, double.NaN, double.NaN);
-            if (!GetPointAcadDialog(editor, out blockPosition)) return result;        
+            if (!GetPointAcadDialog(editor, out blockPosition)) return result;
+
+            int pointNumber = 0;
+            if (!GetPointNumberDialog(out pointNumber)) return result;
 
             // block creation
             var block = GetTopPointTemplate(database);
             SetBlockName(block, blockNamePrefix + GetBlockName(block));
             SetBlockPosition(block, blockPosition);
+
+            SetTextParams(
+              block,
+              paramsTextPrefix, () => FormatPointNumber(pointNumber));
 
             result = true;
 
@@ -534,28 +595,56 @@ namespace SectionConverterPlugin
             acadApp.DocumentManager.MdiActiveDocument.Editor.Regen();
         }
 
+        #region layer
+
         public void CreateLayersForPluginTool(Document document)
         {
             var database = document.Database;
 
-            using (var documentlock = document.LockDocument())
+            if (!CheckAvailabilityLayers(document))
             {
-                using (var transaction = database.TransactionManager.StartTransaction())
+                using (var documentlock = document.LockDocument())
                 {
-                    var layerTable = transaction.GetObject(database.LayerTableId, OpenMode.ForWrite) as LayerTable;
+                    using (var transaction = database.TransactionManager.StartTransaction())
+                    {
+                        ObjectId plugin_layer;
 
-                    var layerTableRecord = new LayerTableRecord();
-                    layerTableRecord.Name = "plugin_layer";
-   
-                    ObjectId plugin_layer = layerTable.Add(layerTableRecord);
-                    
-                    transaction.AddNewlyCreatedDBObject(layerTableRecord, true);
+                        var layerTable = transaction.GetObject(database.LayerTableId, OpenMode.ForWrite) as LayerTable;
 
-                    transaction.Commit();
+                        var layerTableRecord = new LayerTableRecord();
+
+                        layerTableRecord.Name = "plugin_layer";
+
+                        plugin_layer = layerTable.Add(layerTableRecord);
+
+                        transaction.AddNewlyCreatedDBObject(layerTableRecord, true);
+
+                        transaction.Commit();
+                    }
                 }
             }
         }
 
+        public bool CheckAvailabilityLayers(Document document)
+        {
+            var database = document.Database;
+            {
+                using (Transaction transaction = database.TransactionManager.StartTransaction())
+                {
+                    LayerTable layerTable = (LayerTable)transaction.GetObject(database.LayerTableId, OpenMode.ForRead, false);
+
+                    foreach (ObjectId entity in layerTable)
+                    {
+                        LayerTableRecord LayerTableRecord = (LayerTableRecord)transaction.GetObject(entity, OpenMode.ForRead);
+                        if (LayerTableRecord.Name == "plugin_layer")
+                            return true;
+                    }
+                    transaction.Commit();
+                    return false;
+                }
+            }
+        }
+       
         public void ChangeCurrentLayers()
         {
             var document = Autodesk.AutoCAD.ApplicationServices
@@ -575,12 +664,18 @@ namespace SectionConverterPlugin
             }
         }
 
-        public void DefaultPdMode(Document document)
+        #endregion
+
+        public void SetDefaultPdMode(Document document)
         {
             var database = document.Database;
             database.Pdmode = 35;
-            database.Pdsize = 200;
+            database.Pdsize = 50;
+        }
+
+        public void ManagerColorsForEntity(Document document)
+        {
+
         }
     }
 }
-
