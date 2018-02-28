@@ -15,6 +15,7 @@ namespace SectionConverterPlugin.Forms
     public partial class InputStationDialog : Form
     {
         double _station;
+        private bool _dataReverted;
 
         public InputStationDialog()
         {
@@ -22,11 +23,13 @@ namespace SectionConverterPlugin.Forms
 
             InitializeComponent();
 
-            retb_firstDouble.SetRegExp(new Regex(@"^[-\+]?\d+$"));
-            retb_secondDouble.SetRegExp(new Regex(@"^\d{1,2}([,\.]\d+)?$"));
+            retb_StationValueHundred.SetRegExp(new Regex(@"^\d+$"));
+            retb_StationValueUnit.SetRegExp(new Regex(@"^\d{1,2}([,\.]\d+)?$"));
 
-            retb_firstDouble.Value = "0";
-            retb_secondDouble.Value = "0";
+            retb_StationValueHundred.Value = "0";
+            retb_StationValueUnit.Value = "0";
+
+            _dataReverted = false;
 
             this.Enabled = true;
         }
@@ -38,8 +41,11 @@ namespace SectionConverterPlugin.Forms
 
         private void UpdateStation()
         {
-            var stationValueHundredsString = retb_firstDouble.Value;
-            var stationValueUnitsString = retb_secondDouble.Value;
+            _dataReverted = retb_StationValueHundred.Reverted || 
+                retb_StationValueUnit.Reverted;
+
+            var stationValueHundredsString = retb_StationValueHundred.Value;
+            var stationValueUnitsString = retb_StationValueUnit.Value;
 
             // skip for initialization
             if (stationValueHundredsString == null ||
@@ -51,13 +57,21 @@ namespace SectionConverterPlugin.Forms
             var stationValueHundreds = StringToDouble(stationValueHundredsString);
             var stationValueUnits = StringToDouble(stationValueUnitsString);
 
-            _station = Math.Sign(stationValueHundreds) *
-                (Math.Abs(stationValueHundreds) * 100 + stationValueUnits);
+            _station = stationValueHundreds * 100 + stationValueUnits;
         }
 
         private void btn_Ok_Click(object sender, EventArgs e)
         {
-            //MessageBox.Show(_station.ToString(CultureInfo.InvariantCulture));
+            if (_dataReverted == true)
+            {
+                _dataReverted = false;
+
+                MessageBox.Show("Invalid input");
+                return;
+            }
+
+            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
 
         public double Station
@@ -69,11 +83,11 @@ namespace SectionConverterPlugin.Forms
         }
 
         // update station from forms metods
-        private void regExedTb_NumberOne_ValueChanged(object sender, EventArgs e)
+        private void retb_stationValueHundred_ValueChanged(object sender, EventArgs e)
         {
             UpdateStation();
         }
-        private void regExedTb_NumberTwo_ValueChanged(object sender, EventArgs e)
+        private void retb_stationValueUnit_ValueChanged(object sender, EventArgs e)
         {
             UpdateStation();
         }

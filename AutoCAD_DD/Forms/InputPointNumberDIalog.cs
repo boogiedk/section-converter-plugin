@@ -15,6 +15,8 @@ namespace SectionConverterPlugin.Forms
 {
     public partial class InputPointNumberDialog : Form
     {
+        private bool _dataReverted;
+
         public InputPointNumberDialog()
         {
             this.Enabled = false;
@@ -24,6 +26,8 @@ namespace SectionConverterPlugin.Forms
             retb_PointNumber.SetRegExp(new Regex(@"^\d+$"));
 
             retb_PointNumber.Value = "0";
+            _dataReverted = false;
+
             this.Enabled = true;
         }
 
@@ -36,6 +40,8 @@ namespace SectionConverterPlugin.Forms
 
         private void UpdatePointNumber()
         {
+            _dataReverted = retb_PointNumber.Reverted;
+
             var PointNumberValuesString = retb_PointNumber.Value;
 
             // skip for initialization
@@ -63,7 +69,16 @@ namespace SectionConverterPlugin.Forms
 
         private void btn_Ok_Click(object sender, EventArgs e)
         {
+            if (_dataReverted == true)
+            {
+                _dataReverted = false;
 
+                MessageBox.Show("Invalid input");
+                return;
+            }
+
+            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
     }
 }

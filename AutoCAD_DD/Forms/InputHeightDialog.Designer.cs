@@ -30,10 +30,10 @@
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
-            this.retb_heightDouble = new CivilToolsGUI.CustomControls.RegExedTextBox();
             this.lbl_input = new System.Windows.Forms.Label();
             this.btn_Ok = new System.Windows.Forms.Button();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.retb_height = new CivilToolsGUI.CustomControls.RegExedTextBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
@@ -41,11 +41,11 @@
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 3;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 125F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 133F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanel1.Controls.Add(this.label1, 2, 0);
-            this.tableLayoutPanel1.Controls.Add(this.retb_heightDouble, 1, 0);
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.Controls.Add(this.retb_height, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.label1, 1, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 33);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -56,26 +56,14 @@
             // 
             // label1
             // 
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(261, 0);
+            this.label1.Location = new System.Drawing.Point(103, 7);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(16, 15);
             this.label1.TabIndex = 10;
             this.label1.Text = "м";
-            // 
-            // retb_heightDouble
-            // 
-            this.retb_heightDouble.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.retb_heightDouble.Enabled = false;
-            this.retb_heightDouble.Location = new System.Drawing.Point(125, 2);
-            this.retb_heightDouble.Margin = new System.Windows.Forms.Padding(0);
-            this.retb_heightDouble.MatchOnKeyInput = false;
-            this.retb_heightDouble.Name = "retb_heightDouble";
-            this.retb_heightDouble.Size = new System.Drawing.Size(133, 25);
-            this.retb_heightDouble.TabIndex = 7;
-            this.retb_heightDouble.Value = null;
-            this.retb_heightDouble.ValueChanged += new System.EventHandler(this.retb_heightDouble_ValueChanged);
             // 
             // lbl_input
             // 
@@ -90,7 +78,6 @@
             // 
             // btn_Ok
             // 
-            this.btn_Ok.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btn_Ok.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btn_Ok.Location = new System.Drawing.Point(3, 175);
             this.btn_Ok.Name = "btn_Ok";
@@ -118,17 +105,31 @@
             this.tableLayoutPanel3.Size = new System.Drawing.Size(304, 202);
             this.tableLayoutPanel3.TabIndex = 12;
             // 
-            // InputTopBottomDialog
+            // retb_height
             // 
-            this.AcceptButton = this.btn_Ok;
+            this.retb_height.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.retb_height.Enabled = false;
+            this.retb_height.Location = new System.Drawing.Point(0, 2);
+            this.retb_height.Margin = new System.Windows.Forms.Padding(0);
+            this.retb_height.MatchOnKeyInput = false;
+            this.retb_height.Name = "retb_height";
+            this.retb_height.Silent = true;
+            this.retb_height.Size = new System.Drawing.Size(100, 25);
+            this.retb_height.TabIndex = 7;
+            this.retb_height.Value = null;
+            this.retb_height.ValueChanged += new System.EventHandler(this.retb_height_ValueChanged);
+            // 
+            // InputHeightDialog
+            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(304, 202);
             this.Controls.Add(this.tableLayoutPanel3);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "InputTopBottomDialog";
+            this.Name = "InputHeightDialog";
             this.RightToLeftLayout = true;
             this.Text = "Ввод информации";
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -141,7 +142,7 @@
 
         #endregion
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private CivilToolsGUI.CustomControls.RegExedTextBox retb_heightDouble;
+        private CivilToolsGUI.CustomControls.RegExedTextBox retb_height;
         private System.Windows.Forms.Label lbl_input;
         private System.Windows.Forms.Button btn_Ok;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;

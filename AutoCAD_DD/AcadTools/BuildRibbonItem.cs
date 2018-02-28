@@ -14,7 +14,7 @@ namespace SectionConverterPlugin
 {
     class BuildRibbonItem
     {
-        string tabTitleName = "Конвертер разрезов";
+        string tabTitleName = "Конвертер сечений";
         string tabID = "RibbonPluginStart";
 
         #region command
@@ -133,7 +133,7 @@ namespace SectionConverterPlugin
                 ribbonButtonAxis.ShowText = true;
                 ribbonButtonAxis.ShowImage = true;
 
-                Bitmap imgAxis = Properties.Resources.pointPurple;
+                Bitmap imgAxis = Properties.Resources.PurplePoint_32x32;
                 ribbonButtonAxis.LargeImage = GetBitmap(imgAxis);
                 ribbonButtonAxis.Orientation = System.Windows.Controls.Orientation.Vertical;
                 ribbonButtonAxis.Size = RibbonItemSize.Large;
@@ -148,7 +148,8 @@ namespace SectionConverterPlugin
                     ribbonButtonHeight.ShowImage = true;
 
 
-                Bitmap imgHeight = Properties.Resources.pointGreen;
+                Bitmap imgHeight = Properties.Resources.GreenPoint_32x32;
+                
                     ribbonButtonHeight.LargeImage = GetBitmap(imgHeight);
                     ribbonButtonHeight.Orientation = System.Windows.Controls.Orientation.Vertical;
                     ribbonButtonHeight.Size = RibbonItemSize.Large;
@@ -162,7 +163,7 @@ namespace SectionConverterPlugin
                     ribbonButtonButtom.ShowText = true;
                     ribbonButtonButtom.ShowImage = true;
 
-                Bitmap imgButtom = Properties.Resources.pointBlack;
+                Bitmap imgButtom = Properties.Resources.BlackPoint_32x32;
                 ribbonButtonButtom.LargeImage = GetBitmap(imgButtom);
                 ribbonButtonButtom.Orientation = System.Windows.Controls.Orientation.Vertical;
                 ribbonButtonButtom.Size = RibbonItemSize.Large;
@@ -176,7 +177,7 @@ namespace SectionConverterPlugin
                 ribbonButtonTop.ShowText = true;
                 ribbonButtonTop.ShowImage = true;
 
-                Bitmap imgTop = Properties.Resources.pointRed;
+                Bitmap imgTop = Properties.Resources.RedPoint_32x32;
                 ribbonButtonTop.LargeImage = GetBitmap(imgTop);
                 ribbonButtonTop.Orientation = System.Windows.Controls.Orientation.Vertical;
                 ribbonButtonTop.Size = RibbonItemSize.Large;

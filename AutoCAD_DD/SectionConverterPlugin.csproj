@@ -151,19 +151,19 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Image\pointGreen.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Image\pointBlack.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Image\pointRed.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Image\pointPurple.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Image\settings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Image\PurplePoint_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Image\GreenPoint_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Image\BlackPoint_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Image\RedPoint_32x32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

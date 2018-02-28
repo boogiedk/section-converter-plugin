@@ -14,19 +14,22 @@ namespace SectionConverterPlugin
 {
     public partial class InputHeightDialog : Form
     {
+        double _height;
+        private bool _dataReverted;
+
         public InputHeightDialog()
         {
             this.Enabled = false;
 
             InitializeComponent();
 
-            retb_heightDouble.SetRegExp(new Regex(@"^\d{1,4}([,\.]\d+)?$"));
+            retb_height.SetRegExp(new Regex(@"^[-\+]?\d+([,\.]\d+)?$"));
 
-            retb_heightDouble.Value = "0";
+            retb_height.Value = "0";
+            _dataReverted = false;
+
             this.Enabled = true;
         }
-
-        double _height;
     
         private double StringToDouble(string s)
         {
@@ -35,7 +38,9 @@ namespace SectionConverterPlugin
 
         private void UpdateHeight()
         {
-            var heightValuesString = retb_heightDouble.Value;
+            _dataReverted = retb_height.Reverted;
+            
+            var heightValuesString = retb_height.Value;
 
             // skip for initialization
             if (heightValuesString == null)
@@ -46,6 +51,8 @@ namespace SectionConverterPlugin
              _height = StringToDouble(heightValuesString);
         }
 
+        // TODO:
+        // rename
         public double Height
         {
             get
@@ -55,13 +62,23 @@ namespace SectionConverterPlugin
         }
 
         // update station from forms metods
-        private void retb_heightDouble_ValueChanged(object sender, EventArgs e)
+        private void retb_height_ValueChanged(object sender, EventArgs e)
         {
             UpdateHeight();
         }
 
         private void btn_Ok_Click(object sender, EventArgs e)
         {
+            if (_dataReverted == true)
+            {
+                _dataReverted = false;
+
+                MessageBox.Show("Invalid input");
+                return;
+            }
+
+            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
     }
 }

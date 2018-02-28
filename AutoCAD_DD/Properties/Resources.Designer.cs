@@ -63,9 +63,9 @@ namespace SectionConverterPlugin.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap pointBlack {
+        internal static System.Drawing.Bitmap BlackPoint_32x32 {
             get {
-                object obj = ResourceManager.GetObject("pointBlack", resourceCulture);
+                object obj = ResourceManager.GetObject("BlackPoint_32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -73,9 +73,9 @@ namespace SectionConverterPlugin.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap pointGreen {
+        internal static System.Drawing.Bitmap GreenPoint_32x32 {
             get {
-                object obj = ResourceManager.GetObject("pointGreen", resourceCulture);
+                object obj = ResourceManager.GetObject("GreenPoint_32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -83,9 +83,9 @@ namespace SectionConverterPlugin.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap pointPurple {
+        internal static System.Drawing.Bitmap PurplePoint_32x32 {
             get {
-                object obj = ResourceManager.GetObject("pointPurple", resourceCulture);
+                object obj = ResourceManager.GetObject("PurplePoint_32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -93,9 +93,9 @@ namespace SectionConverterPlugin.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap pointRed {
+        internal static System.Drawing.Bitmap RedPoint_32x32 {
             get {
-                object obj = ResourceManager.GetObject("pointRed", resourceCulture);
+                object obj = ResourceManager.GetObject("RedPoint_32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -32,8 +32,8 @@
             this.lbl_plus = new System.Windows.Forms.Label();
             this.lbl_input = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.retb_firstDouble = new CivilToolsGUI.CustomControls.RegExedTextBox();
-            this.retb_secondDouble = new CivilToolsGUI.CustomControls.RegExedTextBox();
+            this.retb_StationValueHundred = new CivilToolsGUI.CustomControls.RegExedTextBox();
+            this.retb_StationValueUnit = new CivilToolsGUI.CustomControls.RegExedTextBox();
             this.btn_Ok = new System.Windows.Forms.Button();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1.SuspendLayout();
@@ -81,10 +81,10 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.retb_firstDouble, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.retb_StationValueHundred, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.lbl_prefix, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.lbl_plus, 2, 0);
-            this.tableLayoutPanel1.Controls.Add(this.retb_secondDouble, 3, 0);
+            this.tableLayoutPanel1.Controls.Add(this.retb_StationValueUnit, 3, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 33);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -93,35 +93,36 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(298, 24);
             this.tableLayoutPanel1.TabIndex = 9;
             // 
-            // retb_firstDouble
+            // retb_StationValueHundred
             // 
-            this.retb_firstDouble.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.retb_firstDouble.Enabled = false;
-            this.retb_firstDouble.Location = new System.Drawing.Point(40, 5);
-            this.retb_firstDouble.Margin = new System.Windows.Forms.Padding(0);
-            this.retb_firstDouble.MatchOnKeyInput = false;
-            this.retb_firstDouble.Name = "retb_firstDouble";
-            this.retb_firstDouble.Size = new System.Drawing.Size(100, 20);
-            this.retb_firstDouble.TabIndex = 7;
-            this.retb_firstDouble.Value = null;
-            this.retb_firstDouble.ValueChanged += new System.EventHandler(this.regExedTb_NumberOne_ValueChanged);
+            this.retb_StationValueHundred.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.retb_StationValueHundred.Enabled = false;
+            this.retb_StationValueHundred.Location = new System.Drawing.Point(40, 5);
+            this.retb_StationValueHundred.Margin = new System.Windows.Forms.Padding(0);
+            this.retb_StationValueHundred.MatchOnKeyInput = false;
+            this.retb_StationValueHundred.Name = "retb_StationValueHundred";
+            this.retb_StationValueHundred.Silent = true;
+            this.retb_StationValueHundred.Size = new System.Drawing.Size(100, 20);
+            this.retb_StationValueHundred.TabIndex = 7;
+            this.retb_StationValueHundred.Value = null;
+            this.retb_StationValueHundred.ValueChanged += new System.EventHandler(this.retb_stationValueHundred_ValueChanged);
             // 
-            // retb_secondDouble
+            // retb_StationValueUnit
             // 
-            this.retb_secondDouble.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.retb_secondDouble.Enabled = false;
-            this.retb_secondDouble.Location = new System.Drawing.Point(160, 5);
-            this.retb_secondDouble.Margin = new System.Windows.Forms.Padding(0);
-            this.retb_secondDouble.MatchOnKeyInput = false;
-            this.retb_secondDouble.Name = "retb_secondDouble";
-            this.retb_secondDouble.Size = new System.Drawing.Size(100, 20);
-            this.retb_secondDouble.TabIndex = 8;
-            this.retb_secondDouble.Value = null;
-            this.retb_secondDouble.ValueChanged += new System.EventHandler(this.regExedTb_NumberTwo_ValueChanged);
+            this.retb_StationValueUnit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.retb_StationValueUnit.Enabled = false;
+            this.retb_StationValueUnit.Location = new System.Drawing.Point(160, 5);
+            this.retb_StationValueUnit.Margin = new System.Windows.Forms.Padding(0);
+            this.retb_StationValueUnit.MatchOnKeyInput = false;
+            this.retb_StationValueUnit.Name = "retb_StationValueUnit";
+            this.retb_StationValueUnit.Silent = true;
+            this.retb_StationValueUnit.Size = new System.Drawing.Size(100, 20);
+            this.retb_StationValueUnit.TabIndex = 8;
+            this.retb_StationValueUnit.Value = null;
+            this.retb_StationValueUnit.ValueChanged += new System.EventHandler(this.retb_stationValueUnit_ValueChanged);
             // 
             // btn_Ok
             // 
-            this.btn_Ok.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btn_Ok.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btn_Ok.Location = new System.Drawing.Point(3, 175);
             this.btn_Ok.Name = "btn_Ok";
@@ -152,12 +153,12 @@
             // 
             // InputStationDialog
             // 
-            this.AcceptButton = this.btn_Ok;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(304, 202);
             this.Controls.Add(this.tableLayoutPanel3);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "InputStationDialog";
@@ -176,8 +177,8 @@
         private System.Windows.Forms.Label lbl_prefix;
         private System.Windows.Forms.Label lbl_plus;
         private System.Windows.Forms.Label lbl_input;
-        private CivilToolsGUI.CustomControls.RegExedTextBox retb_firstDouble;
-        private CivilToolsGUI.CustomControls.RegExedTextBox retb_secondDouble;
+        private CivilToolsGUI.CustomControls.RegExedTextBox retb_StationValueHundred;
+        private CivilToolsGUI.CustomControls.RegExedTextBox retb_StationValueUnit;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Button btn_Ok;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;

@@ -121,7 +121,7 @@ namespace SectionConverterPlugin
             DBPoint dbPoint = new DBPoint(new Point3d(0, 0, 0));
             //dbPoint.SetDatabaseDefaults();
 
-            dbPoint.Color = Color.FromRgb(255, 66, 41);
+            dbPoint.Color = Color.FromRgb(243, 5, 255);
             entities.Add(dbPoint);
 
             var text = new MText();
@@ -144,7 +144,7 @@ namespace SectionConverterPlugin
             var dbPoint = new DBPoint(new Point3d(0, 0, 0));
             //dbPoint.SetDatabaseDefaults();
 
-            dbPoint.Color = Color.FromRgb(31, 207, 75);
+            dbPoint.Color = Color.FromRgb(76, 255, 5);
             entities.Add(dbPoint);
 
 
@@ -168,7 +168,7 @@ namespace SectionConverterPlugin
             DBPoint dbPoint = new DBPoint(new Point3d(0, 0, 0));
             //dbPoint.SetDatabaseDefaults();
 
-            dbPoint.Color = Color.FromRgb(207, 31, 207);
+            dbPoint.Color = Color.FromRgb(0, 0, 0);
             entities.Add(dbPoint);
 
             var text = new MText();
@@ -192,7 +192,7 @@ namespace SectionConverterPlugin
             DBPoint dbPoint = new DBPoint(new Point3d(0, 0, 0));
             //dbPoint.SetDatabaseDefaults();
 
-            dbPoint.Color = Color.FromRgb(0, 0, 0);
+            dbPoint.Color = Color.FromRgb(255, 0, 0);
             entities.Add(dbPoint);
 
             var text = new MText();
@@ -420,7 +420,7 @@ namespace SectionConverterPlugin
         {
             var sign = Math.Sign(station);
             var abs = Math.Abs(station);
-
+            
             return String.Format("ПК {0:00}+{1:00.000}",
                 sign * (abs / 100),
                 abs % 100);
@@ -547,6 +547,7 @@ namespace SectionConverterPlugin
 
             result = true;
 
+            ManageColorsForEntity(document);
             UpdateCurrentScreen();
             return result;
         }
@@ -587,6 +588,9 @@ namespace SectionConverterPlugin
 
         public void UpdateCurrentScreen()
         {
+            var document = Autodesk.AutoCAD.ApplicationServices
+   .Application.DocumentManager.MdiActiveDocument;
+
             //   redrawing the drawing
             //   acadApp.UpdateScreen();
             //   acadApp.DocumentManager.MdiActiveDocument.Editor.UpdateScreen();
@@ -613,7 +617,7 @@ namespace SectionConverterPlugin
 
                         var layerTableRecord = new LayerTableRecord();
 
-                        layerTableRecord.Name = "plugin_layer";
+                        layerTableRecord.Name = "selection_converter";
 
                         plugin_layer = layerTable.Add(layerTableRecord);
 
@@ -636,7 +640,7 @@ namespace SectionConverterPlugin
                     foreach (ObjectId entity in layerTable)
                     {
                         LayerTableRecord LayerTableRecord = (LayerTableRecord)transaction.GetObject(entity, OpenMode.ForRead);
-                        if (LayerTableRecord.Name == "plugin_layer")
+                        if (LayerTableRecord.Name == "selection_converter")
                             return true;
                     }
                     transaction.Commit();
@@ -656,7 +660,7 @@ namespace SectionConverterPlugin
                 var layerTable = transaction.GetObject(database.LayerTableId, OpenMode.ForRead) as LayerTable;
 
                 if (database.Clayer == layerTable["0"])
-                    database.Clayer = layerTable["plugin_layer"];
+                    database.Clayer = layerTable["selection_converter"];
                 else
                     database.Clayer = layerTable["0"];
 
@@ -673,9 +677,31 @@ namespace SectionConverterPlugin
             database.Pdsize = 50;
         }
 
-        public void ManagerColorsForEntity(Document document)
+        public void ManageColorsForEntity(Document document)
         {
+                Database database = document.Database;
+                using (Transaction transaction = database.TransactionManager.StartTransaction())
+                {
+                    BlockTable blockTable = (BlockTable)transaction.GetObject(database.BlockTableId, OpenMode.ForRead);
+                    foreach (ObjectId blockID in blockTable)
+                    {
+                        BlockTableRecord blockTableRecord = (BlockTableRecord)transaction.GetObject(blockID, OpenMode.ForRead);
+                        if (!(blockTableRecord.IsFromExternalReference || blockTableRecord.IsLayout))
+                        {
+                            foreach (ObjectId id in blockTableRecord)
+                            {
+                                Entity entity = (Entity)transaction.GetObject(id, OpenMode.ForWrite);
 
-        }
+                                if (entity.Color == Color.FromRgb(0, 0, 0))
+                                {
+                                    entity.Layer = "0";
+                                    entity.ColorIndex = 256;
+                                }
+                            }
+                        }
+                    }
+                    transaction.Commit();
+                }
+            }
     }
 }

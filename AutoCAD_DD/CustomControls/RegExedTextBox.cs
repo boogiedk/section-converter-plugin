@@ -17,12 +17,17 @@ namespace CivilToolsGUI.CustomControls
         string _value;
         string _valueTextBoxTemp;
         bool _matchOnKeyInput;
+        bool _silent;
+        bool _reverted;
 
         public RegExedTextBox()
         {
             this.Enabled = false;
 
             ValueChanged += (o, e) => { };
+            _matchOnKeyInput = false;
+            _silent = true;
+            _reverted = false;
 
             InitializeComponent();
         }
@@ -55,15 +60,22 @@ namespace CivilToolsGUI.CustomControls
         private void MatchInput()
         {
             string inputTemp = tb_TextBox.Text;
+            _reverted = true;
 
             MatchCollection mcs = _regEx.Matches(tb_TextBox.Text);
 
             if (mcs.Count == 1 && mcs[0].Length == inputTemp.Length)
             {
                 _valueTextBoxTemp = inputTemp;
+                _reverted = false;
             }
             else
             {
+                if (!_silent)
+                {
+                    MessageBox.Show("Invalid input: " + inputTemp);
+                }
+
                 tb_TextBox.Text = _valueTextBoxTemp;
             }
         }
@@ -71,7 +83,7 @@ namespace CivilToolsGUI.CustomControls
         private void tb_TextBox_Leave(object sender, EventArgs e)
         {
             MatchInput();
-
+            
             Value = _valueTextBoxTemp;
         }
 
@@ -83,13 +95,19 @@ namespace CivilToolsGUI.CustomControls
             }
             set
             {
+                var prevValue = _value;
+
                 _value = value;
                 _valueTextBoxTemp = _value;
 
                 tb_TextBox.Text = _value;
+
                 ValueChanged(this, null);
             }
         }
+
+        public bool Silent { get => _silent; set => _silent = value; }
+        public bool Reverted { get => _reverted;}
 
         public event EventHandler ValueChanged;
     }
