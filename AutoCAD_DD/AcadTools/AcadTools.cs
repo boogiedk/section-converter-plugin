@@ -18,7 +18,7 @@ namespace SectionConverterPlugin
     {
         #region Temporal Methods
 
-        private string _GetAnyIniqueBlockName(BlockTable blockTable)
+        private static string GetAnyIniqueBlockName(BlockTable blockTable)
         {
             Func<string> GetAnyIniqueBlockName = () => DateTime.Now.Ticks.ToString();
 
@@ -34,7 +34,7 @@ namespace SectionConverterPlugin
 
         #region GUI Dialogs
 
-        public bool GetPointAcadDialog(Editor editor, out Point3d point3D)
+        public static bool GetPointAcadDialog(Editor editor, out Point3d point3D)
         {
             bool result = false;
             point3D = new Point3d(
@@ -54,7 +54,7 @@ namespace SectionConverterPlugin
 
             return result;
         }
-        public bool GetStationDialog(out double station)
+        public static bool GetStationDialog(out double station)
         {
             bool result = false;
             station = Double.NaN;
@@ -72,7 +72,7 @@ namespace SectionConverterPlugin
 
             return result;
         }
-        public bool GetHeightDialog(out double height)
+        public static bool GetHeightDialog(out double height)
         {
             bool result = false;
             height = Double.NaN;
@@ -85,13 +85,12 @@ namespace SectionConverterPlugin
                 return result;
             }
 
-            height = dialogForm.Height;
+            height = dialogForm.PointHeight;
             result = true;
 
             return result;
         }
-
-        public bool GetPointNumberDialog(out int pointNumber)
+        public static bool GetPointNumberDialog(out int pointNumber)
         {
             bool result = false;
             pointNumber = 0;
@@ -114,7 +113,7 @@ namespace SectionConverterPlugin
 
         #region Acad Points Templates
 
-        public BlockTableRecord GetAxisPointBlockTemplate(Database documentDatabase)
+        public static BlockTableRecord GetAxisPointBlockTemplate(Database documentDatabase)
         {
             var entities = new List<Entity>();
 
@@ -125,9 +124,10 @@ namespace SectionConverterPlugin
             entities.Add(dbPoint);
 
             var text = new MText();
-            text.Location = new Point3d(80, 0, 0);
+            text.Location = new Point3d(0.05, 0, 0);
             text.Attachment = AttachmentPoint.MiddleLeft;
-            text.TextHeight = 50;
+            text.TextHeight = 0.05;
+            text.Color = dbPoint.Color;
             text.Contents = "axisPoint_";
             entities.Add(text);
 
@@ -136,8 +136,7 @@ namespace SectionConverterPlugin
 
             return block;
         }
-
-        public BlockTableRecord GetHeightPointTemplate(Database documentDatabase)
+        public static BlockTableRecord GetHeightPointTemplate(Database documentDatabase)
         {
             var entities = new List<Entity>();
 
@@ -149,9 +148,10 @@ namespace SectionConverterPlugin
 
 
             var text = new MText();
-            text.Location = new Point3d(80, 0, 0);
+            text.Location = new Point3d(0.05, 0, 0);
             text.Attachment = AttachmentPoint.MiddleLeft;
-            text.TextHeight = 50;
+            text.TextHeight = 0.05;
+            text.Color = dbPoint.Color;
             text.Contents = "heightPoint_";
             entities.Add(text);
 
@@ -160,8 +160,7 @@ namespace SectionConverterPlugin
 
             return block;
         }
-
-        public BlockTableRecord GetBottomPointTemplate(Database documentDatabase)
+        public static BlockTableRecord GetBottomPointTemplate(Database documentDatabase)
         {
             var entities = new List<Entity>();
 
@@ -172,9 +171,10 @@ namespace SectionConverterPlugin
             entities.Add(dbPoint);
 
             var text = new MText();
-            text.Location = new Point3d(80, 0, 0);
+            text.Location = new Point3d(0.05, 0, 0);
             text.Attachment = AttachmentPoint.MiddleLeft;
-            text.TextHeight = 50;
+            text.TextHeight = 0.05;
+            text.Color = dbPoint.Color;
             text.Contents = "bottomPoint_";
             entities.Add(text);
 
@@ -184,8 +184,7 @@ namespace SectionConverterPlugin
 
             return block;
         }
-
-        public BlockTableRecord GetTopPointTemplate(Database documentDatabase)
+        public static BlockTableRecord GetTopPointTemplate(Database documentDatabase)
         {
             var entities = new List<Entity>();
 
@@ -196,9 +195,10 @@ namespace SectionConverterPlugin
             entities.Add(dbPoint);
 
             var text = new MText();
-            text.Location = new Point3d(80, 0, 0);
+            text.Location = new Point3d(0.05, 0, 0);
             text.Attachment = AttachmentPoint.MiddleLeft;
-            text.TextHeight = 50;
+            text.TextHeight = 0.05;
+            text.Color = dbPoint.Color;
             text.Contents = "topPoint_";
             entities.Add(text);
 
@@ -212,7 +212,7 @@ namespace SectionConverterPlugin
 
         #region Block methods
 
-        public BlockTableRecord CreateNewBlock(
+        public static BlockTableRecord CreateNewBlock(
             Database documentDatabase)
         {
 
@@ -227,7 +227,7 @@ namespace SectionConverterPlugin
 
                 block = new BlockTableRecord()
                 {
-                    Name = _GetAnyIniqueBlockName(blockTable)
+                    Name = GetAnyIniqueBlockName(blockTable)
                 };
 
                 var blockTableID = blockTable.Add(block);
@@ -250,7 +250,7 @@ namespace SectionConverterPlugin
             return block;
         }
 
-        public Point3d GetBlockPosition(
+        public static Point3d GetBlockPosition(
             BlockTableRecord block)
         {
             Database documentDatabase = block.Database;
@@ -274,7 +274,7 @@ namespace SectionConverterPlugin
 
             return position;
         }
-        public void SetBlockPosition(
+        public static void SetBlockPosition(
             BlockTableRecord block,
             Point3d position)
         {
@@ -297,12 +297,12 @@ namespace SectionConverterPlugin
             }
         }
 
-        public string GetBlockName(
+        public static string GetBlockName(
             BlockTableRecord block)
         {
             return block.Name;
         }
-        public void SetBlockName(
+        public static void SetBlockName(
             BlockTableRecord block,
             string name)
         {
@@ -325,7 +325,7 @@ namespace SectionConverterPlugin
             }
         }
 
-        public List<Entity> GetBlockEntities(
+        public static List<Entity> GetBlockEntities(
             BlockTableRecord block)
         {
             Database documentDatabase = block.Database;
@@ -353,7 +353,7 @@ namespace SectionConverterPlugin
             return entities;
         }
 
-        public void SetBlockEntities(
+        public static void SetBlockEntities(
             BlockTableRecord block,
             List<Entity> entities)
         {
@@ -372,6 +372,11 @@ namespace SectionConverterPlugin
 
                 foreach (var entity in entities)
                 {
+                    if (entity.Color == Color.FromRgb(0, 0, 0))
+                    {
+                        entity.ColorIndex = 256;
+                    }
+
                     blockTableRecord.AppendEntity(entity);
 
                     try
@@ -387,9 +392,29 @@ namespace SectionConverterPlugin
                 transaction.Commit();
             }
         }
+
+        public static void RefreshBlockGraphics(
+            BlockTableRecord block)
+        {
+            Database documentDatabase = block.Database;
+
+            using (var transaction =
+                    documentDatabase.TransactionManager.StartTransaction())
+            {
+                var blockReference = (BlockReference)transaction.GetObject(
+                    block.GetBlockReferenceIds(true, true)[0],
+                    OpenMode.ForWrite);
+
+                // REQUED FOR UPDATE!!!!
+                blockReference.Position = blockReference.Position;
+
+                transaction.Commit();
+            }
+        }
+        
         #endregion
 
-        public MText GetAnyMText(List<Entity> entities, string startWith = "")
+        public static MText GetAnyMText(List<Entity> entities, string startWith = "")
         {
             var mtexts = entities
                 .Select(e => e as MText)
@@ -399,7 +424,7 @@ namespace SectionConverterPlugin
                 mtexts.First() :
                 mtexts.First(mt => mt.Text.StartsWith(startWith));
         }
-        public void ApplyFunction(Entity entity, Action<Entity> Function)
+        public static void ApplyFunction(Entity entity, Action<Entity> Function)
         {
             var documentDatabase = entity.Database;
 
@@ -415,42 +440,43 @@ namespace SectionConverterPlugin
                 transaction.Commit();
             }
         }
-
-        private string FormatStation(double station)
+        public static string FormatStation(double station)
         {
-            var sign = Math.Sign(station);
-            var abs = Math.Abs(station);
-            
+            var roundedStation = Math.Round(station, 3);
+
+            var sign = Math.Sign(roundedStation);
+            var abs = Math.Abs(roundedStation);
+
             return String.Format("ПК {0:00}+{1:00.000}",
                 sign * (abs / 100),
                 abs % 100);
         }
-
-        private string FormatHeight(double height)
+        public static string FormatHeight(double height)
         {
             return String.Format("{0000,000}" + "м", height);
         }
-
-        private string FormatPointNumber(int pointNumber)
+        public static string FormatPointNumber(int pointNumber)
         {
             return String.Format("{00000}", pointNumber);
         }
 
-        private void SetTextParams(
+        private static void SetTextParams(
             BlockTableRecord block,
             string paramsTextPrefix,
             Func<string> GetParamsText)
         {
             ApplyFunction(
-                GetAnyMText(GetBlockEntities(block), paramsTextPrefix),
+                GetAnyMText(AcadTools.GetBlockEntities(block), paramsTextPrefix),
                 e =>
                 {
                     var text = (MText)e;
                     text.Contents = GetParamsText();
                 });
+
+            RefreshBlockGraphics(block);
         }
 
-        public bool CreateAxisPointBlock(Document document)
+        public static bool CreateAxisPointBlock(Document document)
         {
             bool result = false;
 
@@ -479,11 +505,10 @@ namespace SectionConverterPlugin
                 paramsTextPrefix, () => FormatStation(station));
 
             result = true;
-            UpdateCurrentScreen();
 
             return result;
         }
-        public bool CreateHeightPointBlock(Document document)
+        public static bool CreateHeightPointBlock(Document document)
         {
             bool result = false;
 
@@ -511,13 +536,12 @@ namespace SectionConverterPlugin
                 block,
                 paramsTextPrefix, () => FormatHeight(height));
 
+            ManageColorsForEntity(document);
             result = true;
 
-            UpdateCurrentScreen();
             return result;
         }
-
-        public bool CreateBottomPointBlock(Document document)
+        public static bool CreateBottomPointBlock(Document document, int pointNumber)
         {
             bool result = false;
 
@@ -532,9 +556,6 @@ namespace SectionConverterPlugin
             // Get data dialogs
             var blockPosition = new Point3d(double.NaN, double.NaN, double.NaN);
             if (!GetPointAcadDialog(editor, out blockPosition)) return result;
-
-            int pointNumber = 0;
-            if (!GetPointNumberDialog(out pointNumber)) return result;
             
             // block creation
             var block = GetBottomPointTemplate(database);
@@ -548,11 +569,9 @@ namespace SectionConverterPlugin
             result = true;
 
             ManageColorsForEntity(document);
-            UpdateCurrentScreen();
             return result;
         }
-
-        public bool CreateTopPointBlock(Document document)
+        public static bool CreateTopPointBlock(Document document, int pointNumber)
         {
             bool result = false;
 
@@ -568,9 +587,6 @@ namespace SectionConverterPlugin
             var blockPosition = new Point3d(double.NaN, double.NaN, double.NaN);
             if (!GetPointAcadDialog(editor, out blockPosition)) return result;
 
-            int pointNumber = 0;
-            if (!GetPointNumberDialog(out pointNumber)) return result;
-
             // block creation
             var block = GetTopPointTemplate(database);
             SetBlockName(block, blockNamePrefix + GetBlockName(block));
@@ -581,27 +597,12 @@ namespace SectionConverterPlugin
               paramsTextPrefix, () => FormatPointNumber(pointNumber));
 
             result = true;
-
-            UpdateCurrentScreen();
             return result;
-        }
-
-        public void UpdateCurrentScreen()
-        {
-            var document = Autodesk.AutoCAD.ApplicationServices
-   .Application.DocumentManager.MdiActiveDocument;
-
-            //   redrawing the drawing
-            //   acadApp.UpdateScreen();
-            //   acadApp.DocumentManager.MdiActiveDocument.Editor.UpdateScreen();
-
-            //   regeneration of the drawing
-            acadApp.DocumentManager.MdiActiveDocument.Editor.Regen();
         }
 
         #region layer
 
-        public void CreateLayersForPluginTool(Document document)
+        public static void CreateLayersForPluginTool(Document document)
         {
             var database = document.Database;
 
@@ -628,8 +629,7 @@ namespace SectionConverterPlugin
                 }
             }
         }
-
-        public bool CheckAvailabilityLayers(Document document)
+        public static bool CheckAvailabilityLayers(Document document)
         {
             var database = document.Database;
             {
@@ -648,8 +648,7 @@ namespace SectionConverterPlugin
                 }
             }
         }
-       
-        public void ChangeCurrentLayers()
+        public static void ChangeCurrentLayers()
         {
             var document = Autodesk.AutoCAD.ApplicationServices
    .Application.DocumentManager.MdiActiveDocument;
@@ -670,14 +669,13 @@ namespace SectionConverterPlugin
 
         #endregion
 
-        public void SetDefaultPdMode(Document document)
+        public static void SetDefaultPdMode(Document document)
         {
             var database = document.Database;
             database.Pdmode = 35;
-            database.Pdsize = 50;
+            database.Pdsize = 0.05;
         }
-
-        public void ManageColorsForEntity(Document document)
+        public static void ManageColorsForEntity(Document document)
         {
                 Database database = document.Database;
                 using (Transaction transaction = database.TransactionManager.StartTransaction())
@@ -686,8 +684,9 @@ namespace SectionConverterPlugin
                     foreach (ObjectId blockID in blockTable)
                     {
                         BlockTableRecord blockTableRecord = (BlockTableRecord)transaction.GetObject(blockID, OpenMode.ForRead);
-                        if (!(blockTableRecord.IsFromExternalReference || blockTableRecord.IsLayout))
-                        {
+
+                    if (!(blockTableRecord.IsFromExternalReference || blockTableRecord.IsLayout))
+                        {                    
                             foreach (ObjectId id in blockTableRecord)
                             {
                                 Entity entity = (Entity)transaction.GetObject(id, OpenMode.ForWrite);

@@ -118,7 +118,7 @@ namespace SectionConverterPlugin.HandlerEntity
                     MessageBox.Show(BlockTableRecord.ModelSpace.Substring(0, 9));
                 else
                     MessageBox.Show("try again");
-                    Point3d coords = new AcadTools().GetBlockPosition(blockTableRecord);
+                    Point3d coords = AcadTools.GetBlockPosition(blockTableRecord);
 
                     transaction.Commit();
             }

@@ -23,12 +23,15 @@ namespace SectionConverterPlugin
 
             InitializeComponent();
 
-            retb_height.SetRegExp(new Regex(@"^[-\+]?\d+([,\.]\d+)?$"));
+            retb_Height.SetRegExp(new Regex(@"^[-\+]?\d+([,\.]\d+)?$"));
 
-            retb_height.Value = "0";
+            //TODO: Переименовать
+            retb_Height.Value = "0";
             _dataReverted = false;
 
             this.Enabled = true;
+
+            this.ActiveControl = retb_Height;
         }
     
         private double StringToDouble(string s)
@@ -38,9 +41,9 @@ namespace SectionConverterPlugin
 
         private void UpdateHeight()
         {
-            _dataReverted = retb_height.Reverted;
+            _dataReverted = retb_Height.Reverted;
             
-            var heightValuesString = retb_height.Value;
+            var heightValuesString = retb_Height.Value;
 
             // skip for initialization
             if (heightValuesString == null)
@@ -52,8 +55,8 @@ namespace SectionConverterPlugin
         }
 
         // TODO:
-        // rename
-        public double Height
+        // rename to PointHeight
+        public double PointHeight
         {
             get
             {
@@ -67,13 +70,34 @@ namespace SectionConverterPlugin
             UpdateHeight();
         }
 
+
+        // TODO:
+        // работает почему-то только в дебаге.
+        private bool TrySetActiveAnyRevertedInputControl()
+        {
+            bool result = false;
+
+            if (retb_Height.Reverted)
+            {
+                this.ActiveControl = retb_Height;
+                result = true;
+            }
+            
+            return result;
+        }
+
         private void btn_Ok_Click(object sender, EventArgs e)
         {
+            this.ActiveControl = btn_Ok;
+
             if (_dataReverted == true)
             {
                 _dataReverted = false;
 
                 MessageBox.Show("Invalid input");
+
+                TrySetActiveAnyRevertedInputControl();
+
                 return;
             }
 

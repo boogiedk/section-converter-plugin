@@ -15,6 +15,8 @@ namespace SectionConverterPlugin.Forms
 {
     public partial class InputPointNumberDialog : Form
     {
+        int _pointNumber;
+
         private bool _dataReverted;
 
         public InputPointNumberDialog()
@@ -29,9 +31,9 @@ namespace SectionConverterPlugin.Forms
             _dataReverted = false;
 
             this.Enabled = true;
-        }
 
-        int _pointNumber;
+            this.ActiveControl = retb_PointNumber;
+        }
 
         private int StringToUInt(string s)
         {
@@ -61,6 +63,19 @@ namespace SectionConverterPlugin.Forms
             }
         }
 
+        private bool TrySetActiveAnyRevertedInputControl()
+        {
+            bool result = false;
+
+            if (retb_PointNumber.Reverted)
+            {
+                this.ActiveControl = retb_PointNumber;
+                result = true;
+            }
+
+            return result;
+        }
+
         // update station from forms metods
         private void retb_PointNumber_ValueChanged(object sender, EventArgs e)
         {
@@ -69,11 +84,16 @@ namespace SectionConverterPlugin.Forms
 
         private void btn_Ok_Click(object sender, EventArgs e)
         {
+            this.ActiveControl = btn_Ok;
+
             if (_dataReverted == true)
             {
                 _dataReverted = false;
 
                 MessageBox.Show("Invalid input");
+
+                TrySetActiveAnyRevertedInputControl();
+
                 return;
             }
 

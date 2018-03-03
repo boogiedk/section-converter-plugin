@@ -91,7 +91,14 @@ namespace SectionConverterPlugin
 
         void acadApp_SystemVariableChanged(object sender, SystemVariableChangedEventArgs e)
         {
-            if (e.Name.Equals("WSCURRENT")) BuildRibbonTab();
+            if (e.Name.Equals("WSCURRENT"))
+            {
+                var document = Autodesk.AutoCAD.ApplicationServices
+                    .Application.DocumentManager.MdiActiveDocument;
+
+                AcadTools.CreateLayersForPluginTool(document);
+                new BuildRibbonItem().CreateRibbonTab();
+            }
         }
 
         public void CreateRibbonTab()

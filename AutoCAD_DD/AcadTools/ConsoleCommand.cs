@@ -24,13 +24,12 @@ namespace SectionConverterPlugin
             var document = Autodesk.AutoCAD.ApplicationServices
                .Application.DocumentManager.MdiActiveDocument;
 
-            new AcadTools().CreateLayersForPluginTool(document);
-            new AcadTools().ChangeCurrentLayers();
-            new AcadTools().SetDefaultPdMode(document);
+            AcadTools.CreateLayersForPluginTool(document);
+            AcadTools.ChangeCurrentLayers();
 
-            var a = new AcadTools();
-            while (a.CreateAxisPointBlock(document)) { };
-            new AcadTools().ChangeCurrentLayers();
+            while (AcadTools.CreateAxisPointBlock(document)) { };
+
+            AcadTools.ChangeCurrentLayers();
         }
         [CommandMethod("buildheight")]
         public void Buildheight()
@@ -40,47 +39,41 @@ namespace SectionConverterPlugin
             var document = Autodesk.AutoCAD.ApplicationServices
                .Application.DocumentManager.MdiActiveDocument;
 
-            new AcadTools().CreateLayersForPluginTool(document);
-            new AcadTools().ChangeCurrentLayers();
-            new AcadTools().SetDefaultPdMode(document);
+            AcadTools.CreateLayersForPluginTool(document);
+            AcadTools.ChangeCurrentLayers();
 
-            var a = new AcadTools();
-            while (a.CreateHeightPointBlock(document)) { };
-            new AcadTools().ChangeCurrentLayers();
+            while (AcadTools.CreateHeightPointBlock(document)) { };
+
+            AcadTools.ChangeCurrentLayers();
         }
         [CommandMethod("buildbottom")]
-        public void Buildbottom()
+        public void BuildBottom()
         {
-            Func<string> GetAnyIniqueBlockName = () => DateTime.Now.Ticks.ToString();
-
-            var document = Autodesk.AutoCAD.ApplicationServices
-               .Application.DocumentManager.MdiActiveDocument;
-
-            new AcadTools().CreateLayersForPluginTool(document);
-            new AcadTools().ChangeCurrentLayers();
-            new AcadTools().SetDefaultPdMode(document);
-
-            var a = new AcadTools();
-            while (a.CreateBottomPointBlock(document)) { };
-
-            new AcadTools().ChangeCurrentLayers();
+            BuildRoadPoint(AcadTools.CreateBottomPointBlock);
         }
         [CommandMethod("buildtop")]
-        public void Buildtop()
+        public void BuildTop()
         {
-            Func<string> GetAnyIniqueBlockName = () => DateTime.Now.Ticks.ToString();
+            BuildRoadPoint(AcadTools.CreateTopPointBlock);
+        }
 
+        private void BuildRoadPoint(Func<Document, int, bool> CreatePointBlockDialog)
+        {
             var document = Autodesk.AutoCAD.ApplicationServices
                .Application.DocumentManager.MdiActiveDocument;
 
-            new AcadTools().CreateLayersForPluginTool(document);
-            new AcadTools().ChangeCurrentLayers();
-            new AcadTools().SetDefaultPdMode(document);
+            int pointNumber = 0;
+            if (!AcadTools.GetPointNumberDialog(out pointNumber)) return;
 
-            var a = new AcadTools();
-            while (a.CreateTopPointBlock(document)) { };
+            AcadTools.CreateLayersForPluginTool(document);
+            AcadTools.ChangeCurrentLayers();
 
-            new AcadTools().ChangeCurrentLayers();
+            while (CreatePointBlockDialog(document, pointNumber))
+            {
+                pointNumber++;
+            };
+
+            AcadTools.ChangeCurrentLayers();
         }
     }
 }

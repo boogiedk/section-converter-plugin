@@ -14,7 +14,10 @@ namespace SectionConverterPlugin.Forms
 {
     public partial class InputStationDialog : Form
     {
+        public Regex _stationRegex;
+
         double _station;
+
         private bool _dataReverted;
 
         public InputStationDialog()
@@ -23,15 +26,18 @@ namespace SectionConverterPlugin.Forms
 
             InitializeComponent();
 
-            retb_StationValueHundred.SetRegExp(new Regex(@"^\d+$"));
-            retb_StationValueUnit.SetRegExp(new Regex(@"^\d{1,2}([,\.]\d+)?$"));
+            _stationRegex = 
+                new Regex(@"^(((?<hundreds>\d+)\+(?<units>\d{1,2}))|(?<all_units>\d+))([,\.](?<fractional>\d+))?$");
 
-            retb_StationValueHundred.Value = "0";
-            retb_StationValueUnit.Value = "0";
+            retb_Station.SetRegExp(_stationRegex);
+
+            retb_Station.Value = "0";
 
             _dataReverted = false;
 
             this.Enabled = true;
+
+            this.ActiveControl = retb_Station;
         }
 
         private double StringToDouble(string s)
@@ -41,32 +47,76 @@ namespace SectionConverterPlugin.Forms
 
         private void UpdateStation()
         {
-            _dataReverted = retb_StationValueHundred.Reverted || 
-                retb_StationValueUnit.Reverted;
+            _dataReverted = retb_Station.Reverted;
 
-            var stationValueHundredsString = retb_StationValueHundred.Value;
-            var stationValueUnitsString = retb_StationValueUnit.Value;
+            var stationString = retb_Station.Value;
 
             // skip for initialization
-            if (stationValueHundredsString == null ||
-                stationValueUnitsString == null)
+            if (stationString == null)
             {
                 return;
             }
 
-            var stationValueHundreds = StringToDouble(stationValueHundredsString);
-            var stationValueUnits = StringToDouble(stationValueUnitsString);
+            _station = ParseStationString(stationString);
+        }
 
-            _station = stationValueHundreds * 100 + stationValueUnits;
+        private double ParseStationString(string stationString)
+        {
+            MatchCollection mc = _stationRegex.Matches(stationString);
+
+            var match = mc[0];
+
+            double station = .0;
+
+            if (match.Groups["hundreds"].Length > 0)
+            {
+                station += 100 * StringToDouble(match.Groups["hundreds"].Value) +
+                    StringToDouble(match.Groups["units"].Value);
+            }
+            else
+            {
+                station += StringToDouble(match.Groups["all_units"].Value);
+            }
+            if (match.Groups["fractional"].Length > 0)
+            {
+                var fractional = StringToDouble(match.Groups["fractional"].Value);
+                
+                while (fractional > 1.0 && fractional != .0)
+                {
+                    fractional /= 10.0;
+                }
+
+                station += fractional;
+            }
+
+            return station;
+        }
+
+        private bool TrySetActiveAnyRevertedInputControl()
+        {
+            bool result = false;
+
+            if (retb_Station.Reverted)
+            {
+                this.ActiveControl = retb_Station;
+                result = true;
+            }
+
+            return result;
         }
 
         private void btn_Ok_Click(object sender, EventArgs e)
         {
+            this.ActiveControl = btn_Ok;
+
             if (_dataReverted == true)
             {
                 _dataReverted = false;
 
                 MessageBox.Show("Invalid input");
+
+                TrySetActiveAnyRevertedInputControl();
+
                 return;
             }
 
@@ -81,13 +131,9 @@ namespace SectionConverterPlugin.Forms
                 return _station;
             }
         }
-
+        
         // update station from forms metods
-        private void retb_stationValueHundred_ValueChanged(object sender, EventArgs e)
-        {
-            UpdateStation();
-        }
-        private void retb_stationValueUnit_ValueChanged(object sender, EventArgs e)
+        private void retb_StationValue_ValueChanged(object sender, EventArgs e)
         {
             UpdateStation();
         }

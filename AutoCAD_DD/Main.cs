@@ -17,17 +17,43 @@ namespace SectionConverterPlugin
         /// </summary>
         public void Initialize()
         {
+            var document = Autodesk.AutoCAD.ApplicationServices
+   .Application.DocumentManager.MdiActiveDocument;
+
             acadApp.Idle += StartPluginHandler;
+
+            AcadTools.SetDefaultPdMode(document);
+
+            if (Autodesk.Windows.ComponentManager.Ribbon == null)
+            {
+                acadApp.SystemVariableChanged += new SystemVariableChangedEventHandler(Application_SystemVariableChanged);
+
+            }
+            else
+            {
+                acadApp.SystemVariableChanged +=new SystemVariableChangedEventHandler(Application_SystemVariableChanged);
+            }
+
+            void Application_SystemVariableChanged(object sender, SystemVariableChangedEventArgs e)
+            {
+
+                if (e.Name.ToLower() == "wscurrent")
+                {
+                    AcadTools.CreateLayersForPluginTool(document);
+                    new BuildRibbonItem().CreateRibbonTab();
+                }
+            }
         }
 
-        private void StartPluginHandler(object sender, EventArgs e)
+
+            private void StartPluginHandler(object sender, EventArgs e)
         {
             var document = Autodesk.AutoCAD.ApplicationServices
                .Application.DocumentManager.MdiActiveDocument;
 
             acadApp.Idle -= StartPluginHandler;
 
-            new AcadTools().CreateLayersForPluginTool(document);
+            AcadTools.CreateLayersForPluginTool(document);
             new BuildRibbonItem().CreateRibbonTab();
         }
 
