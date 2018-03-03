@@ -165,5 +165,8 @@
   <ItemGroup>
     <None Include="Resources\Image\RedPoint_32x32.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Image\GroupBlocks.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

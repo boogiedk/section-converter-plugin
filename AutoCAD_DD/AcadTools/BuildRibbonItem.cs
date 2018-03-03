@@ -24,7 +24,7 @@ namespace SectionConverterPlugin
         string buildtop = "buildtop";
         string buildaxis = "buildaxis";
 
-        string listatt = "LISTATT";
+        string grouBlocks = "GroupBlocks"; 
 
         string showPointStyleDialog = "_ptype";
 
@@ -192,19 +192,19 @@ namespace SectionConverterPlugin
                 ribbonButtonTop.CommandParameter = buildtop;
                 #endregion
 
-                //#region list
-                //RibbonButton listAttributes = new RibbonButton();
-                //listAttributes.Text = "Показать атрибуты блоков";
-                //listAttributes.ShowText = true;
-                //listAttributes.ShowImage = true;
+                #region group
+                RibbonButton ribbonButtonGroup = new RibbonButton();
+                ribbonButtonGroup.Text = "Сгруппировать блоки";
+                ribbonButtonGroup.ShowText = true;
+                ribbonButtonGroup.ShowImage = true;
 
-                //Bitmap imglist = Properties.Resources.pointPurple;
-                //listAttributes.LargeImage = GetBitmap(imgButtom);
-                //listAttributes.Orientation = System.Windows.Controls.Orientation.Vertical;
-                //listAttributes.Size = RibbonItemSize.Large;
-                //listAttributes.CommandHandler = new RibbonCommandHandler();
-                //listAttributes.CommandParameter = listatt;
-                //#endregion
+                Bitmap imgGroup = Properties.Resources.GroupBlocks;
+                ribbonButtonGroup.LargeImage = GetBitmap(imgGroup);
+                ribbonButtonGroup.Orientation = System.Windows.Controls.Orientation.Vertical;
+                ribbonButtonGroup.Size = RibbonItemSize.Large;
+                ribbonButtonGroup.CommandHandler = new RibbonCommandHandler();
+                ribbonButtonGroup.CommandParameter = grouBlocks;
+                #endregion
 
                 #region point style dialog
                 RibbonButton ribbonButtonPointStyle = new RibbonButton();
@@ -224,7 +224,7 @@ namespace SectionConverterPlugin
                 ribbonPanelSourceMain.Items.Add(ribbonButtonHeight);
                 ribbonPanelSourceMain.Items.Add(ribbonButtonButtom);
                 ribbonPanelSourceMain.Items.Add(ribbonButtonTop);
-               // ribbonPanelSourceMain.Items.Add(listAttributes);
+                ribbonPanelSourceMain.Items.Add(ribbonButtonGroup);
 
                 ribbonPanelSourceMain.Items.Add(ribbonButtonPointStyle);
 

@@ -8,8 +8,9 @@ using System.Collections.Generic;
 using System.Linq;
 using SectionConverterPlugin.Forms;
 using Autodesk.AutoCAD.Interop;
+using Autodesk.AutoCAD.Colors;
 
-using Color = Autodesk.AutoCAD.Colors.Color;
+//using Color = Autodesk.AutoCAD.Colors.Color;
 using acadApp = Autodesk.AutoCAD.ApplicationServices.Application;
 
 namespace SectionConverterPlugin
@@ -167,7 +168,7 @@ namespace SectionConverterPlugin
             DBPoint dbPoint = new DBPoint(new Point3d(0, 0, 0));
             //dbPoint.SetDatabaseDefaults();
 
-            dbPoint.Color = Color.FromRgb(0, 0, 0);
+            dbPoint.Color = Color.FromColorIndex(ColorMethod.ByLayer, 256);
             entities.Add(dbPoint);
 
             var text = new MText();
@@ -371,12 +372,7 @@ namespace SectionConverterPlugin
                     OpenMode.ForWrite);
 
                 foreach (var entity in entities)
-                {
-                    if (entity.Color == Color.FromRgb(0, 0, 0))
-                    {
-                        entity.ColorIndex = 256;
-                    }
-
+                {            
                     blockTableRecord.AppendEntity(entity);
 
                     try
@@ -536,7 +532,7 @@ namespace SectionConverterPlugin
                 block,
                 paramsTextPrefix, () => FormatHeight(height));
 
-            ManageColorsForEntity(document);
+            //ManageColorsForEntity(document);
             result = true;
 
             return result;
@@ -568,7 +564,7 @@ namespace SectionConverterPlugin
 
             result = true;
 
-            ManageColorsForEntity(document);
+            //ManageColorsForEntity(document);
             return result;
         }
         public static bool CreateTopPointBlock(Document document, int pointNumber)
@@ -675,32 +671,5 @@ namespace SectionConverterPlugin
             database.Pdmode = 35;
             database.Pdsize = 0.05;
         }
-        public static void ManageColorsForEntity(Document document)
-        {
-                Database database = document.Database;
-                using (Transaction transaction = database.TransactionManager.StartTransaction())
-                {
-                    BlockTable blockTable = (BlockTable)transaction.GetObject(database.BlockTableId, OpenMode.ForRead);
-                    foreach (ObjectId blockID in blockTable)
-                    {
-                        BlockTableRecord blockTableRecord = (BlockTableRecord)transaction.GetObject(blockID, OpenMode.ForRead);
-
-                    if (!(blockTableRecord.IsFromExternalReference || blockTableRecord.IsLayout))
-                        {                    
-                            foreach (ObjectId id in blockTableRecord)
-                            {
-                                Entity entity = (Entity)transaction.GetObject(id, OpenMode.ForWrite);
-
-                                if (entity.Color == Color.FromRgb(0, 0, 0))
-                                {
-                                    entity.Layer = "0";
-                                    entity.ColorIndex = 256;
-                                }
-                            }
-                        }
-                    }
-                    transaction.Commit();
-                }
-            }
     }
 }
