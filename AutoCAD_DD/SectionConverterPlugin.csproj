@@ -98,6 +98,7 @@
     <Compile Include="AcadTools\AcadTools.cs" />
     <Compile Include="AcadTools\BuildRibbonItem.cs" />
     <Compile Include="AcadTools\ConsoleCommand.cs" />
+    <Compile Include="HandlerEntity\SectionData.cs" />
     <Compile Include="CustomControls\RegExedTextBox.cs">
       <SubType>UserControl</SubType>
     </Compile>

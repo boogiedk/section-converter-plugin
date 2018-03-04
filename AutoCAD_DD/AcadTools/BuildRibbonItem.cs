@@ -24,7 +24,7 @@ namespace SectionConverterPlugin
         string buildtop = "buildtop";
         string buildaxis = "buildaxis";
 
-        string grouBlocks = "GroupBlocks"; 
+        string createListOfBlocks = "CreateListsOfBlocks"; 
 
         string showPointStyleDialog = "_ptype";
 
@@ -192,9 +192,9 @@ namespace SectionConverterPlugin
                 ribbonButtonTop.CommandParameter = buildtop;
                 #endregion
 
-                #region group
+                #region createBlocksofList
                 RibbonButton ribbonButtonGroup = new RibbonButton();
-                ribbonButtonGroup.Text = "Сгруппировать блоки";
+                ribbonButtonGroup.Text = "Создать списки блоков";
                 ribbonButtonGroup.ShowText = true;
                 ribbonButtonGroup.ShowImage = true;
 
@@ -203,7 +203,7 @@ namespace SectionConverterPlugin
                 ribbonButtonGroup.Orientation = System.Windows.Controls.Orientation.Vertical;
                 ribbonButtonGroup.Size = RibbonItemSize.Large;
                 ribbonButtonGroup.CommandHandler = new RibbonCommandHandler();
-                ribbonButtonGroup.CommandParameter = grouBlocks;
+                ribbonButtonGroup.CommandParameter = createListOfBlocks;
                 #endregion
 
                 #region point style dialog

@@ -7,16 +7,15 @@ using Autodesk.AutoCAD.EditorInput;
 using System.Collections.Generic;
 using System.Linq;
 using SectionConverterPlugin.Forms;
-using Autodesk.AutoCAD.Interop;
 using Autodesk.AutoCAD.Colors;
 
-//using Color = Autodesk.AutoCAD.Colors.Color;
 using acadApp = Autodesk.AutoCAD.ApplicationServices.Application;
 
 namespace SectionConverterPlugin
 {
     public class AcadTools
     {
+
         #region Temporal Methods
 
         private static string GetAnyIniqueBlockName(BlockTable blockTable)
