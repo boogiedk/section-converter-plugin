@@ -1,15 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using SectionConverterPlugin;
 
 namespace SectionConverterPlugin.Forms
 {
@@ -26,12 +18,10 @@ namespace SectionConverterPlugin.Forms
             InitializeComponent();
 
             retb_PointNumber.SetRegExp(new Regex(@"^\d+$"));
-
             retb_PointNumber.Value = "0";
             _dataReverted = false;
 
             this.Enabled = true;
-
             this.ActiveControl = retb_PointNumber;
         }
 

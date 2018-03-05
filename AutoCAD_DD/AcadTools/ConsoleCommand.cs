@@ -36,15 +36,15 @@ namespace SectionConverterPlugin
 
             AcadTools.ChangeCurrentLayers();
         }
-        [CommandMethod("buildbottom")]
+        [CommandMethod("buildblack")]
         public void BuildBottom()
         {
-            BuildRoadPoint(AcadTools.CreateBottomPointBlock);
+            BuildRoadPoint(AcadTools.CreateBlackPointBlock);
         }
-        [CommandMethod("buildtop")]
+        [CommandMethod("buildred")]
         public void BuildTop()
         {
-            BuildRoadPoint(AcadTools.CreateTopPointBlock);
+            BuildRoadPoint(AcadTools.CreateRedPointBlock);
         }
 
         private void BuildRoadPoint(Func<Document, int, bool> CreatePointBlockDialog)

@@ -25,12 +25,10 @@ namespace SectionConverterPlugin
 
             retb_Height.SetRegExp(new Regex(@"^[-\+]?\d+([,\.]\d+)?$"));
 
-            //TODO: Переименовать
             retb_Height.Value = "0";
             _dataReverted = false;
 
             this.Enabled = true;
-
             this.ActiveControl = retb_Height;
         }
     
@@ -69,7 +67,6 @@ namespace SectionConverterPlugin
         {
             UpdateHeight();
         }
-
 
         // TODO:
         // работает почему-то только в дебаге.

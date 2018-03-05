@@ -10,6 +10,7 @@ using SectionConverterPlugin.Forms;
 using Autodesk.AutoCAD.Colors;
 
 using acadApp = Autodesk.AutoCAD.ApplicationServices.Application;
+using Autodesk.AutoCAD.Runtime;
 
 namespace SectionConverterPlugin
 {
@@ -160,7 +161,7 @@ namespace SectionConverterPlugin
 
             return block;
         }
-        public static BlockTableRecord GetBottomPointTemplate(Database documentDatabase)
+        public static BlockTableRecord GetBlackPointTemplate(Database documentDatabase)
         {
             var entities = new List<Entity>();
 
@@ -175,7 +176,7 @@ namespace SectionConverterPlugin
             text.Attachment = AttachmentPoint.MiddleLeft;
             text.TextHeight = 0.05;
             text.Color = dbPoint.Color;
-            text.Contents = "bottomPoint_";
+            text.Contents = "blackPoint_";
             entities.Add(text);
 
 
@@ -184,7 +185,7 @@ namespace SectionConverterPlugin
 
             return block;
         }
-        public static BlockTableRecord GetTopPointTemplate(Database documentDatabase)
+        public static BlockTableRecord GetRedPointTemplate(Database documentDatabase)
         {
             var entities = new List<Entity>();
 
@@ -199,7 +200,7 @@ namespace SectionConverterPlugin
             text.Attachment = AttachmentPoint.MiddleLeft;
             text.TextHeight = 0.05;
             text.Color = dbPoint.Color;
-            text.Contents = "topPoint_";
+            text.Contents = "redPoint_";
             entities.Add(text);
 
             var block = CreateNewBlock(documentDatabase);
@@ -371,7 +372,7 @@ namespace SectionConverterPlugin
                     OpenMode.ForWrite);
 
                 foreach (var entity in entities)
-                {            
+                {
                     blockTableRecord.AppendEntity(entity);
 
                     try
@@ -406,7 +407,7 @@ namespace SectionConverterPlugin
                 transaction.Commit();
             }
         }
-        
+
         #endregion
 
         public static MText GetAnyMText(List<Entity> entities, string startWith = "")
@@ -536,13 +537,13 @@ namespace SectionConverterPlugin
 
             return result;
         }
-        public static bool CreateBottomPointBlock(Document document, int pointNumber)
+        public static bool CreateBlackPointBlock(Document document, int pointNumber)
         {
             bool result = false;
 
             CreateLayersForPluginTool(document);
 
-            var blockNamePrefix = "bottomPoint_";
+            var blockNamePrefix = "blackPoint_";
             var paramsTextPrefix = blockNamePrefix;
 
             var database = document.Database;
@@ -551,9 +552,9 @@ namespace SectionConverterPlugin
             // Get data dialogs
             var blockPosition = new Point3d(double.NaN, double.NaN, double.NaN);
             if (!GetPointAcadDialog(editor, out blockPosition)) return result;
-            
+
             // block creation
-            var block = GetBottomPointTemplate(database);
+            var block = GetBlackPointTemplate(database);
             SetBlockName(block, blockNamePrefix + GetBlockName(block));
             SetBlockPosition(block, blockPosition);
 
@@ -566,13 +567,13 @@ namespace SectionConverterPlugin
             //ManageColorsForEntity(document);
             return result;
         }
-        public static bool CreateTopPointBlock(Document document, int pointNumber)
+        public static bool CreateRedPointBlock(Document document, int pointNumber)
         {
             bool result = false;
 
             CreateLayersForPluginTool(document);
 
-            var blockNamePrefix = "topPoint_";
+            var blockNamePrefix = "redPoint_";
             var paramsTextPrefix = blockNamePrefix;
 
             var database = document.Database;
@@ -583,7 +584,7 @@ namespace SectionConverterPlugin
             if (!GetPointAcadDialog(editor, out blockPosition)) return result;
 
             // block creation
-            var block = GetTopPointTemplate(database);
+            var block = GetRedPointTemplate(database);
             SetBlockName(block, blockNamePrefix + GetBlockName(block));
             SetBlockPosition(block, blockPosition);
 
@@ -669,6 +670,21 @@ namespace SectionConverterPlugin
             var database = document.Database;
             database.Pdmode = 35;
             database.Pdsize = 0.05;
+        }
+
+
+        [CommandMethod("GetRelativePath")]
+        public static void GetRelativePath()
+        {
+
+            var document = Autodesk.AutoCAD.ApplicationServices
+   .Application.DocumentManager.MdiActiveDocument;
+
+            acadApp.GetSystemVariable("DWGPREFIX");
+
+            Editor editor = document.Editor;
+
+            editor.WriteMessage(acadApp.GetSystemVariable("DWGPREFIX").ToString());
         }
     }
 }

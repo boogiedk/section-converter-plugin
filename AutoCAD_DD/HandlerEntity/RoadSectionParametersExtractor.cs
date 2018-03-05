@@ -8,6 +8,7 @@ using System;
 using System.Globalization;
 
 using acadApp = Autodesk.AutoCAD.ApplicationServices.Application;
+using Autodesk.AutoCAD.EditorInput;
 
 namespace SectionConverterPlugin.HandlerEntity
 {
@@ -42,7 +43,7 @@ namespace SectionConverterPlugin.HandlerEntity
 
         private bool CheckPrefixNameOfBlock(string prefix, string blockName)
         {
-            if (!(blockName == null && blockName==""))
+            if (!(blockName == null && blockName == ""))
                 if (blockName.Substring(0, blockName.IndexOf('_') + 1) == prefix)
                     return true;
 
@@ -93,7 +94,7 @@ namespace SectionConverterPlugin.HandlerEntity
                     var topSectionPoints = topPoints
                         .Where(point => CheckBlockInWindow(point, sectionOrigin, windowSize));
                     if (topSectionPoints.Count() < 2) return null;
-                    
+
                     var bottomSectionPoints = bottomPoints
                         .Where(point => CheckBlockInWindow(point, sectionOrigin, windowSize));
 
@@ -132,13 +133,13 @@ namespace SectionConverterPlugin.HandlerEntity
                 {
                     var mText = (MText)transaction.GetObject(entity, OpenMode.ForRead);
 
-                    string _axisPointStringUnit = mText.Contents.Substring(2, mText.Contents.IndexOf('+')-1);
+                    string _axisPointStringUnit = mText.Contents.Substring(2, mText.Contents.IndexOf('+') - 1);
                     string _axisPointStringHungred = mText.Contents.Substring(mText.Contents.IndexOf('+') + 1, mText.Contents.Length - mText.Contents.IndexOf('+'));
 
                     var sign = Math.Sign(double.Parse(_axisPointStringUnit));
                     var abs = Math.Abs(double.Parse(_axisPointStringHungred));
 
-                    _axisPoint= sign * (abs / 100) + (abs % 100);
+                    _axisPoint = sign * (abs / 100) + (abs % 100);
                 }
                 transaction.Commit();
             }
@@ -163,9 +164,9 @@ namespace SectionConverterPlugin.HandlerEntity
                 {
                     var mText = (MText)transaction.GetObject(entity, OpenMode.ForRead);
 
-                    string _heightPointString = mText.Contents.Substring(0, mText.Contents.IndexOf('м')-1);
+                    string _heightPointString = mText.Contents.Substring(0, mText.Contents.IndexOf('м') - 1);
 
-                    _heightPoint = double.Parse(_heightPointString, CultureInfo.InvariantCulture);                                  
+                    _heightPoint = double.Parse(_heightPointString, CultureInfo.InvariantCulture);
                 }
                 transaction.Commit();
             }
@@ -195,5 +196,6 @@ namespace SectionConverterPlugin.HandlerEntity
             }
             return _pointNumber;
         }
+
     }
 }

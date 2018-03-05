@@ -20,8 +20,8 @@ namespace SectionConverterPlugin
         #region command
 
         string buildheight = "buildheight";
-        string buildbottom = "buildbottom";
-        string buildtop = "buildtop";
+        string buildblack = "buildblack";
+        string buildred = "buildred";
         string buildaxis = "buildaxis";
 
         string createListOfBlocks = "CreateListsOfBlocks"; 
@@ -164,32 +164,32 @@ namespace SectionConverterPlugin
                 ribbonButtonHeight.CommandParameter = buildheight;
                 #endregion
 
-                #region bottom
-                RibbonButton ribbonButtonButtom = new RibbonButton();
-                    ribbonButtonButtom.Text = "Низ полотна";
-                    ribbonButtonButtom.ShowText = true;
-                    ribbonButtonButtom.ShowImage = true;
+                #region black
+                RibbonButton ribbonButtonBlack = new RibbonButton();
+                    ribbonButtonBlack.Text = "Низ полотна";
+                    ribbonButtonBlack.ShowText = true;
+                    ribbonButtonBlack.ShowImage = true;
 
                 Bitmap imgButtom = Properties.Resources.BlackPoint_32x32;
-                ribbonButtonButtom.LargeImage = GetBitmap(imgButtom);
-                ribbonButtonButtom.Orientation = System.Windows.Controls.Orientation.Vertical;
-                ribbonButtonButtom.Size = RibbonItemSize.Large;
-                ribbonButtonButtom.CommandHandler = new RibbonCommandHandler();
-                ribbonButtonButtom.CommandParameter = buildbottom;
+                ribbonButtonBlack.LargeImage = GetBitmap(imgButtom);
+                ribbonButtonBlack.Orientation = System.Windows.Controls.Orientation.Vertical;
+                ribbonButtonBlack.Size = RibbonItemSize.Large;
+                ribbonButtonBlack.CommandHandler = new RibbonCommandHandler();
+                ribbonButtonBlack.CommandParameter = buildblack;
                 #endregion
 
-                #region top
-                RibbonButton ribbonButtonTop = new RibbonButton();
-                ribbonButtonTop.Text = "Вверх полотна";
-                ribbonButtonTop.ShowText = true;
-                ribbonButtonTop.ShowImage = true;
+                #region red
+                RibbonButton ribbonButtonRed = new RibbonButton();
+                ribbonButtonRed.Text = "Вверх полотна";
+                ribbonButtonRed.ShowText = true;
+                ribbonButtonRed.ShowImage = true;
 
                 Bitmap imgTop = Properties.Resources.RedPoint_32x32;
-                ribbonButtonTop.LargeImage = GetBitmap(imgTop);
-                ribbonButtonTop.Orientation = System.Windows.Controls.Orientation.Vertical;
-                ribbonButtonTop.Size = RibbonItemSize.Large;
-                ribbonButtonTop.CommandHandler = new RibbonCommandHandler();
-                ribbonButtonTop.CommandParameter = buildtop;
+                ribbonButtonRed.LargeImage = GetBitmap(imgTop);
+                ribbonButtonRed.Orientation = System.Windows.Controls.Orientation.Vertical;
+                ribbonButtonRed.Size = RibbonItemSize.Large;
+                ribbonButtonRed.CommandHandler = new RibbonCommandHandler();
+                ribbonButtonRed.CommandParameter = buildred;
                 #endregion
 
                 #region createBlocksofList
@@ -222,8 +222,8 @@ namespace SectionConverterPlugin
 
                 ribbonPanelSourceMain.Items.Add(ribbonButtonAxis);
                 ribbonPanelSourceMain.Items.Add(ribbonButtonHeight);
-                ribbonPanelSourceMain.Items.Add(ribbonButtonButtom);
-                ribbonPanelSourceMain.Items.Add(ribbonButtonTop);
+                ribbonPanelSourceMain.Items.Add(ribbonButtonBlack);
+                ribbonPanelSourceMain.Items.Add(ribbonButtonRed);
                 ribbonPanelSourceMain.Items.Add(ribbonButtonGroup);
 
                 ribbonPanelSourceMain.Items.Add(ribbonButtonPointStyle);

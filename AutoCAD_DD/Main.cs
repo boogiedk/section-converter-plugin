@@ -1,9 +1,6 @@
 ﻿using System;
 using Autodesk.AutoCAD.ApplicationServices;
-using Autodesk.Windows;
-using System.Windows.Media.Imaging;
 using Autodesk.AutoCAD.Runtime;
-using System.Windows.Forms;
 
 using acadApp = Autodesk.AutoCAD.ApplicationServices.Application;
 
