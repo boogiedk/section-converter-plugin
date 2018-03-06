@@ -2,7 +2,6 @@
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.Windows;
 using System.Windows.Media.Imaging;
-using Autodesk.AutoCAD.Windows.Data;
 using System.Drawing;
 using System.IO;
 using System.Drawing.Imaging;
@@ -122,7 +121,7 @@ namespace SectionConverterPlugin
             }
         }
 
-        void addPluginContent(RibbonTab ribbonTab)
+        public void addPluginContent(RibbonTab ribbonTab)
         {
             try
             {
@@ -220,13 +219,54 @@ namespace SectionConverterPlugin
                 ribbonButtonPointStyle.CommandParameter = showPointStyleDialog;
                 #endregion
 
+                #region textbox width
+
+                RibbonTextBox ribbonTextBoxWidth = new RibbonTextBox();
+                ribbonTextBoxWidth.ShowText = true;
+                ribbonTextBoxWidth.Text = "Ширина окна";      
+                ribbonTextBoxWidth.Width = 150;
+                ribbonTextBoxWidth.Value = 50;
+                ribbonTextBoxWidth.IsEmptyTextValid = false;
+                ribbonTextBoxWidth.AcceptTextOnLostFocus = true;
+                ribbonTextBoxWidth.InvokesCommand = true;
+
+                #endregion
+
+                #region textbox height
+
+                RibbonTextBox ribbonTextBoxHeight = new RibbonTextBox();
+
+                ribbonTextBoxHeight.ShowText = true;
+                ribbonTextBoxHeight.Text = "Высота окна ";
+                ribbonTextBoxHeight.Width = 150;
+                ribbonTextBoxHeight.Value = 50;
+                ribbonTextBoxHeight.IsEmptyTextValid = false;
+                ribbonTextBoxHeight.AcceptTextOnLostFocus = true;
+                ribbonTextBoxHeight.InvokesCommand = true;
+                #endregion
+
+                Autodesk.Windows.RibbonPanelSource ribbonPanelSourceSettings = new RibbonPanelSource();
+                ribbonPanelSourceSettings.Title = "Настройки";
+                RibbonPanel ribbonPanelSetting = new RibbonPanel();
+                ribbonPanelSetting.Source = ribbonPanelSourceSettings;
+                ribbonTab.Panels.Add(ribbonPanelSetting);
+
                 ribbonPanelSourceMain.Items.Add(ribbonButtonAxis);
                 ribbonPanelSourceMain.Items.Add(ribbonButtonHeight);
                 ribbonPanelSourceMain.Items.Add(ribbonButtonBlack);
                 ribbonPanelSourceMain.Items.Add(ribbonButtonRed);
                 ribbonPanelSourceMain.Items.Add(ribbonButtonGroup);
-
                 ribbonPanelSourceMain.Items.Add(ribbonButtonPointStyle);
+
+                RibbonRowPanel ribbonRowPanel = new RibbonRowPanel();
+                RibbonCombo ribbonCombo = new RibbonCombo();
+                ribbonRowPanel.Items.Add(ribbonTextBoxWidth);
+                ribbonRowPanel.Items.Add(new RibbonRowBreak());
+                ribbonRowPanel.Items.Add(ribbonTextBoxHeight);
+                ribbonRowPanel.Items.Add(new RibbonRowBreak());
+
+                ribbonPanelSourceSettings.Items.Add(new RibbonSeparator());
+                ribbonPanelSourceSettings.Items.Add(ribbonRowPanel);
 
                 ribbonTab.IsActive = true;
                 }

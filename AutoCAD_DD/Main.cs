@@ -21,6 +21,9 @@ namespace SectionConverterPlugin
 
             AcadTools.SetDefaultPdMode(document);
 
+            BuildRibbonItem buildRibbonItem = new BuildRibbonItem();
+             
+
             if (Autodesk.Windows.ComponentManager.Ribbon == null)
             {
                 acadApp.SystemVariableChanged += new SystemVariableChangedEventHandler(Application_SystemVariableChanged);
