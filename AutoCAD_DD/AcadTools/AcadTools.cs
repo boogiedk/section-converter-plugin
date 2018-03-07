@@ -6,6 +6,7 @@ using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.EditorInput;
 using System.Collections.Generic;
 using System.Linq;
+using System.Globalization;
 using SectionConverterPlugin.Forms;
 using Autodesk.AutoCAD.Colors;
 
@@ -32,7 +33,7 @@ namespace SectionConverterPlugin
         }
 
         #endregion
-
+        
         #region GUI Dialogs
 
         public static bool GetPointAcadDialog(Editor editor, out Point3d point3D)
@@ -449,11 +450,16 @@ namespace SectionConverterPlugin
         }
         public static string FormatHeight(double height)
         {
-            return String.Format("{0000,000}" + "м", height);
+            return DoubleToFormattedString(height) + "м";
         }
         public static string FormatPointNumber(int pointNumber)
         {
-            return String.Format("{00000}", pointNumber);
+            return pointNumber.ToString();
+        }
+
+        public static string DoubleToFormattedString(double num)
+        {
+            return string.Format(CultureInfo.InvariantCulture, "{0:0.000}", num);
         }
 
         private static void SetTextParams(
@@ -672,7 +678,6 @@ namespace SectionConverterPlugin
             database.Pdsize = 0.05;
         }
 
-
         [CommandMethod("GetRelativePath")]
         public static void GetRelativePath()
         {
@@ -680,11 +685,11 @@ namespace SectionConverterPlugin
             var document = Autodesk.AutoCAD.ApplicationServices
    .Application.DocumentManager.MdiActiveDocument;
 
-            acadApp.GetSystemVariable("DWGPREFIX");
+            string pathDrawing = acadApp.GetSystemVariable("DWGPREFIX").ToString();
 
             Editor editor = document.Editor;
 
-            editor.WriteMessage(acadApp.GetSystemVariable("DWGPREFIX").ToString());
+            editor.WriteMessage(pathDrawing);
         }
     }
 }

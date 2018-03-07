@@ -1,6 +1,8 @@
 ﻿using System;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.Runtime;
+using System.Windows.Forms;
+using SectionConverterPlugin.Forms;
 
 namespace SectionConverterPlugin
 {
@@ -64,6 +66,24 @@ namespace SectionConverterPlugin
             };
 
             AcadTools.ChangeCurrentLayers();
+        }
+
+        [CommandMethod("ShowSizeWindowDialog")]
+        public void ShowSizeWindowDialog()
+        {
+            var pluginSettings = PluginSettings.GetInstance();
+            var sectionMaxSize = pluginSettings.SectionMaxSize;
+
+            var dialogForm = new InputSizeForWindowDialog();
+            dialogForm.Initialize(sectionMaxSize);
+            var dialogResult = dialogForm.ShowDialog();
+
+            if (dialogResult != DialogResult.OK)
+            {
+                return;
+            }
+
+            pluginSettings.SectionMaxSize = dialogForm.SearchWindowSize;
         }
     }
 }

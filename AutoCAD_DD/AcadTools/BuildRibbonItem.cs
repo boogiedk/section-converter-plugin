@@ -5,13 +5,17 @@ using System.Windows.Media.Imaging;
 using System.Drawing;
 using System.IO;
 using System.Drawing.Imaging;
+using System.ComponentModel;
+using System.Windows.Input;
+using System.Windows;
+using System.Windows.Media;
+
 
 using acadApp = Autodesk.AutoCAD.ApplicationServices.Application;
 
-
 namespace SectionConverterPlugin
 {
-    class BuildRibbonItem
+    class BuildRibbonItem : RibbonTextBox
     {
         string tabTitleName = "Конвертер сечений";
         string tabID = "RibbonPluginStart";
@@ -23,9 +27,11 @@ namespace SectionConverterPlugin
         string buildred = "buildred";
         string buildaxis = "buildaxis";
 
-        string createListOfBlocks = "CreateListsOfBlocks"; 
+        string createListOfBlocks = "CreateListsOfBlocks";
 
         string showPointStyleDialog = "_ptype";
+
+        string showSizeWindowDialog = "ShowSizeWindowDialog";
 
         #endregion
 
@@ -125,13 +131,22 @@ namespace SectionConverterPlugin
         {
             try
             {
+
+               
+
                 RibbonControl ribbonControl = ComponentManager.Ribbon;
 
                 Autodesk.Windows.RibbonPanelSource ribbonPanelSourceMain = new RibbonPanelSource();
-                    ribbonPanelSourceMain.Title = "Главная панель";
-                    RibbonPanel mainPanel = new RibbonPanel();
-                    mainPanel.Source = ribbonPanelSourceMain;
-                    ribbonTab.Panels.Add(mainPanel);
+                ribbonPanelSourceMain.Title = "Главная панель";
+                RibbonPanel mainPanel = new RibbonPanel();
+                mainPanel.Source = ribbonPanelSourceMain;
+                ribbonTab.Panels.Add(mainPanel);
+
+                Autodesk.Windows.RibbonPanelSource ribbonPanelSourceSettings = new RibbonPanelSource();
+                ribbonPanelSourceSettings.Title = "Настройки";
+                RibbonPanel ribbonPanelSetting = new RibbonPanel();
+                ribbonPanelSetting.Source = ribbonPanelSourceSettings;
+                ribbonTab.Panels.Add(ribbonPanelSetting);
 
                 #region axis
                 RibbonButton ribbonButtonAxis = new RibbonButton();
@@ -149,25 +164,25 @@ namespace SectionConverterPlugin
 
                 #region height
                 RibbonButton ribbonButtonHeight = new RibbonButton();
-                    ribbonButtonHeight.Text = "Отметка";
-                    ribbonButtonHeight.ShowText = true;
-                    ribbonButtonHeight.ShowImage = true;
+                ribbonButtonHeight.Text = "Отметка";
+                ribbonButtonHeight.ShowText = true;
+                ribbonButtonHeight.ShowImage = true;
 
 
                 Bitmap imgHeight = Properties.Resources.GreenPoint_32x32;
-                
-                    ribbonButtonHeight.LargeImage = GetBitmap(imgHeight);
-                    ribbonButtonHeight.Orientation = System.Windows.Controls.Orientation.Vertical;
-                    ribbonButtonHeight.Size = RibbonItemSize.Large;
-                    ribbonButtonHeight.CommandHandler = new RibbonCommandHandler();
+
+                ribbonButtonHeight.LargeImage = GetBitmap(imgHeight);
+                ribbonButtonHeight.Orientation = System.Windows.Controls.Orientation.Vertical;
+                ribbonButtonHeight.Size = RibbonItemSize.Large;
+                ribbonButtonHeight.CommandHandler = new RibbonCommandHandler();
                 ribbonButtonHeight.CommandParameter = buildheight;
                 #endregion
 
                 #region black
                 RibbonButton ribbonButtonBlack = new RibbonButton();
-                    ribbonButtonBlack.Text = "Низ полотна";
-                    ribbonButtonBlack.ShowText = true;
-                    ribbonButtonBlack.ShowImage = true;
+                ribbonButtonBlack.Text = "Низ полотна";
+                ribbonButtonBlack.ShowText = true;
+                ribbonButtonBlack.ShowImage = true;
 
                 Bitmap imgButtom = Properties.Resources.BlackPoint_32x32;
                 ribbonButtonBlack.LargeImage = GetBitmap(imgButtom);
@@ -219,37 +234,18 @@ namespace SectionConverterPlugin
                 ribbonButtonPointStyle.CommandParameter = showPointStyleDialog;
                 #endregion
 
-                #region textbox width
 
-                RibbonTextBox ribbonTextBoxWidth = new RibbonTextBox();
-                ribbonTextBoxWidth.ShowText = true;
-                ribbonTextBoxWidth.Text = "Ширина окна";      
-                ribbonTextBoxWidth.Width = 150;
-                ribbonTextBoxWidth.Value = 50;
-                ribbonTextBoxWidth.IsEmptyTextValid = false;
-                ribbonTextBoxWidth.AcceptTextOnLostFocus = true;
-                ribbonTextBoxWidth.InvokesCommand = true;
+                RibbonButton ribbonButtonWindowSize = new RibbonButton();
+                ribbonButtonWindowSize.Text = "Размер окна";
+                ribbonButtonWindowSize.ShowText = true;
+                ribbonButtonWindowSize.ShowImage = true;
 
-                #endregion
-
-                #region textbox height
-
-                RibbonTextBox ribbonTextBoxHeight = new RibbonTextBox();
-
-                ribbonTextBoxHeight.ShowText = true;
-                ribbonTextBoxHeight.Text = "Высота окна ";
-                ribbonTextBoxHeight.Width = 150;
-                ribbonTextBoxHeight.Value = 50;
-                ribbonTextBoxHeight.IsEmptyTextValid = false;
-                ribbonTextBoxHeight.AcceptTextOnLostFocus = true;
-                ribbonTextBoxHeight.InvokesCommand = true;
-                #endregion
-
-                Autodesk.Windows.RibbonPanelSource ribbonPanelSourceSettings = new RibbonPanelSource();
-                ribbonPanelSourceSettings.Title = "Настройки";
-                RibbonPanel ribbonPanelSetting = new RibbonPanel();
-                ribbonPanelSetting.Source = ribbonPanelSourceSettings;
-                ribbonTab.Panels.Add(ribbonPanelSetting);
+                Bitmap imgWindowSize = Properties.Resources.windowSize;
+                ribbonButtonWindowSize.LargeImage = GetBitmap(imgWindowSize);
+                ribbonButtonWindowSize.Orientation = System.Windows.Controls.Orientation.Vertical;
+                ribbonButtonWindowSize.Size = RibbonItemSize.Large;
+                ribbonButtonWindowSize.CommandHandler = new RibbonCommandHandler();
+                ribbonButtonWindowSize.CommandParameter = showSizeWindowDialog;
 
                 ribbonPanelSourceMain.Items.Add(ribbonButtonAxis);
                 ribbonPanelSourceMain.Items.Add(ribbonButtonHeight);
@@ -258,28 +254,18 @@ namespace SectionConverterPlugin
                 ribbonPanelSourceMain.Items.Add(ribbonButtonGroup);
                 ribbonPanelSourceMain.Items.Add(ribbonButtonPointStyle);
 
-                RibbonRowPanel ribbonRowPanel = new RibbonRowPanel();
-                RibbonCombo ribbonCombo = new RibbonCombo();
-                ribbonRowPanel.Items.Add(ribbonTextBoxWidth);
-                ribbonRowPanel.Items.Add(new RibbonRowBreak());
-                ribbonRowPanel.Items.Add(ribbonTextBoxHeight);
-                ribbonRowPanel.Items.Add(new RibbonRowBreak());
-
-                ribbonPanelSourceSettings.Items.Add(new RibbonSeparator());
-                ribbonPanelSourceSettings.Items.Add(ribbonRowPanel);
-
+                ribbonPanelSourceSettings.Items.Add(ribbonButtonWindowSize);
+                    
                 ribbonTab.IsActive = true;
-                }
+            }
             catch (System.Exception ex)
             {
                 Autodesk.AutoCAD.ApplicationServices.Application.
                   DocumentManager.MdiActiveDocument.Editor.WriteMessage(ex.Message);
             }
-
         }
-    
 
-    BitmapImage LoadImage(string ImageName)
+        BitmapImage LoadImage(string ImageName)
         {
             return new BitmapImage(
                 new Uri("pack://application:,,,/AutoCAD_DD;component/" + ImageName + ".png"));
@@ -298,7 +284,8 @@ namespace SectionConverterPlugin
 
         }
 
-        class RibbonCommandHandler : System.Windows.Input.ICommand
+        //ribbon tabs
+        public class RibbonCommandHandler : ICommand
         {
             public bool CanExecute(object parameter)
             {
@@ -309,17 +296,16 @@ namespace SectionConverterPlugin
 
             public void Execute(object parameter)
             {
-                Document document = acadApp.DocumentManager.MdiActiveDocument;
+                Document doc = acadApp.DocumentManager.MdiActiveDocument;
 
                 if (parameter is RibbonButton)
                 {
                     TurnOffInputPoint();
-                    RibbonButton button = parameter as RibbonButton;
+                    var button = (RibbonButton)parameter;
                     acadApp.DocumentManager.MdiActiveDocument.SendStringToExecute(
                         button.CommandParameter + " ", true, false, true);
                 }
             }
-
             public void TurnOffInputPoint()
             {
                 Document doc = acadApp.DocumentManager.MdiActiveDocument;
@@ -339,7 +325,9 @@ namespace SectionConverterPlugin
                     doc.SendStringToExecute(esc + "", true, false, true);
                 }
             }
-
         }
     }
 }
+
+
+

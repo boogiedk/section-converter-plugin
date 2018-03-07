@@ -41,15 +41,15 @@ namespace SectionConverterPlugin
         {
             _dataReverted = retb_Height.Reverted;
             
-            var heightValuesString = retb_Height.Value;
+            var heightValueString = retb_Height.Value;
 
             // skip for initialization
-            if (heightValuesString == null)
+            if (heightValueString == null)
             {
                 return;
             }
 
-             _height = StringToDouble(heightValuesString);
+             _height = StringToDouble(heightValueString);
         }
 
         // TODO:

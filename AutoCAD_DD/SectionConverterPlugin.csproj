@@ -98,6 +98,12 @@
     <Compile Include="AcadTools\AcadTools.cs" />
     <Compile Include="AcadTools\BuildRibbonItem.cs" />
     <Compile Include="AcadTools\ConsoleCommand.cs" />
+    <Compile Include="Forms\InputSizeForWindowDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\InputSizeForWindowDialog.Designer.cs">
+      <DependentUpon>InputSizeForWindowDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="HandlerEntity\SectionData.cs" />
     <Compile Include="CustomControls\RegExedTextBox.cs">
       <SubType>UserControl</SubType>
@@ -131,10 +137,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="PluginSettings.cs" />
+    <Compile Include="Size.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="CustomControls\RegExedTextBox.resx">
       <DependentUpon>RegExedTextBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\InputSizeForWindowDialog.resx">
+      <DependentUpon>InputSizeForWindowDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\InputStationDialog.resx">
       <DependentUpon>InputStationDialog.cs</DependentUpon>
@@ -168,6 +179,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Image\GroupBlocks.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Image\windowSize.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
