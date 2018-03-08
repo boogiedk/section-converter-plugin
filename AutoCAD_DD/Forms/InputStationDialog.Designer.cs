@@ -30,7 +30,7 @@
         {
             this.lbl_input = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.retb_Station = new CivilToolsGUI.CustomControls.RegExedTextBox();
+            this.retb_Station = new SectionConverterPlugin.CustomControls.RegExedTextBox();
             this.btn_Ok = new System.Windows.Forms.Button();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
@@ -142,7 +142,7 @@
 
         #endregion
         private System.Windows.Forms.Label lbl_input;
-        private CivilToolsGUI.CustomControls.RegExedTextBox retb_Station;
+        private SectionConverterPlugin.CustomControls.RegExedTextBox retb_Station;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Button btn_Ok;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;

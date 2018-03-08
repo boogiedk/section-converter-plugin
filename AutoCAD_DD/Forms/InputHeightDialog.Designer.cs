@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.retb_Height = new CivilToolsGUI.CustomControls.RegExedTextBox();
+            this.retb_Height = new SectionConverterPlugin.CustomControls.RegExedTextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.lbl_input = new System.Windows.Forms.Label();
             this.btn_Ok = new System.Windows.Forms.Button();
@@ -144,7 +144,7 @@
 
         #endregion
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private CivilToolsGUI.CustomControls.RegExedTextBox retb_Height;
+        private SectionConverterPlugin.CustomControls.RegExedTextBox retb_Height;
         private System.Windows.Forms.Label lbl_input;
         private System.Windows.Forms.Button btn_Ok;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;

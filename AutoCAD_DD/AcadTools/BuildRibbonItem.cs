@@ -27,7 +27,7 @@ namespace SectionConverterPlugin
         string buildred = "buildred";
         string buildaxis = "buildaxis";
 
-        string createListOfBlocks = "CreateListsOfBlocks";
+        string exportSelectionsDataForm = "ExportSelectionsDataForm";
 
         string showPointStyleDialog = "_ptype";
 
@@ -130,10 +130,7 @@ namespace SectionConverterPlugin
         public void addPluginContent(RibbonTab ribbonTab)
         {
             try
-            {
-
-               
-
+            {          
                 RibbonControl ribbonControl = ComponentManager.Ribbon;
 
                 Autodesk.Windows.RibbonPanelSource ribbonPanelSourceMain = new RibbonPanelSource();
@@ -217,7 +214,7 @@ namespace SectionConverterPlugin
                 ribbonButtonGroup.Orientation = System.Windows.Controls.Orientation.Vertical;
                 ribbonButtonGroup.Size = RibbonItemSize.Large;
                 ribbonButtonGroup.CommandHandler = new RibbonCommandHandler();
-                ribbonButtonGroup.CommandParameter = createListOfBlocks;
+                ribbonButtonGroup.CommandParameter = exportSelectionsDataForm;
                 #endregion
 
                 #region point style dialog

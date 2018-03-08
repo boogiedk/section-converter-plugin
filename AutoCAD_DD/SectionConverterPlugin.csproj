@@ -98,13 +98,19 @@
     <Compile Include="AcadTools\AcadTools.cs" />
     <Compile Include="AcadTools\BuildRibbonItem.cs" />
     <Compile Include="AcadTools\ConsoleCommand.cs" />
+    <Compile Include="Forms\ExportSectionsDataForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ExportSectionsDataForm.Designer.cs">
+      <DependentUpon>ExportSectionsDataForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\InputSizeForWindowDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\InputSizeForWindowDialog.Designer.cs">
       <DependentUpon>InputSizeForWindowDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="HandlerEntity\SectionData.cs" />
+    <Compile Include="ModulToExportDocument\SectionData.cs" />
     <Compile Include="CustomControls\RegExedTextBox.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -129,7 +135,7 @@
     <Compile Include="Forms\InputPointNumberDialog.Designer.cs">
       <DependentUpon>InputPointNumberDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="HandlerEntity\RoadSectionParametersExtractor.cs" />
+    <Compile Include="ModulToExportDocument\RoadSectionParametersExtractor.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -143,6 +149,9 @@
   <ItemGroup>
     <EmbeddedResource Include="CustomControls\RegExedTextBox.resx">
       <DependentUpon>RegExedTextBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ExportSectionsDataForm.resx">
+      <DependentUpon>ExportSectionsDataForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\InputSizeForWindowDialog.resx">
       <DependentUpon>InputSizeForWindowDialog.cs</DependentUpon>

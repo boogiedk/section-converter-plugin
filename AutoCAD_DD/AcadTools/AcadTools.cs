@@ -679,17 +679,14 @@ namespace SectionConverterPlugin
         }
 
         [CommandMethod("GetRelativePath")]
-        public static void GetRelativePath()
+        public static string GetAbsolutePath()
         {
-
             var document = Autodesk.AutoCAD.ApplicationServices
-   .Application.DocumentManager.MdiActiveDocument;
+                .Application.DocumentManager.MdiActiveDocument;
 
             string pathDrawing = acadApp.GetSystemVariable("DWGPREFIX").ToString();
 
-            Editor editor = document.Editor;
-
-            editor.WriteMessage(pathDrawing);
+            return pathDrawing;
         }
     }
 }

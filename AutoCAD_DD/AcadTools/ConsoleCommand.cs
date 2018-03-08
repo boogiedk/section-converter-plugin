@@ -76,6 +76,7 @@ namespace SectionConverterPlugin
 
             var dialogForm = new InputSizeForWindowDialog();
             dialogForm.Initialize(sectionMaxSize);
+
             var dialogResult = dialogForm.ShowDialog();
 
             if (dialogResult != DialogResult.OK)
@@ -84,6 +85,20 @@ namespace SectionConverterPlugin
             }
 
             pluginSettings.SectionMaxSize = dialogForm.SearchWindowSize;
+        }
+
+        [CommandMethod("ExportSelectionsDataForm")]
+        public void ExportSelectionsDataForm()
+        {
+            var dialogForm = new ExportSectionsDataForm();
+            dialogForm.ShowDialog();
+
+            var dialogResult = dialogForm.ShowDialog();
+
+            if (dialogResult != DialogResult.OK)
+            {
+                return;
+            }
         }
     }
 }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 
-namespace CivilToolsGUI.CustomControls
+namespace SectionConverterPlugin.CustomControls
 {
     public partial class RegExedTextBox : UserControl
     {
@@ -31,6 +31,7 @@ namespace CivilToolsGUI.CustomControls
 
             InitializeComponent();
         }
+
         public void SetRegExp(Regex regEx)
         {
             _regEx = regEx;

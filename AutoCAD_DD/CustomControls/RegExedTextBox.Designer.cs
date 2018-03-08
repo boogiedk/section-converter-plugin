@@ -1,4 +1,4 @@
-﻿namespace CivilToolsGUI.CustomControls
+﻿namespace SectionConverterPlugin.CustomControls
 {
     partial class RegExedTextBox
     {

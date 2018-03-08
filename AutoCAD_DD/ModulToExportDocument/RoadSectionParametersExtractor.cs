@@ -12,10 +12,9 @@ using Autodesk.AutoCAD.EditorInput;
 
 namespace SectionConverterPlugin.HandlerEntity
 {
-    public class RoadSectionParametersExtractor
+    public static class RoadSectionParametersExtractor
     {
-
-        public List<BlockTableRecord> GetListBlocksByPrefix(string prefix)
+        public static List<BlockTableRecord> GetListBlocksByPrefix(string prefix)
         {
             List<BlockTableRecord> blocks = new List<BlockTableRecord>();
 
@@ -41,7 +40,7 @@ namespace SectionConverterPlugin.HandlerEntity
             return blocks;
         }
 
-        private bool CheckPrefixNameOfBlock(string prefix, string blockName)
+        private static bool CheckPrefixNameOfBlock(string prefix, string blockName)
         {
             if (!(blockName == null && blockName == ""))
                 if (blockName.Substring(0, blockName.IndexOf('_') + 1) == prefix)
@@ -50,12 +49,12 @@ namespace SectionConverterPlugin.HandlerEntity
             return false;
         }
 
-        public bool CheckBlockInWindow(BlockTableRecord block, Point3d origin, Point3d windowSize)
+        public static bool CheckBlockInWindow(BlockTableRecord block, Point3d origin, Size windowSize)
         {
             var blockLocalPos = AcadTools.GetBlockPosition(block) - origin;
 
-            var windowWidth = windowSize.X;
-            var windowHeight = windowSize.Y;
+            var windowWidth = windowSize.Width;
+            var windowHeight = windowSize.Height;
 
             return -windowWidth / 2.0 <= blockLocalPos.X &&
                 blockLocalPos.X < windowWidth / 2.0 &&
@@ -63,40 +62,36 @@ namespace SectionConverterPlugin.HandlerEntity
                 blockLocalPos.Y < windowHeight / 2.0;
         }
 
-        [CommandMethod("CreateListsOfBlocks")]
-        public void CreateListsOfBlocks()
+        public static SectionData[] ExtractSectionsData(Size searchWindowSize)
         {
             var axisPoints = GetListBlocksByPrefix("axisPoint_");
             var heightPoints = GetListBlocksByPrefix("heightPoint_");
-            var topPoints = GetListBlocksByPrefix("topPoint_");
-            var bottomPoints = GetListBlocksByPrefix("bottomPoint_");
+            var topPoints = GetListBlocksByPrefix("redPoint_");
+            var bottomPoints = GetListBlocksByPrefix("blackPoint_");
 
+            var data = new SectionData[0];
 
             if (axisPoints.Count == 0)
             {
-                return;
+                return data;
             }
 
-            // TODO:
-            // to config or settings
-            Point3d windowSize = new Point3d(50, 50, 0);
-
-            var data = axisPoints.
+            return axisPoints.
                 Select(axisPoint =>
                 {
                     var sectionOrigin = AcadTools.GetBlockPosition(axisPoint);
 
                     var heightSectionPoints = heightPoints
-                        .Where(point => CheckBlockInWindow(point, sectionOrigin, windowSize));
+                        .Where(point => CheckBlockInWindow(point, sectionOrigin, searchWindowSize));
                     if (heightSectionPoints.Count() != 1) return null;
                     var heightSectionPoint = heightSectionPoints.First();
 
                     var topSectionPoints = topPoints
-                        .Where(point => CheckBlockInWindow(point, sectionOrigin, windowSize));
+                        .Where(point => CheckBlockInWindow(point, sectionOrigin, searchWindowSize));
                     if (topSectionPoints.Count() < 2) return null;
 
                     var bottomSectionPoints = bottomPoints
-                        .Where(point => CheckBlockInWindow(point, sectionOrigin, windowSize));
+                        .Where(point => CheckBlockInWindow(point, sectionOrigin, searchWindowSize));
 
                     return new SectionData()
                     {
@@ -109,14 +104,9 @@ namespace SectionConverterPlugin.HandlerEntity
                 })
                 .Where(sectionData => sectionData != null)
                 .ToArray();
-
-            if (data.Length < 1) return;
-
-            MessageBox.Show("Красных в зоне: " + data.First().TopPoints.Count());
-            MessageBox.Show("Черных в зоне: " + data.First().BottomPoints.Count());
         }
 
-        public double GetStationFromAxisPointBlock(BlockTableRecord axisPointBlock)
+        public static double GetStationFromPointBlock(BlockTableRecord axisPointBlock)
         {
             var document = Autodesk.AutoCAD.ApplicationServices
                           .Application.DocumentManager.MdiActiveDocument;
@@ -146,8 +136,9 @@ namespace SectionConverterPlugin.HandlerEntity
             return _axisPoint;
         }
 
+        // TODO: пикета в точке с высотой нет, там только высота
         // пофиксить точка/запятая
-        public double GetStationFromHeightPointBlock(BlockTableRecord heightPointBlock)
+        public static double GetHeightFromPointBlock(BlockTableRecord heightPointBlock)
         {
             var document = Autodesk.AutoCAD.ApplicationServices
                           .Application.DocumentManager.MdiActiveDocument;
@@ -173,7 +164,7 @@ namespace SectionConverterPlugin.HandlerEntity
             return _heightPoint;
         }
 
-        public int GetStationFromPointNumberPointBlock(BlockTableRecord pointNumberBlock)
+        public static int GetPointNumberFromPointBlock(BlockTableRecord pointNumberBlock)
         {
             var document = Autodesk.AutoCAD.ApplicationServices
                           .Application.DocumentManager.MdiActiveDocument;
@@ -196,6 +187,5 @@ namespace SectionConverterPlugin.HandlerEntity
             }
             return _pointNumber;
         }
-
     }
 }
