@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using Autodesk.AutoCAD.Geometry;
 
 using SectionConverterPlugin.HandlerEntity;
 
@@ -67,11 +62,6 @@ namespace SectionConverterPlugin.Forms
             }
         }
 
-        public bool GetTheValueOfCheckBox()
-        {
-            return _factPositionsValuesEnabled=cb_ActualValueMistake.Checked;
-        }
-
         private void retb_ActuallyValue_ValueChanged(object sender, EventArgs e)
         {
             UpdateActuallyValue();
@@ -79,29 +69,74 @@ namespace SectionConverterPlugin.Forms
 
         private void btn_Run_Click(object sender, EventArgs e)
         {
-         var pluginSettings = PluginSettings.GetInstance();
-         var sectionMaxSize = pluginSettings.SectionMaxSize;
-        
-         var sectionsData = RoadSectionParametersExtractor
-             .ExtractSectionsData(sectionMaxSize);
-        
-         var pathToCurentDocument = AcadTools.GetAbsolutePath();
+            var pluginSettings = PluginSettings.GetInstance();
+            var sectionMaxSize = pluginSettings.SectionMaxSize;
+            
+            var sectionsData = RoadSectionParametersExtractor
+                .ExtractSectionsData(sectionMaxSize);
+            
+            var pathToCurentDocument = AcadTools.GetAbsolutePath();
+
+            Func<double, double, string> CoordsToString = (x,y) =>
+                String.Format("{0} {1}",
+                    AcadTools.DoubleToFormattedString(x),
+                    AcadTools.DoubleToFormattedString(y));
+
+            Func<Point3d, Point3d, int, XElement> GetPointElement =
+                (projPos, factPos, number) =>
+                    new XElement(
+                        "point",
+                            new XElement(
+                                "proj_position",
+                                CoordsToString(projPos.X, projPos.Y)),
+                            new XElement(
+                                "fact_position",
+                                CoordsToString(factPos.X, factPos.Y)),
+                            new XElement("number", number));
 
             var extractedSectionDataDoc = new XDocument(
-               new XElement(
-            "road_sections",
-                  new XAttribute(
-                "fact_enabled",
-                GetTheValueOfCheckBox()),
                 new XElement(
-                    "road_section",
+                    "road_sections",
                     new XAttribute(
-                        "staEq", sectionsData
-                .Select(sd =>
-                        RoadSectionParametersExtractor
-             .GetStationFromPointBlock(sd.AxisPoint)))))); // выводит ересь
+                        "fact_enabled",
+                        _factPositionsValuesEnabled),
+                    sectionsData
+                        .Select(sd =>
+                            new XElement(
+                                "road_section",
+                                new XElement(
+                                    "staEq",
+                                    AcadTools.DoubleToFormattedString(
+                                        RoadSectionParametersExtractor.GetStationFromPointBlock(sd.AxisPoint))),
+                                new XElement(
+                                    "origin",
+                                    CoordsToString(
+                                        AcadTools.GetBlockPosition(sd.AxisPoint).X,
+                                        AcadTools.GetBlockPosition(sd.HeightPoint).Y)),
+                                    new XElement("origin_height",
+                                    AcadTools.DoubleToFormattedString(
+                                        RoadSectionParametersExtractor.GetHeightFromPointBlock(sd.HeightPoint))),
 
-            extractedSectionDataDoc.Save("test.xml");
+                                    new XElement(
+                                        "red_points",
+                                        sd.RedPoints
+                                        .Select(redPoint =>
+                                            GetPointElement(
+                                                AcadTools.GetBlockPosition(redPoint),
+                                                AcadTools.GetBlockPosition(redPoint),
+                                                RoadSectionParametersExtractor.GetPointNumberFromPointBlock(redPoint)))),
+
+                                    new XElement(
+                                        "black_points",
+                                    sd.BlackPoints
+                                        .Select(blackPoint =>
+                                            GetPointElement(
+                                                AcadTools.GetBlockPosition(blackPoint),
+                                                AcadTools.GetBlockPosition(blackPoint),
+                                                RoadSectionParametersExtractor.GetPointNumberFromPointBlock(blackPoint))))
+                                    ))));
+
+            extractedSectionDataDoc.Save("tester.xml");
 
             this.ActiveControl = btn_Run;
 
@@ -116,6 +151,11 @@ namespace SectionConverterPlugin.Forms
 
             this.DialogResult = DialogResult.OK;
             this.Close();
+        }
+
+        private void cb_ActualValueMistake_CheckedChanged(object sender, EventArgs e)
+        {
+            _factPositionsValuesEnabled = cb_ActualValueMistake.Checked;
         }
     }
 }

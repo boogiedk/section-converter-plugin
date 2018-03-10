@@ -22,10 +22,10 @@ namespace SectionConverterPlugin
 
         #region command
 
-        string buildheight = "buildheight";
-        string buildblack = "buildblack";
-        string buildred = "buildred";
-        string buildaxis = "buildaxis";
+        string buildAxis = "BuildAxis";
+        string buildHeight = "BuildHeight";
+        string buildRed = "BuildRed";
+        string buildBlack = "BuildBlack";
 
         string exportSelectionsDataForm = "ExportSelectionsDataForm";
 
@@ -156,7 +156,7 @@ namespace SectionConverterPlugin
                 ribbonButtonAxis.Orientation = System.Windows.Controls.Orientation.Vertical;
                 ribbonButtonAxis.Size = RibbonItemSize.Large;
                 ribbonButtonAxis.CommandHandler = new RibbonCommandHandler();
-                ribbonButtonAxis.CommandParameter = buildaxis;
+                ribbonButtonAxis.CommandParameter = buildAxis;
                 #endregion
 
                 #region height
@@ -172,7 +172,7 @@ namespace SectionConverterPlugin
                 ribbonButtonHeight.Orientation = System.Windows.Controls.Orientation.Vertical;
                 ribbonButtonHeight.Size = RibbonItemSize.Large;
                 ribbonButtonHeight.CommandHandler = new RibbonCommandHandler();
-                ribbonButtonHeight.CommandParameter = buildheight;
+                ribbonButtonHeight.CommandParameter = buildHeight;
                 #endregion
 
                 #region black
@@ -186,7 +186,7 @@ namespace SectionConverterPlugin
                 ribbonButtonBlack.Orientation = System.Windows.Controls.Orientation.Vertical;
                 ribbonButtonBlack.Size = RibbonItemSize.Large;
                 ribbonButtonBlack.CommandHandler = new RibbonCommandHandler();
-                ribbonButtonBlack.CommandParameter = buildblack;
+                ribbonButtonBlack.CommandParameter = buildBlack;
                 #endregion
 
                 #region red
@@ -200,7 +200,7 @@ namespace SectionConverterPlugin
                 ribbonButtonRed.Orientation = System.Windows.Controls.Orientation.Vertical;
                 ribbonButtonRed.Size = RibbonItemSize.Large;
                 ribbonButtonRed.CommandHandler = new RibbonCommandHandler();
-                ribbonButtonRed.CommandParameter = buildred;
+                ribbonButtonRed.CommandParameter = buildRed;
                 #endregion
 
                 #region createBlocksofList
@@ -281,7 +281,6 @@ namespace SectionConverterPlugin
 
         }
 
-        //ribbon tabs
         public class RibbonCommandHandler : ICommand
         {
             public bool CanExecute(object parameter)

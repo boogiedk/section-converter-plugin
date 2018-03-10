@@ -13,12 +13,12 @@ namespace SectionConverterPlugin
     {
         private BlockTableRecord _axisPoint;
         private BlockTableRecord _heightPoint;
-        private List<BlockTableRecord> _topPoints = new List<BlockTableRecord>();
-        private List<BlockTableRecord> _bottomPoints = new List<BlockTableRecord>();
+        private List<BlockTableRecord> _redPoints = new List<BlockTableRecord>();
+        private List<BlockTableRecord> _blackPoints = new List<BlockTableRecord>();
 
         public BlockTableRecord AxisPoint { get => _axisPoint; set => _axisPoint = value; }
         public BlockTableRecord HeightPoint { get => _heightPoint; set => _heightPoint = value; }
-        public List<BlockTableRecord> TopPoints { get => _topPoints; set => _topPoints = value; }
-        public List<BlockTableRecord> BottomPoints { get => _bottomPoints; set => _bottomPoints = value; }
+        public List<BlockTableRecord> RedPoints { get => _redPoints; set => _redPoints = value; }
+        public List<BlockTableRecord> BlackPoints { get => _blackPoints; set => _blackPoints = value; }
     }
 }

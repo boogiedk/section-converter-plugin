@@ -8,8 +8,8 @@ namespace SectionConverterPlugin
 {
     public class ConsoleCommand
     {
-        [CommandMethod("buildaxis")]
-        public void Buildaxis()
+        [CommandMethod("BuildAxis")]
+        public void BuildAxis()
         {
             Func<string> GetAnyIniqueBlockName = () => DateTime.Now.Ticks.ToString();
 
@@ -23,8 +23,8 @@ namespace SectionConverterPlugin
 
             AcadTools.ChangeCurrentLayers();
         }
-        [CommandMethod("buildheight")]
-        public void Buildheight()
+        [CommandMethod("BuildHeight")]
+        public void BuildHeight()
         {
             Func<string> GetAnyIniqueBlockName = () => DateTime.Now.Ticks.ToString();
 
@@ -38,13 +38,13 @@ namespace SectionConverterPlugin
 
             AcadTools.ChangeCurrentLayers();
         }
-        [CommandMethod("buildblack")]
-        public void BuildBottom()
+        [CommandMethod("BuildBlack")]
+        public void BuildBlack()
         {
             BuildRoadPoint(AcadTools.CreateBlackPointBlock);
         }
-        [CommandMethod("buildred")]
-        public void BuildTop()
+        [CommandMethod("BuildRed")]
+        public void BuildRed()
         {
             BuildRoadPoint(AcadTools.CreateRedPointBlock);
         }

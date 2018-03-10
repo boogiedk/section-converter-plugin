@@ -1,14 +1,10 @@
 ﻿using Autodesk.AutoCAD.DatabaseServices;
 using System.Collections.Generic;
-using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.Geometry;
 using System.Linq;
-using System.Windows.Forms;
 using System;
 using System.Globalization;
-
-using acadApp = Autodesk.AutoCAD.ApplicationServices.Application;
-using Autodesk.AutoCAD.EditorInput;
+using System.Text.RegularExpressions;
 
 namespace SectionConverterPlugin.HandlerEntity
 {
@@ -97,13 +93,61 @@ namespace SectionConverterPlugin.HandlerEntity
                     {
                         AxisPoint = axisPoint,
                         HeightPoint = heightSectionPoint,
-                        TopPoints = topSectionPoints.ToList(),
-                        BottomPoints = bottomSectionPoints.ToList()
+                        RedPoints = topSectionPoints.ToList(),
+                        BlackPoints = bottomSectionPoints.ToList()
                     };
-
                 })
                 .Where(sectionData => sectionData != null)
                 .ToArray();
+        }
+
+        //TODO: fix refular expr ^
+        public static double GetStationValue(string mtext)
+        {
+            var _stationRegex =
+     new Regex(@"^(((?<hundreds>\d+)\+(?<units>\d{1,2}))|(?<all_units>\d+))([,\.](?<fractional>\d+))?$");
+
+            MatchCollection mc = _stationRegex.Matches(mtext.Substring(3, mtext.Length - 3));
+
+            var match = mc[0];
+
+            double station = .0;
+
+            double unit = .0;
+            double hungred = .0;
+
+            if (match.Groups["hundreds"].Length > 0)
+            {
+                hungred = 100 * StringToDouble(match.Groups["hundreds"].Value);
+                unit = StringToDouble(match.Groups["units"].Value);
+            }
+            else
+            {
+                unit += StringToDouble(match.Groups["all_units"].Value);
+            }
+            if (match.Groups["fractional"].Length > 0)
+            {
+                var fractional = StringToDouble(match.Groups["fractional"].Value);
+
+                while (fractional > 1.0 && fractional != .0)
+                {
+                    fractional /= 10.0;
+                }
+
+                unit += fractional;
+            }
+
+            var sign = Math.Sign(unit);
+            var abs = Math.Abs(hungred);
+
+            station = sign * (abs / 100) + (abs % 100);
+
+            return station;
+        }
+
+        private static double StringToDouble(string s)
+        {
+            return Double.Parse(s.Replace(',', '.'), CultureInfo.InvariantCulture);
         }
 
         public static double GetStationFromPointBlock(BlockTableRecord axisPointBlock)
@@ -119,25 +163,22 @@ namespace SectionConverterPlugin.HandlerEntity
             {
                 var blockTableRecord = axisPointBlock;
 
-                foreach (ObjectId entity in blockTableRecord)
+                foreach (var entity in blockTableRecord)
                 {
-                    var mText = (MText)transaction.GetObject(entity, OpenMode.ForRead);
+                    var currentEntity = transaction.GetObject(entity, OpenMode.ForRead) as MText;
 
-                    string _axisPointStringUnit = mText.Contents.Substring(2, mText.Contents.IndexOf('+') - 1);
-                    string _axisPointStringHungred = mText.Contents.Substring(mText.Contents.IndexOf('+') + 1, mText.Contents.Length - mText.Contents.IndexOf('+'));
+                    if (currentEntity == null) continue;
 
-                    var sign = Math.Sign(double.Parse(_axisPointStringUnit));
-                    var abs = Math.Abs(double.Parse(_axisPointStringHungred));
+                    var mText = transaction.GetObject(entity, OpenMode.ForRead) as MText;
+                    _axisPoint = GetStationValue(mText.Contents);
 
-                    _axisPoint = sign * (abs / 100) + (abs % 100);
+                    break;
                 }
                 transaction.Commit();
             }
             return _axisPoint;
         }
 
-        // TODO: пикета в точке с высотой нет, там только высота
-        // пофиксить точка/запятая
         public static double GetHeightFromPointBlock(BlockTableRecord heightPointBlock)
         {
             var document = Autodesk.AutoCAD.ApplicationServices
@@ -151,13 +192,20 @@ namespace SectionConverterPlugin.HandlerEntity
             {
                 var blockTableRecord = heightPointBlock;
 
-                foreach (ObjectId entity in blockTableRecord)
+                foreach (var entity in blockTableRecord)
                 {
-                    var mText = (MText)transaction.GetObject(entity, OpenMode.ForRead);
+                    var currentEntity = transaction.GetObject(entity, OpenMode.ForRead) as MText;
+
+                    if (currentEntity == null) continue;
+
+                    var mText = transaction.GetObject(entity, OpenMode.ForRead) as MText;
 
                     string _heightPointString = mText.Contents.Substring(0, mText.Contents.IndexOf('м') - 1);
 
                     _heightPoint = double.Parse(_heightPointString, CultureInfo.InvariantCulture);
+
+                    break;
+
                 }
                 transaction.Commit();
             }
@@ -177,11 +225,19 @@ namespace SectionConverterPlugin.HandlerEntity
             {
                 var blockTableRecord = pointNumberBlock;
 
-                foreach (ObjectId entity in blockTableRecord)
+                foreach (var entity in blockTableRecord)
                 {
-                    var mText = (MText)transaction.GetObject(entity, OpenMode.ForRead);
+                    var currentEntity = transaction.GetObject(entity, OpenMode.ForRead) as MText;
 
-                    _pointNumber = Int32.Parse(mText.Contents);
+                    if (currentEntity == null) continue;
+
+                    if (currentEntity.GetType() == typeof(MText))
+                    {
+                        var mText = transaction.GetObject(entity, OpenMode.ForRead) as MText;
+
+                        _pointNumber = Int32.Parse(mText.Contents);
+                        break;
+                    }
                 }
                 transaction.Commit();
             }

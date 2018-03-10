@@ -65,11 +65,12 @@
             // cb_ActualValueMistake
             // 
             this.cb_ActualValueMistake.AutoSize = true;
-            this.cb_ActualValueMistake.Location = new System.Drawing.Point(202, 82);
+            this.cb_ActualValueMistake.Location = new System.Drawing.Point(203, 82);
             this.cb_ActualValueMistake.Name = "cb_ActualValueMistake";
             this.cb_ActualValueMistake.Size = new System.Drawing.Size(15, 14);
             this.cb_ActualValueMistake.TabIndex = 2;
             this.cb_ActualValueMistake.UseVisualStyleBackColor = true;
+            this.cb_ActualValueMistake.CheckedChanged += new System.EventHandler(this.cb_ActualValueMistake_CheckedChanged);
             // 
             // label_mistake
             // 
@@ -123,7 +124,7 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(300, 33);
             this.tableLayoutPanel2.TabIndex = 6;
             // 
-            // ANewForm
+            // ExportSectionsDataForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -132,7 +133,7 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Name = "ANewForm";
+            this.Name = "ExportSectionsDataForm";
             this.Text = "Создание документации";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
