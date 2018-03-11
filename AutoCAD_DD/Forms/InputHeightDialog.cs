@@ -52,8 +52,6 @@ namespace SectionConverterPlugin
              _height = StringToDouble(heightValueString);
         }
 
-        // TODO:
-        // rename to PointHeight
         public double PointHeight
         {
             get
@@ -68,8 +66,6 @@ namespace SectionConverterPlugin
             UpdateHeight();
         }
 
-        // TODO:
-        // работает почему-то только в дебаге.
         private bool TrySetActiveAnyRevertedInputControl()
         {
             bool result = false;

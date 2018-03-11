@@ -192,5 +192,8 @@
   <ItemGroup>
     <None Include="Resources\Image\windowSize.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Image\ExportArrow.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

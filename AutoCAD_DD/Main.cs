@@ -66,7 +66,7 @@ namespace SectionConverterPlugin
         }
 
 
-            private void StartPluginHandler(object sender, EventArgs e)
+         private void StartPluginHandler(object sender, EventArgs e)
         {
             var document = Autodesk.AutoCAD.ApplicationServices
                .Application.DocumentManager.MdiActiveDocument;

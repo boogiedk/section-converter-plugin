@@ -121,11 +121,11 @@
   <data name="BlackPoint_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Image\BlackPoint_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="ExportArrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Image\ExportArrow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="GreenPoint_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Image\GreenPoint_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="GroupBlocks" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Image\GroupBlocks.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="PurplePoint_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Image\PurplePoint_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

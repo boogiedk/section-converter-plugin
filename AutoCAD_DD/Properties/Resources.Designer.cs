@@ -73,9 +73,9 @@ namespace SectionConverterPlugin.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap GreenPoint_32x32 {
+        internal static System.Drawing.Bitmap ExportArrow {
             get {
-                object obj = ResourceManager.GetObject("GreenPoint_32x32", resourceCulture);
+                object obj = ResourceManager.GetObject("ExportArrow", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -83,9 +83,9 @@ namespace SectionConverterPlugin.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap GroupBlocks {
+        internal static System.Drawing.Bitmap GreenPoint_32x32 {
             get {
-                object obj = ResourceManager.GetObject("GroupBlocks", resourceCulture);
+                object obj = ResourceManager.GetObject("GreenPoint_32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

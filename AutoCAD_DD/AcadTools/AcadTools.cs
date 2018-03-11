@@ -678,15 +678,58 @@ namespace SectionConverterPlugin
             database.Pdsize = 0.05;
         }
 
-        [CommandMethod("GetRelativePath")]
-        public static string GetAbsolutePath()
+        public static string GetAbsolutePathWithName()
         {
             var document = Autodesk.AutoCAD.ApplicationServices
                 .Application.DocumentManager.MdiActiveDocument;
 
-            string pathDrawing = acadApp.GetSystemVariable("DWGPREFIX").ToString();
+            var database = document.Database;
+
+            string pathDrawing = database.OriginalFileName;
 
             return pathDrawing;
+        }
+
+        public static string GetAbsolutePath()
+        {
+            string filePath = "";
+
+            return filePath = acadApp.GetSystemVariable("DWGPREFIX").ToString();
+        }
+
+
+        public string GetAcadCurVerKey()
+        {
+            RegistryKey registryKey = Registry.CurrentUser;
+
+            string path = @"Software\Autodesk\AutoCAD\";
+
+            using (RegistryKey registryKeyCurrent = registryKey.OpenSubKey(path))
+            {
+                path += registryKeyCurrent.GetValue("CurVer");
+                using (RegistryKey rk2 = registryKey.OpenSubKey(path))
+                {
+                    return path + "\\" + rk2.GetValue("CurVer");
+                }
+            }
+        }
+
+        [CommandMethod("GetAcadLocation")]
+        public void GetAcadLocation()
+        {
+            var document = Autodesk.AutoCAD.ApplicationServices
+     .Application.DocumentManager.MdiActiveDocument;
+
+            var database = document.Database;
+
+            var ed = document.Editor;
+
+            RegistryKey registryKey = Registry.LocalMachine;
+            string path = GetAcadCurVerKey();
+            using (RegistryKey registryKeyCurrent = registryKey.OpenSubKey(path))
+            {
+                ed.WriteMessage((string)registryKeyCurrent.GetValue("AcadLocation"));
+            }
         }
     }
 }

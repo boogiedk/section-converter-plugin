@@ -8,15 +8,17 @@ using System.Windows.Forms;
 using Autodesk.AutoCAD.Geometry;
 
 using SectionConverterPlugin.HandlerEntity;
+using System.IO;
+using System.Xml;
+using System.Text;
 
 namespace SectionConverterPlugin.Forms
 {
     // Экспортировать данные о сечениях
     public partial class ExportSectionsDataForm : Form
     {
-        double _actuallyValue;
-
-        bool _factPositionsValuesEnabled;
+        double _fuctPassDeviantionAmplitude;
+        bool _factPassEnable;
 
         private bool _dataReverted;
 
@@ -26,12 +28,13 @@ namespace SectionConverterPlugin.Forms
 
             InitializeComponent();
 
-            retb_ActuallyValue.SetRegExp(new Regex(@"^[-\+]?\d+([,\.]\d+)?$"));
+            retb_FactValue.SetRegExp(new Regex(@"^\d+([,\.]\d+)?$"));
 
-            retb_ActuallyValue.Value = "0";
+            retb_FactValue.Value = "0";
             _dataReverted = false;
 
             this.Enabled = true;
+            this.ActiveControl = retb_FactValue;
         }
 
         private double StringToDouble(string s)
@@ -39,45 +42,87 @@ namespace SectionConverterPlugin.Forms
             return Double.Parse(s.Replace(',', '.'), CultureInfo.InvariantCulture);
         }
 
-        private void UpdateActuallyValue()
+        private void UpdateFactValue()
         {
-            _dataReverted = retb_ActuallyValue.Reverted;
+            _dataReverted = retb_FactValue.Reverted;
 
-            var actuallyValueeString = retb_ActuallyValue.Value;
+            var factValueeString = retb_FactValue.Value;
 
             // skip for initialization
-            if (actuallyValueeString == null)
+            if (factValueeString == null)
             {
                 return;
             }
 
-            _actuallyValue = StringToDouble(actuallyValueeString);
+            _fuctPassDeviantionAmplitude = StringToDouble(factValueeString);
         }
 
-        public double ActuallyValue
+        public double FactValue
         {
             get
             {
-                return _actuallyValue;
+                return _fuctPassDeviantionAmplitude;
             }
         }
 
-        private void retb_ActuallyValue_ValueChanged(object sender, EventArgs e)
+        private void retb_FactValue_ValueChanged(object sender, EventArgs e)
         {
-            UpdateActuallyValue();
+            UpdateFactValue();
         }
 
-        private void btn_Run_Click(object sender, EventArgs e)
+        private void cb_FactValueMistake_CheckedChanged(object sender, EventArgs e)
+        {
+            _factPassEnable = cb_ActualValueMistake.Checked;
+        }
+
+        private void btn_ExportPoints_Click(object sender, EventArgs e)
+        {
+            ActiveControl = btn_ExportPoints;
+
+            if (_dataReverted == true)
+            {
+                _dataReverted = false;
+
+                MessageBox.Show("Invalid input");
+
+                return;
+            }
+
+            using (var dialog = new SaveFileDialog())
+            {
+                dialog.InitialDirectory = AcadTools.GetAbsolutePath();
+                dialog.Title = "Экспортировать в ";
+
+                CreateANeWFolder(AcadTools.GetAbsolutePath());
+
+                dialog.FileName = GenerateNameForFolder()+".xml";
+
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    GenerateANewXmlFile(
+                        AcadTools.GetAbsolutePath(),
+                    dialog.FileName);
+            
+                }
+
+                this.ActiveControl = btn_ExportPoints;
+
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+            }
+        }
+
+        public void GenerateANewXmlFile(string path,string fileName)
         {
             var pluginSettings = PluginSettings.GetInstance();
             var sectionMaxSize = pluginSettings.SectionMaxSize;
-            
+
             var sectionsData = RoadSectionParametersExtractor
                 .ExtractSectionsData(sectionMaxSize);
-            
-            var pathToCurentDocument = AcadTools.GetAbsolutePath();
 
-            Func<double, double, string> CoordsToString = (x,y) =>
+            var pathToCurentDocument = AcadTools.GetAbsolutePathWithName();
+
+            Func<double, double, string> CoordsToString = (x, y) =>
                 String.Format("{0} {1}",
                     AcadTools.DoubleToFormattedString(x),
                     AcadTools.DoubleToFormattedString(y));
@@ -99,7 +144,7 @@ namespace SectionConverterPlugin.Forms
                     "road_sections",
                     new XAttribute(
                         "fact_enabled",
-                        _factPositionsValuesEnabled),
+                        _factPassEnable),
                     sectionsData
                         .Select(sd =>
                             new XElement(
@@ -134,28 +179,60 @@ namespace SectionConverterPlugin.Forms
                                                 AcadTools.GetBlockPosition(blackPoint),
                                                 AcadTools.GetBlockPosition(blackPoint),
                                                 RoadSectionParametersExtractor.GetPointNumberFromPointBlock(blackPoint))))
+
+
                                     ))));
 
-            extractedSectionDataDoc.Save("tester.xml");
+            extractedSectionDataDoc.Save(fileName);
 
-            this.ActiveControl = btn_Run;
-
-            if (_dataReverted == true)
-            {
-                _dataReverted = false;
-
-                MessageBox.Show("Invalid input");
-
-                return;
-            }
-
-            this.DialogResult = DialogResult.OK;
-            this.Close();
         }
 
-        private void cb_ActualValueMistake_CheckedChanged(object sender, EventArgs e)
+        public bool CreateANeWFolder(string pathFolder)
         {
-            _factPositionsValuesEnabled = cb_ActualValueMistake.Checked;
+        
+                bool result = false;
+
+                string path = pathFolder;
+
+                var newFolder = new DirectoryInfo(path);
+
+                if ((GenerateNameForFolder() == "default"))
+                {
+                    result = true;
+                    return result;
+                }
+                else
+                {
+                    if (Directory.Exists(path+GenerateNameForFolder()))
+                    {
+                        MessageBox.Show("Такая папка уже существует!");
+                        return false;
+                    }
+
+                    result = true;
+                    var directoryInfo = Directory.CreateDirectory(GenerateNameForFolder());
+                    return result;
+                }
+            
+        }    
+
+        public string GenerateNameForFolder()
+        {
+            string drawingName = Path.GetFileNameWithoutExtension(AcadTools.GetAbsolutePathWithName());
+
+            string folderName = "default";
+
+            if (drawingName == "" || drawingName == null)
+            {
+                return folderName;
+            }
+            else
+                return drawingName + "_" + ReplaceSymbolToDate(DateTime.Now.ToString());
+        }
+
+        private string ReplaceSymbolToDate(string s)
+        {
+            return s.Replace(':', '.');
         }
     }
 }

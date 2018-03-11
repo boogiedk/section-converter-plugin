@@ -34,15 +34,13 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btn_Ok = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // retb_heightWindow
             // 
             this.retb_heightWindow.Enabled = false;
-            this.retb_heightWindow.Location = new System.Drawing.Point(138, 0);
+            this.retb_heightWindow.Location = new System.Drawing.Point(150, 0);
             this.retb_heightWindow.Margin = new System.Windows.Forms.Padding(0);
             this.retb_heightWindow.MatchOnKeyInput = false;
             this.retb_heightWindow.Name = "retb_heightWindow";
@@ -54,7 +52,7 @@
             // retb_widthWindow
             // 
             this.retb_widthWindow.Enabled = false;
-            this.retb_widthWindow.Location = new System.Drawing.Point(138, 73);
+            this.retb_widthWindow.Location = new System.Drawing.Point(150, 85);
             this.retb_widthWindow.Margin = new System.Windows.Forms.Padding(0);
             this.retb_widthWindow.MatchOnKeyInput = false;
             this.retb_widthWindow.Name = "retb_widthWindow";
@@ -75,7 +73,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 73);
+            this.label2.Location = new System.Drawing.Point(3, 85);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(49, 13);
             this.label2.TabIndex = 3;
@@ -83,9 +81,9 @@
             // 
             // btn_Ok
             // 
-            this.btn_Ok.Location = new System.Drawing.Point(3, 3);
+            this.btn_Ok.Location = new System.Drawing.Point(3, 173);
             this.btn_Ok.Name = "btn_Ok";
-            this.btn_Ok.Size = new System.Drawing.Size(274, 22);
+            this.btn_Ok.Size = new System.Drawing.Size(144, 25);
             this.btn_Ok.TabIndex = 4;
             this.btn_Ok.Text = "Ок";
             this.btn_Ok.UseVisualStyleBackColor = true;
@@ -96,32 +94,19 @@
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Controls.Add(this.btn_Ok, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.retb_widthWindow, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.retb_heightWindow, 1, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(15, 12);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(2, 2);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowCount = 3;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(277, 147);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(301, 201);
             this.tableLayoutPanel1.TabIndex = 5;
-            // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.ColumnCount = 1;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.Controls.Add(this.btn_Ok, 0, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(12, 162);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(280, 28);
-            this.tableLayoutPanel2.TabIndex = 6;
             // 
             // InputSizeForWindowDialog
             // 
@@ -129,7 +114,6 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(304, 202);
-            this.Controls.Add(this.tableLayoutPanel2);
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
@@ -139,7 +123,6 @@
             this.Text = "Ввод информации";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
-            this.tableLayoutPanel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -152,6 +135,5 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btn_Ok;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
     }
 }

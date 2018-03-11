@@ -91,7 +91,6 @@ namespace SectionConverterPlugin
         public void ExportSelectionsDataForm()
         {
             var dialogForm = new ExportSectionsDataForm();
-            dialogForm.ShowDialog();
 
             var dialogResult = dialogForm.ShowDialog();
 

@@ -134,7 +134,7 @@ namespace SectionConverterPlugin
                 RibbonControl ribbonControl = ComponentManager.Ribbon;
 
                 Autodesk.Windows.RibbonPanelSource ribbonPanelSourceMain = new RibbonPanelSource();
-                ribbonPanelSourceMain.Title = "Главная панель";
+                ribbonPanelSourceMain.Title = "Создание точек";
                 RibbonPanel mainPanel = new RibbonPanel();
                 mainPanel.Source = ribbonPanelSourceMain;
                 ribbonTab.Panels.Add(mainPanel);
@@ -144,6 +144,12 @@ namespace SectionConverterPlugin
                 RibbonPanel ribbonPanelSetting = new RibbonPanel();
                 ribbonPanelSetting.Source = ribbonPanelSourceSettings;
                 ribbonTab.Panels.Add(ribbonPanelSetting);
+
+                Autodesk.Windows.RibbonPanelSource ribbonPanelSourceControl = new RibbonPanelSource();
+                ribbonPanelSourceControl.Title = "Управление";
+                RibbonPanel ribbonPanelControl = new RibbonPanel();
+                ribbonPanelControl.Source = ribbonPanelSourceControl;
+                ribbonTab.Panels.Add(ribbonPanelControl);
 
                 #region axis
                 RibbonButton ribbonButtonAxis = new RibbonButton();
@@ -177,7 +183,7 @@ namespace SectionConverterPlugin
 
                 #region black
                 RibbonButton ribbonButtonBlack = new RibbonButton();
-                ribbonButtonBlack.Text = "Низ полотна";
+                ribbonButtonBlack.Text = "Черная";
                 ribbonButtonBlack.ShowText = true;
                 ribbonButtonBlack.ShowImage = true;
 
@@ -191,7 +197,7 @@ namespace SectionConverterPlugin
 
                 #region red
                 RibbonButton ribbonButtonRed = new RibbonButton();
-                ribbonButtonRed.Text = "Вверх полотна";
+                ribbonButtonRed.Text = "Красная";
                 ribbonButtonRed.ShowText = true;
                 ribbonButtonRed.ShowImage = true;
 
@@ -205,11 +211,11 @@ namespace SectionConverterPlugin
 
                 #region createBlocksofList
                 RibbonButton ribbonButtonGroup = new RibbonButton();
-                ribbonButtonGroup.Text = "Создать списки блоков";
+                ribbonButtonGroup.Text = "Экспорт сечений";
                 ribbonButtonGroup.ShowText = true;
                 ribbonButtonGroup.ShowImage = true;
 
-                Bitmap imgGroup = Properties.Resources.GroupBlocks;
+                Bitmap imgGroup = Properties.Resources.ExportArrow;
                 ribbonButtonGroup.LargeImage = GetBitmap(imgGroup);
                 ribbonButtonGroup.Orientation = System.Windows.Controls.Orientation.Vertical;
                 ribbonButtonGroup.Size = RibbonItemSize.Large;
@@ -231,7 +237,7 @@ namespace SectionConverterPlugin
                 ribbonButtonPointStyle.CommandParameter = showPointStyleDialog;
                 #endregion
 
-
+                #region size window
                 RibbonButton ribbonButtonWindowSize = new RibbonButton();
                 ribbonButtonWindowSize.Text = "Размер окна";
                 ribbonButtonWindowSize.ShowText = true;
@@ -243,16 +249,18 @@ namespace SectionConverterPlugin
                 ribbonButtonWindowSize.Size = RibbonItemSize.Large;
                 ribbonButtonWindowSize.CommandHandler = new RibbonCommandHandler();
                 ribbonButtonWindowSize.CommandParameter = showSizeWindowDialog;
+                #endregion
 
                 ribbonPanelSourceMain.Items.Add(ribbonButtonAxis);
                 ribbonPanelSourceMain.Items.Add(ribbonButtonHeight);
                 ribbonPanelSourceMain.Items.Add(ribbonButtonBlack);
                 ribbonPanelSourceMain.Items.Add(ribbonButtonRed);
-                ribbonPanelSourceMain.Items.Add(ribbonButtonGroup);
-                ribbonPanelSourceMain.Items.Add(ribbonButtonPointStyle);
 
                 ribbonPanelSourceSettings.Items.Add(ribbonButtonWindowSize);
-                    
+                ribbonPanelSourceSettings.Items.Add(ribbonButtonPointStyle);
+
+                ribbonPanelSourceControl.Items.Add(ribbonButtonGroup);
+
                 ribbonTab.IsActive = true;
             }
             catch (System.Exception ex)
