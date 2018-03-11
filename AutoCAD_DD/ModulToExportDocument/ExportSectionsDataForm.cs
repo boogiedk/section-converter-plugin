@@ -62,8 +62,8 @@ namespace SectionConverterPlugin.HandlerEntity
         {
             var axisPoints = GetListBlocksByPrefix("axisPoint_");
             var heightPoints = GetListBlocksByPrefix("heightPoint_");
-            var topPoints = GetListBlocksByPrefix("redPoint_");
-            var bottomPoints = GetListBlocksByPrefix("blackPoint_");
+            var redPoints = GetListBlocksByPrefix("redPoint_");
+            var blackPoints = GetListBlocksByPrefix("blackPoint_");
 
             var data = new SectionData[0];
 
@@ -82,19 +82,19 @@ namespace SectionConverterPlugin.HandlerEntity
                     if (heightSectionPoints.Count() != 1) return null;
                     var heightSectionPoint = heightSectionPoints.First();
 
-                    var topSectionPoints = topPoints
+                    var redSectionPoints = redPoints
                         .Where(point => CheckBlockInWindow(point, sectionOrigin, searchWindowSize));
-                    if (topSectionPoints.Count() < 2) return null;
+                    if (redSectionPoints.Count() < 2) return null;
 
-                    var bottomSectionPoints = bottomPoints
+                    var blackSectionPoints = blackPoints
                         .Where(point => CheckBlockInWindow(point, sectionOrigin, searchWindowSize));
 
                     return new SectionData()
                     {
                         AxisPoint = axisPoint,
                         HeightPoint = heightSectionPoint,
-                        RedPoints = topSectionPoints.ToList(),
-                        BlackPoints = bottomSectionPoints.ToList()
+                        RedPoints = redSectionPoints.ToList(),
+                        BlackPoints = blackSectionPoints.ToList()
                     };
                 })
                 .Where(sectionData => sectionData != null)

@@ -11,6 +11,7 @@ using SectionConverterPlugin.HandlerEntity;
 using System.IO;
 using System.Xml;
 using System.Text;
+using System.Diagnostics;
 
 namespace SectionConverterPlugin.Forms
 {
@@ -93,16 +94,27 @@ namespace SectionConverterPlugin.Forms
                 dialog.InitialDirectory = AcadTools.GetAbsolutePath();
                 dialog.Title = "Экспортировать в ";
 
-                CreateANeWFolder(AcadTools.GetAbsolutePath());
-
-                dialog.FileName = GenerateNameForFolder()+".xml";
+                dialog.FileName=GenerateNameForFolder();
 
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    GenerateANewXmlFile(
-                        AcadTools.GetAbsolutePath(),
-                    dialog.FileName);
-            
+                    string saveName = Path.GetFileName(dialog.FileName);
+                    string savePath = dialog.FileName.Replace(GenerateNameForFolder(), "");
+
+                    CreateANeWFolder(savePath);  // path
+
+                    GenerateANewXmlFile(savePath+ $"\\{saveName}.xml");   //path+name
+
+                    string savePathNameSettings = savePath + "\\setting.xml";
+
+                    GenerateASettingXmlFile(
+                        savePathNameSettings,
+                        "roadSectionsDataPath", savePath + $"\\{saveName}.xml",
+                        "roadSectionsListPath",
+                        savePath+"\\"+saveName + ".tsv"
+                        );
+
+                    StartProcess(savePathNameSettings);
                 }
 
                 this.ActiveControl = btn_ExportPoints;
@@ -112,15 +124,13 @@ namespace SectionConverterPlugin.Forms
             }
         }
 
-        public void GenerateANewXmlFile(string path,string fileName)
+        public void GenerateANewXmlFile(string fileName) 
         {
             var pluginSettings = PluginSettings.GetInstance();
             var sectionMaxSize = pluginSettings.SectionMaxSize;
 
             var sectionsData = RoadSectionParametersExtractor
-                .ExtractSectionsData(sectionMaxSize);
-
-            var pathToCurentDocument = AcadTools.GetAbsolutePathWithName();
+                .ExtractSectionsData(sectionMaxSize);          
 
             Func<double, double, string> CoordsToString = (x, y) =>
                 String.Format("{0} {1}",
@@ -187,30 +197,50 @@ namespace SectionConverterPlugin.Forms
 
         }
 
+        public void GenerateASettingXmlFile(string fileName,
+            string keyXml,
+            string valueXml,
+            string keyTsv,
+            string valueTsv)
+        {
+            var extractedSectionDataDoc = new XDocument(
+                      new XElement(
+                          "settings",
+                          new XElement(
+                              "add",
+                          new XAttribute(
+                              "key",keyXml),
+                           new XAttribute(
+                              "value", valueXml)),
+                          new XElement("add",
+                              new XAttribute("key",keyTsv),
+                              new XAttribute("value",valueTsv)
+                                           )));
+
+            extractedSectionDataDoc.Save(fileName);
+        }
+
         public bool CreateANeWFolder(string pathFolder)
         {
-        
                 bool result = false;
 
-                string path = pathFolder;
+                 string folderName = GenerateNameForFolder();
 
-                var newFolder = new DirectoryInfo(path);
-
-                if ((GenerateNameForFolder() == "default"))
+                if ((folderName == "default"))
                 {
                     result = true;
                     return result;
                 }
                 else
                 {
-                    if (Directory.Exists(path+GenerateNameForFolder()))
+                    if (Directory.Exists(pathFolder+folderName))
                     {
                         MessageBox.Show("Такая папка уже существует!");
                         return false;
                     }
 
                     result = true;
-                    var directoryInfo = Directory.CreateDirectory(GenerateNameForFolder());
+                    var directoryInfo = Directory.CreateDirectory(pathFolder);
                     return result;
                 }
             
@@ -234,5 +264,28 @@ namespace SectionConverterPlugin.Forms
         {
             return s.Replace(':', '.');
         }
+
+        private void StartProcess(string pathSettingsXml)
+        {
+            try
+            {
+                Process process = new Process();
+
+                var processStartInfo = new ProcessStartInfo()
+                {
+                    FileName = Path.Combine(AcadTools.GetAcadLocation(), @"SectionConverterPlugin\SectionListGenerator\SectionListGenerator.exe"),
+                    Arguments = pathSettingsXml
+                };
+
+                process = Process.Start(processStartInfo);
+
+
+                process.WaitForExit();
+            }
+            catch
+            {
+                MessageBox.Show("Failed to execute");
+            }
+        }     
     }
 }

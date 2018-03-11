@@ -697,8 +697,7 @@ namespace SectionConverterPlugin
             return filePath = acadApp.GetSystemVariable("DWGPREFIX").ToString();
         }
 
-
-        public string GetAcadCurVerKey()
+        public static  string GetAcadCurVerKey()
         {
             RegistryKey registryKey = Registry.CurrentUser;
 
@@ -714,8 +713,7 @@ namespace SectionConverterPlugin
             }
         }
 
-        [CommandMethod("GetAcadLocation")]
-        public void GetAcadLocation()
+        public static string GetAcadLocation()
         {
             var document = Autodesk.AutoCAD.ApplicationServices
      .Application.DocumentManager.MdiActiveDocument;
@@ -724,11 +722,15 @@ namespace SectionConverterPlugin
 
             var ed = document.Editor;
 
+            string s;
+
             RegistryKey registryKey = Registry.LocalMachine;
             string path = GetAcadCurVerKey();
             using (RegistryKey registryKeyCurrent = registryKey.OpenSubKey(path))
             {
-                ed.WriteMessage((string)registryKeyCurrent.GetValue("AcadLocation"));
+                s = (string)registryKeyCurrent.GetValue("AcadLocation");
+
+                return s;
             }
         }
     }
