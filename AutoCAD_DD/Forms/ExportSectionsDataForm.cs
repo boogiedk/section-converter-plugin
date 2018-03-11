@@ -274,7 +274,7 @@ namespace SectionConverterPlugin.Forms
                 var processStartInfo = new ProcessStartInfo()
                 {
                     FileName = Path.Combine(AcadTools.GetAcadLocation(), @"SectionConverterPlugin\SectionListGenerator\SectionListGenerator.exe"),
-                    Arguments = pathSettingsXml
+                    Arguments = "\"" + pathSettingsXml + "\""
                 };
 
                 process = Process.Start(processStartInfo);
