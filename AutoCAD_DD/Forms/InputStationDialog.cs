@@ -26,6 +26,7 @@ namespace SectionConverterPlugin.Forms
 
             retb_Station.Value = "0";       
             _dataReverted = false;
+            retb_Station.SelectAll();
 
             this.Enabled = true;
             this.ActiveControl = retb_Station;

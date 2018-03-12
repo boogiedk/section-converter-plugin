@@ -18,8 +18,11 @@ namespace SectionConverterPlugin.Forms
             InitializeComponent();
 
             retb_PointNumber.SetRegExp(new Regex(@"^\d+$"));
+
             retb_PointNumber.Value = "0";
             _dataReverted = false;
+
+            retb_PointNumber.SelectAll();
 
             this.Enabled = true;
             this.ActiveControl = retb_PointNumber;

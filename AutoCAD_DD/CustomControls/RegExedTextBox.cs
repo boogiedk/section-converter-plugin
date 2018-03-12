@@ -111,5 +111,10 @@ namespace SectionConverterPlugin.CustomControls
         public bool Reverted { get => _reverted;}
 
         public event EventHandler ValueChanged;
+
+        public void SelectAll()
+        {
+            tb_TextBox.SelectAll();
+        }
     }
 }

@@ -199,7 +199,6 @@
             this.Name = "ExportSectionsDataForm";
             this.ShowIcon = false;
             this.Text = "Экспорт сечений";
-            this.Load += new System.EventHandler(this.ExportSectionsDataForm_Load);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();

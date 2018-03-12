@@ -201,7 +201,8 @@ namespace SectionConverterPlugin.Forms
 
         }
 
-        public void GenerateASettingXmlFile(string fileName,
+        public void GenerateASettingXmlFile(
+            string fileName,
             string keyXml,
             string valueXml,
             string keyTsv,
@@ -330,11 +331,6 @@ namespace SectionConverterPlugin.Forms
             {
                 MessageBox.Show("Failed to execute");
             }
-        }
-
-        private void ExportSectionsDataForm_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }
