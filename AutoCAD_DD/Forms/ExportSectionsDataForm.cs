@@ -103,18 +103,22 @@ namespace SectionConverterPlugin.Forms
 
                     CreateANeWFolder(savePath);  // path
 
-                    GenerateANewXmlFile(savePath+ $"\\{saveName}.xml");   //path+name
+                    GenerateANewXmlFile(savePath+ "\\data.xml");   //path+name
 
-                    string savePathNameSettings = savePath + "\\setting.xml";
+                    string savePathNameSettings = savePath + "\\settings.xml";
 
                     GenerateASettingXmlFile(
                         savePathNameSettings,
-                        "roadSectionsDataPath", savePath + $"\\{saveName}.xml",
+                        "roadSectionsDataPath", savePath + "\\data.xml",
                         "roadSectionsListPath",
-                        savePath+"\\"+saveName + ".tsv"
+                        savePath+"\\"+ GenerateNameForTsvFile() + ".tsv",
+                        "blueprintTemplatePath", savePath +"\\"+ GenerateNameForDxfFile()+".dxf",
+                        "roadSectionsBlueprintPath",savePath+"\\"+"data_blueprint"+".dxf"
                         );
 
-                    StartProcess(savePathNameSettings);
+                    StartProcessForCreateTsvFile(savePathNameSettings);
+
+                    StartProcessForCreateDxfFile(savePathNameSettings);
                 }
 
                 this.ActiveControl = btn_ExportPoints;
@@ -122,7 +126,7 @@ namespace SectionConverterPlugin.Forms
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
-        }
+        }  //button
 
         public void GenerateANewXmlFile(string fileName) 
         {
@@ -201,21 +205,29 @@ namespace SectionConverterPlugin.Forms
             string keyXml,
             string valueXml,
             string keyTsv,
-            string valueTsv)
+            string valueTsv,
+            string keyDxf,
+            string valueDxf,
+            string keyBluePrint,
+            string valueBluePrint)
         {
             var extractedSectionDataDoc = new XDocument(
                       new XElement(
                           "settings",
                           new XElement(
                               "add",
-                          new XAttribute(
-                              "key",keyXml),
-                           new XAttribute(
-                              "value", valueXml)),
+                          new XAttribute("key",keyXml),
+                           new XAttribute("value", valueXml)),
                           new XElement("add",
                               new XAttribute("key",keyTsv),
-                              new XAttribute("value",valueTsv)
-                                           )));
+                              new XAttribute("value",valueTsv)),
+                          new XElement("add",
+                              new XAttribute("key", keyDxf),
+                              new XAttribute("value", valueDxf)),
+                         new XElement("add",
+                              new XAttribute("key", keyBluePrint),
+                              new XAttribute("value", valueBluePrint))
+                                           ));
 
             extractedSectionDataDoc.Save(fileName);
         }
@@ -257,15 +269,24 @@ namespace SectionConverterPlugin.Forms
                 return folderName;
             }
             else
-                return drawingName + "_" + ReplaceSymbolToDate(DateTime.Now.ToString());
+                return drawingName + "_" + DateTime.Now.ToString("dd.MM.yyy_hh.mm.ss");
         }
 
-        private string ReplaceSymbolToDate(string s)
+        public string GenerateNameForDxfFile()
         {
-            return s.Replace(':', '.');
+            string dfxName = Path.GetFileNameWithoutExtension(AcadTools.GetAbsolutePathWithName());
+
+            return dfxName + "_" + "blueprint_" + DateTime.Now.ToString("dd.MM.yyy_hh.mm.ss");
         }
 
-        private void StartProcess(string pathSettingsXml)
+        public string GenerateNameForTsvFile()
+        {
+            string tsvName = Path.GetFileNameWithoutExtension(AcadTools.GetAbsolutePathWithName());
+
+            return tsvName + "_list_" + DateTime.Now.ToString("dd.MM.yyy_hh.mm.ss");
+        }
+
+        private void StartProcessForCreateTsvFile(string pathSettingsXml)
         {
             try
             {
@@ -286,6 +307,34 @@ namespace SectionConverterPlugin.Forms
             {
                 MessageBox.Show("Failed to execute");
             }
-        }     
+        }
+
+        private void StartProcessForCreateDxfFile(string pathSettingsXml)
+        {
+            try
+            {
+                Process process = new Process();
+
+                var processStartInfo = new ProcessStartInfo()
+                {
+                    FileName = Path.Combine(AcadTools.GetAcadLocation(), @"SectionConverterPlugin\SectionListGenerator\SectionBlueprintGenerator.exe"),
+                    Arguments = "\"" + pathSettingsXml + "\""
+                };
+
+                process = Process.Start(processStartInfo);
+
+
+                process.WaitForExit();
+            }
+            catch
+            {
+                MessageBox.Show("Failed to execute");
+            }
+        }
+
+        private void ExportSectionsDataForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
