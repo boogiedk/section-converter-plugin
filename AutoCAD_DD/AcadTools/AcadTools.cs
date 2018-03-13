@@ -437,6 +437,7 @@ namespace SectionConverterPlugin
                 transaction.Commit();
             }
         }
+
         public static string FormatStation(double station)
         {
             var roundedStation = Math.Round(station, 3);
@@ -444,17 +445,21 @@ namespace SectionConverterPlugin
             var sign = Math.Sign(roundedStation);
             var abs = Math.Abs(roundedStation);
 
-            return String.Format("ПК {0:00}+{1:00.000}",
-                sign * (abs / 100),
+            return String.Format(
+                System.Globalization.CultureInfo.InvariantCulture,
+                "ПК {0}+{1:00.000}",
+                sign * (int)abs / 100,
                 abs % 100);
         }
         public static string FormatHeight(double height)
         {
-            return DoubleToFormattedString(height) + "м";
+            return String.Format(
+                System.Globalization.CultureInfo.InvariantCulture,
+                "{0:0.000}м", height);
         }
         public static string FormatPointNumber(int pointNumber)
         {
-            return pointNumber.ToString();
+            return String.Format("{0}", pointNumber);
         }
 
         public static string DoubleToFormattedString(double num)

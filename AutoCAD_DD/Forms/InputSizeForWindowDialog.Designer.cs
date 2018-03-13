@@ -34,10 +34,10 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btn_Ok = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -54,6 +54,7 @@
             this.retb_heightWindow.Size = new System.Drawing.Size(139, 20);
             this.retb_heightWindow.TabIndex = 0;
             this.retb_heightWindow.Value = null;
+            this.retb_heightWindow.ValueChanged += new System.EventHandler(this.retb_heightWindow_ValueChanged);
             // 
             // retb_widthWindow
             // 
@@ -66,6 +67,7 @@
             this.retb_widthWindow.Size = new System.Drawing.Size(139, 20);
             this.retb_widthWindow.TabIndex = 0;
             this.retb_widthWindow.Value = null;
+            this.retb_widthWindow.ValueChanged += new System.EventHandler(this.retb_widthtWindow_ValueChanged);
             // 
             // label1
             // 
@@ -116,6 +118,24 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(301, 63);
             this.tableLayoutPanel1.TabIndex = 5;
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(284, 30);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(14, 13);
+            this.label4.TabIndex = 8;
+            this.label4.Text = "м";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(284, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(14, 13);
+            this.label3.TabIndex = 7;
+            this.label3.Text = "м";
+            // 
             // tableLayoutPanel2
             // 
             this.tableLayoutPanel2.ColumnCount = 1;
@@ -126,7 +146,7 @@
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(295, 29);
             this.tableLayoutPanel2.TabIndex = 6;
             // 
@@ -143,24 +163,6 @@
             this.tableLayoutPanel3.Size = new System.Drawing.Size(301, 130);
             this.tableLayoutPanel3.TabIndex = 7;
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(284, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(14, 13);
-            this.label3.TabIndex = 7;
-            this.label3.Text = "м";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(284, 30);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(14, 13);
-            this.label4.TabIndex = 8;
-            this.label4.Text = "м";
-            // 
             // InputSizeForWindowDialog
             // 
             this.AcceptButton = this.btn_Ok;
@@ -170,6 +172,7 @@
             this.Controls.Add(this.tableLayoutPanel3);
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "InputSizeForWindowDialog";
