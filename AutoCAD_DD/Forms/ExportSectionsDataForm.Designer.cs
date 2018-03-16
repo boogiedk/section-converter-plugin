@@ -28,53 +28,53 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.retb_FactValue = new SectionConverterPlugin.CustomControls.RegExedTextBox();
+            this.retb__FactPossNoizeLowerBound = new SectionConverterPlugin.CustomControls.RegExedTextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label_mistake = new System.Windows.Forms.Label();
             this.cb_ActualValueMistake = new System.Windows.Forms.CheckBox();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.label4 = new System.Windows.Forms.Label();
             this.btn_ExportPoints = new System.Windows.Forms.Button();
-            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.label4 = new System.Windows.Forms.Label();
-            this.tableLayoutPanel2.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
-            this.tableLayoutPanel3.SuspendLayout();
-            this.tableLayoutPanel4.SuspendLayout();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.label5 = new System.Windows.Forms.Label();
+            this.retb__FactPossNoizeUpperBound = new SectionConverterPlugin.CustomControls.RegExedTextBox();
             this.tableLayoutPanel5.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // retb_FactValue
+            // retb__FactPossNoizeLowerBound
             // 
-            this.retb_FactValue.Enabled = false;
-            this.retb_FactValue.Location = new System.Drawing.Point(0, 0);
-            this.retb_FactValue.Margin = new System.Windows.Forms.Padding(0);
-            this.retb_FactValue.MatchOnKeyInput = false;
-            this.retb_FactValue.Name = "retb_FactValue";
-            this.retb_FactValue.Silent = true;
-            this.retb_FactValue.Size = new System.Drawing.Size(129, 24);
-            this.retb_FactValue.TabIndex = 0;
-            this.retb_FactValue.Value = null;
-            this.retb_FactValue.ValueChanged += new System.EventHandler(this.retb_FactValue_ValueChanged);
+            this.retb__FactPossNoizeLowerBound.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.retb__FactPossNoizeLowerBound.Enabled = false;
+            this.retb__FactPossNoizeLowerBound.Location = new System.Drawing.Point(180, 63);
+            this.retb__FactPossNoizeLowerBound.Margin = new System.Windows.Forms.Padding(0);
+            this.retb__FactPossNoizeLowerBound.MatchOnKeyInput = false;
+            this.retb__FactPossNoizeLowerBound.Name = "retb__FactPossNoizeLowerBound";
+            this.retb__FactPossNoizeLowerBound.Silent = true;
+            this.retb__FactPossNoizeLowerBound.Size = new System.Drawing.Size(88, 24);
+            this.retb__FactPossNoizeLowerBound.TabIndex = 0;
+            this.retb__FactPossNoizeLowerBound.Value = null;
+            this.retb__FactPossNoizeLowerBound.ValueChanged += new System.EventHandler(this.retb_FactValue_ValueChanged);
             // 
             // label1
             // 
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.label1.Location = new System.Drawing.Point(23, 30);
+            this.label1.Location = new System.Drawing.Point(33, 67);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(55, 15);
+            this.label1.Size = new System.Drawing.Size(103, 15);
             this.label1.TabIndex = 4;
-            this.label1.Text = "Разброс";
+            this.label1.Text = "Нижняя граница";
             // 
             // label_mistake
             // 
+            this.label_mistake.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label_mistake.AutoSize = true;
             this.label_mistake.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.label_mistake.Location = new System.Drawing.Point(23, 0);
+            this.label_mistake.Location = new System.Drawing.Point(33, 7);
             this.label_mistake.Name = "label_mistake";
             this.label_mistake.Size = new System.Drawing.Size(91, 15);
             this.label_mistake.TabIndex = 3;
@@ -82,116 +82,124 @@
             // 
             // cb_ActualValueMistake
             // 
+            this.cb_ActualValueMistake.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cb_ActualValueMistake.AutoSize = true;
-            this.cb_ActualValueMistake.Location = new System.Drawing.Point(154, 3);
+            this.cb_ActualValueMistake.Location = new System.Drawing.Point(183, 8);
             this.cb_ActualValueMistake.Name = "cb_ActualValueMistake";
             this.cb_ActualValueMistake.Size = new System.Drawing.Size(15, 14);
             this.cb_ActualValueMistake.TabIndex = 2;
             this.cb_ActualValueMistake.UseVisualStyleBackColor = true;
             this.cb_ActualValueMistake.CheckedChanged += new System.EventHandler(this.cb_FactValueMistake_CheckedChanged);
             // 
-            // tableLayoutPanel2
+            // label4
             // 
-            this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.Controls.Add(this.label4, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.retb_FactValue, 0, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(154, 33);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(143, 24);
-            this.tableLayoutPanel2.TabIndex = 6;
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.ColumnCount = 3;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 47.05882F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 52.94118F));
-            this.tableLayoutPanel1.Controls.Add(this.cb_ActualValueMistake, 2, 0);
-            this.tableLayoutPanel1.Controls.Add(this.label_mistake, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 2, 1);
-            this.tableLayoutPanel1.Controls.Add(this.label1, 1, 1);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(2, 36);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(300, 95);
-            this.tableLayoutPanel1.TabIndex = 7;
+            this.label4.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(271, 37);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(16, 15);
+            this.label4.TabIndex = 9;
+            this.label4.Text = "м";
             // 
             // btn_ExportPoints
             // 
-            this.btn_ExportPoints.Location = new System.Drawing.Point(3, 3);
+            this.btn_ExportPoints.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btn_ExportPoints.Location = new System.Drawing.Point(3, 175);
             this.btn_ExportPoints.Name = "btn_ExportPoints";
-            this.btn_ExportPoints.Size = new System.Drawing.Size(288, 24);
+            this.btn_ExportPoints.Size = new System.Drawing.Size(298, 24);
             this.btn_ExportPoints.TabIndex = 7;
             this.btn_ExportPoints.Text = "Экспорт";
             this.btn_ExportPoints.UseVisualStyleBackColor = true;
             this.btn_ExportPoints.Click += new System.EventHandler(this.btn_ExportPoints_Click);
             // 
-            // tableLayoutPanel3
+            // label3
             // 
-            this.tableLayoutPanel3.ColumnCount = 1;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel3.Controls.Add(this.btn_ExportPoints, 0, 0);
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 32);
-            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 1;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(294, 29);
-            this.tableLayoutPanel3.TabIndex = 8;
-            // 
-            // tableLayoutPanel4
-            // 
-            this.tableLayoutPanel4.ColumnCount = 1;
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel3, 0, 1);
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(2, 137);
-            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
-            this.tableLayoutPanel4.RowCount = 2;
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(300, 64);
-            this.tableLayoutPanel4.TabIndex = 9;
+            this.label3.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.label3.Location = new System.Drawing.Point(33, 37);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(106, 15);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "Верхняя граница";
             // 
             // label2
             // 
+            this.label2.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.label2.Location = new System.Drawing.Point(23, 0);
+            this.label2.Location = new System.Drawing.Point(3, 6);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(164, 17);
+            this.label2.Size = new System.Drawing.Size(168, 17);
             this.label2.TabIndex = 10;
-            this.label2.Text = "Фактические значения";
+            this.label2.Text = "Фактические значения:";
             // 
             // tableLayoutPanel5
             // 
-            this.tableLayoutPanel5.ColumnCount = 2;
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel5.ColumnCount = 1;
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.Controls.Add(this.label2, 1, 0);
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(2, 5);
+            this.tableLayoutPanel5.Controls.Add(this.label2, 0, 0);
+            this.tableLayoutPanel5.Controls.Add(this.tableLayoutPanel1, 0, 1);
+            this.tableLayoutPanel5.Controls.Add(this.btn_ExportPoints, 0, 2);
+            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
-            this.tableLayoutPanel5.RowCount = 1;
+            this.tableLayoutPanel5.RowCount = 3;
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(297, 25);
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(304, 202);
             this.tableLayoutPanel5.TabIndex = 10;
             // 
-            // label4
+            // tableLayoutPanel1
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(132, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(14, 15);
-            this.label4.TabIndex = 9;
-            this.label4.Text = "м";
+            this.tableLayoutPanel1.ColumnCount = 4;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel1.Controls.Add(this.label4, 3, 1);
+            this.tableLayoutPanel1.Controls.Add(this.cb_ActualValueMistake, 2, 0);
+            this.tableLayoutPanel1.Controls.Add(this.label_mistake, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.label5, 3, 2);
+            this.tableLayoutPanel1.Controls.Add(this.label3, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.label1, 1, 2);
+            this.tableLayoutPanel1.Controls.Add(this.retb__FactPossNoizeLowerBound, 2, 2);
+            this.tableLayoutPanel1.Controls.Add(this.retb__FactPossNoizeUpperBound, 2, 1);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 33);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 4;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(298, 136);
+            this.tableLayoutPanel1.TabIndex = 11;
+            // 
+            // label5
+            // 
+            this.label5.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(271, 67);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(16, 15);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "м";
+            // 
+            // retb__FactPossNoizeUpperBound
+            // 
+            this.retb__FactPossNoizeUpperBound.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.retb__FactPossNoizeUpperBound.Enabled = false;
+            this.retb__FactPossNoizeUpperBound.Location = new System.Drawing.Point(180, 31);
+            this.retb__FactPossNoizeUpperBound.Margin = new System.Windows.Forms.Padding(0);
+            this.retb__FactPossNoizeUpperBound.MatchOnKeyInput = false;
+            this.retb__FactPossNoizeUpperBound.Name = "retb__FactPossNoizeUpperBound";
+            this.retb__FactPossNoizeUpperBound.Silent = true;
+            this.retb__FactPossNoizeUpperBound.Size = new System.Drawing.Size(88, 28);
+            this.retb__FactPossNoizeUpperBound.TabIndex = 0;
+            this.retb__FactPossNoizeUpperBound.Value = null;
+            this.retb__FactPossNoizeUpperBound.ValueChanged += new System.EventHandler(this.retb_FactValue_ValueChanged);
             // 
             // ExportSectionsDataForm
             // 
@@ -200,8 +208,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(304, 202);
             this.Controls.Add(this.tableLayoutPanel5);
-            this.Controls.Add(this.tableLayoutPanel4);
-            this.Controls.Add(this.tableLayoutPanel1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.KeyPreview = true;
@@ -211,31 +217,27 @@
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Экспорт сечений";
-            this.tableLayoutPanel2.ResumeLayout(false);
-            this.tableLayoutPanel2.PerformLayout();
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel1.PerformLayout();
-            this.tableLayoutPanel3.ResumeLayout(false);
-            this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel5.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private CustomControls.RegExedTextBox retb_FactValue;
+        private CustomControls.RegExedTextBox retb__FactPossNoizeLowerBound;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label_mistake;
         private System.Windows.Forms.CheckBox cb_ActualValueMistake;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Button btn_ExportPoints;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Label label5;
+        private CustomControls.RegExedTextBox retb__FactPossNoizeUpperBound;
     }
 }

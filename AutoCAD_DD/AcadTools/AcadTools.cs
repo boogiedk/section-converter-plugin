@@ -271,11 +271,11 @@ namespace SectionConverterPlugin
             {
                 var blockTable = (BlockTable) transaction.GetObject(
                     documentDatabase.BlockTableId,
-                    OpenMode.ForRead);
+                    OpenMode.ForWrite);
 
                 var blockReference = (BlockReference) transaction.GetObject(
                     block.GetBlockReferenceIds(true, true)[0],
-                    OpenMode.ForRead);
+                    OpenMode.ForWrite);
 
                 position = blockReference.Position;
 
@@ -758,140 +758,49 @@ namespace SectionConverterPlugin
         }
 
         [CommandMethod("TestEraseBlk")]
-        public void TestEraseBlk()
+        public void CleanUpDatabaseFromBadBlocks()
         {
-            string[] prefixes = {"axisPoint_", "heightPoint_", "redPoint_", "blackPoint_"};
+            string[] prefixes = { "axisPoint_", "heightPoint_", "redPoint_", "blackPoint_" };
+            int recordsErased;
+            int referencesErased;
 
-            var document = Autodesk.AutoCAD.ApplicationServices
-                .Application.DocumentManager.MdiActiveDocument;
+            ClenUpDatabaseFromBadBlocks(prefixes, out recordsErased, out referencesErased);
 
-            Database db = document.Database;
-            Editor ed = document.Editor;
-
-            for (int i = 0; i < prefixes.Length; i++)
-            {
-                var blockList = RoadSectionParametersExtractor.GetListBlocksByPrefix(prefixes[i]);
-                var blkName = "Ter";
-
-                try
-                {
-                    var blkId = GetBlkId(db, blkName);
-
-                    if (blkId.IsNull)
-                        throw new System.Exception(string.Format("\n Block not found: {0}", blkName));
-
-                    if (!EraseBlkRefs(blkId))
-                        throw new System.Exception(
-                            string.Format("\n Failed to Erase BlockReferences for: {0}", blkName));
-
-                    if (!EraseBlk(blkId))
-                        throw new System.Exception(string.Format("\n Failed to Erase Block: {0}", blkName));
-
-                    ed.WriteMessage("\n Block Erased: {0}", blkName);
-                }
-                catch (System.Exception ex)
-                {
-                    ed.WriteMessage(ex.Message);
-                }
-            }
+            MessageBox.Show("Recs erased: " + recordsErased + "\nRefs erased: " + referencesErased);
         }
 
-        public static ObjectId GetBlkId(Database db, string blkName)
+        public static void ClenUpDatabaseFromBadBlocks(string[] prefixes, out int recordsErased, out int referencesErased)
         {
+            recordsErased = 0;
+            referencesErased = 0;
 
-            ObjectId blkId = ObjectId.Null;
-
-            if (db == null)
-                return ObjectId.Null;
-
-            if (string.IsNullOrWhiteSpace(blkName))
-                return ObjectId.Null;
-
-            using (Transaction tr = db.TransactionManager.StartTransaction())
+            for (int prefixIndex = 0; prefixIndex < prefixes.Length; prefixIndex++)
             {
-                BlockTable bt = (BlockTable) tr.GetObject(db.BlockTableId, OpenMode.ForRead);
-                if (bt.Has(blkName))
-                    blkId = bt[blkName];
-                tr.Commit();
-            }
+                var blockListRecords = HandlerEntity.RoadSectionParametersExtractor.GetListBlocksByPrefix(prefixes[prefixIndex]);
 
-            return blkId;
-        }
-
-        public static bool EraseBlkRefs(ObjectId blkId)
-        {
-            bool blkRefsErased = false;
-
-            if (blkId.IsNull)
-                return false;
-
-            Database db = blkId.Database;
-            if (db == null)
-                return false;
-
-            using (Transaction tr = db.TransactionManager.StartTransaction())
-            {
-                BlockTableRecord blk = (BlockTableRecord) tr.GetObject(blkId, OpenMode.ForRead);
-                var blkRefs = blk.GetBlockReferenceIds(true, true);
-                if (blkRefs != null && blkRefs.Count > 0)
+                for (int blockRecIndex = 0; blockRecIndex < blockListRecords.Count; blockRecIndex++)
                 {
-                    foreach (ObjectId blkRefId in blkRefs)
+                    var blockListReferense = GetListBlockReferences(blockListRecords[blockRecIndex]);
+
+                    if (blockListReferense.Count == 0)
                     {
-                        BlockReference blkRef = (BlockReference) tr.GetObject(blkRefId, OpenMode.ForWrite);
-                        blkRef.Erase();
+                        EraseDBObject(blockListRecords[blockRecIndex].ObjectId);
+                        recordsErased++;
                     }
 
-                    blkRefsErased = true;
+                    if (blockListReferense.Count > 1)
+                    {
+                        for (int blockRefIndex = 1; blockRefIndex < blockListReferense.Count; blockRefIndex++)
+                        {
+                            EraseDBObject(blockListReferense[blockRefIndex].ObjectId);
+                            referencesErased++;
+                        }
+                    }
                 }
-
-                tr.Commit();
-            }
-
-            return blkRefsErased;
-        }
-
-        public static bool EraseBlk(ObjectId blkId)
-        {
-            bool blkIsErased = false;
-
-            if (blkId.IsNull)
-                return false;
-
-            Database db = blkId.Database;
-            if (db == null)
-                return false;
-
-            using (Transaction tr = db.TransactionManager.StartTransaction())
-            {
-
-                BlockTableRecord blk = (BlockTableRecord) tr.GetObject(blkId, OpenMode.ForRead);
-                var blkRefs = blk.GetBlockReferenceIds(true, true);
-                if (blkRefs == null || blkRefs.Count == 0)
-                {
-                    blk.UpgradeOpen();
-                    blk.Erase();
-                    blkIsErased = true;
-                }
-
-                tr.Commit();
-            }
-
-            return blkIsErased;
-        }
-
-        private void CleanUpDatabaseFromBadBlocks(string[] prefixes)
-        {
-            for (int i = 0; i < prefixes.Length; i++)
-            {
-                var blockListRecords = HandlerEntity.RoadSectionParametersExtractor.GetListBlocksByPrefix(prefixes[i]);
-
-                var blockListReferense = GetListBlockReferense(blockListRecords[i]);
-
-
             }
         }
 
-        public List<BlockReference> GetListBlockReferense(BlockTableRecord block)
+        public static List<BlockReference> GetListBlockReferences(BlockTableRecord block)
         {
             Database documentDatabase = block.Database;
 
@@ -900,18 +809,31 @@ namespace SectionConverterPlugin
             using (var transaction =
                 documentDatabase.TransactionManager.StartTransaction())
             {
-                foreach (ObjectId id in block)
+                ObjectIdCollection objectIdCollection = block.GetBlockReferenceIds(true, true);
+
+                foreach (ObjectId id in objectIdCollection)
                 {
-                    if (id.ObjectClass == block)
-                    {
-                        listReferences.Add((BlockReference)transaction.GetObject(id, OpenMode.ForRead));
-                    }
-
-                 //   ObjectIdCollection curBtrRefIds = block.GetBlockReferenceIds(true, true);
-
-                    transaction.Commit();
+                    listReferences.Add((BlockReference) transaction.GetObject(id, OpenMode.ForWrite));
                 }
-                return listReferences;
+
+                transaction.Commit();
+
+            }
+
+            return listReferences;
+        }
+
+        public static void EraseDBObject(ObjectId id)
+        {
+            var document = Autodesk.AutoCAD.ApplicationServices
+                .Application.DocumentManager.MdiActiveDocument;
+
+            var database = document.Database;
+
+            using (var transaction = database.TransactionManager.StartTransaction())
+            {
+                transaction.GetObject(id, OpenMode.ForWrite).Erase();
+                transaction.Commit();
             }
         }
     }

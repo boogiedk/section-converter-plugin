@@ -75,26 +75,35 @@ namespace SectionConverterPlugin.HandlerEntity
             return axisPoints.
                 Select(axisPoint =>
                 {
-                    var sectionOrigin = AcadTools.GetBlockPosition(axisPoint);
+                    var axisPointPosition = AcadTools.GetBlockPosition(axisPoint);
 
                     var heightSectionPoints = heightPoints
-                        .Where(point => CheckBlockInWindow(point, sectionOrigin, searchWindowSize));
-                    if (heightSectionPoints.Count() != 1) return null;
-                    var heightSectionPoint = heightSectionPoints.First();
+                        .Where(point => CheckBlockInWindow(point, axisPointPosition, searchWindowSize));
+                    if (heightSectionPoints.Count() == 0) return null;
+                    var heightSectionPoint = heightSectionPoints
+                        .OrderBy(point => (AcadTools.GetBlockPosition(point) - axisPointPosition).Length)
+                        .First();
+
+                    var sectionOrigin = new Point3d(
+                        axisPointPosition.X, 
+                        AcadTools.GetBlockPosition(heightSectionPoint).Y,
+                        .0);
 
                     var redSectionPoints = redPoints
-                        .Where(point => CheckBlockInWindow(point, sectionOrigin, searchWindowSize));
-                    if (redSectionPoints.Count() < 2) return null;
+                        .Where(point => CheckBlockInWindow(point, sectionOrigin, searchWindowSize))
+                        .ToList();
+                    if (redSectionPoints.Count < 2) return null;
 
                     var blackSectionPoints = blackPoints
-                        .Where(point => CheckBlockInWindow(point, sectionOrigin, searchWindowSize));
+                        .Where(point => CheckBlockInWindow(point, sectionOrigin, searchWindowSize))
+                        .ToList();
 
                     return new SectionData()
                     {
                         AxisPoint = axisPoint,
                         HeightPoint = heightSectionPoint,
-                        RedPoints = redSectionPoints.ToList(),
-                        BlackPoints = blackSectionPoints.ToList()
+                        RedPoints = redSectionPoints,
+                        BlackPoints = blackSectionPoints
                     };
                 })
                 .Where(sectionData => sectionData != null)

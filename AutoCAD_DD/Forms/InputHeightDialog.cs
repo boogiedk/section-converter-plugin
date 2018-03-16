@@ -17,10 +17,10 @@ namespace SectionConverterPlugin
             InitializeComponent();
 
             retb_Height.SetRegExp(new Regex(@"^[-\+]?\d+([,\.]\d+)?$"));
-
+            
             retb_Height.Value = "0";
             _dataReverted = false;
-
+            
             retb_Height.SelectAll();
              
             this.Enabled = true;
@@ -43,7 +43,7 @@ namespace SectionConverterPlugin
             {
                 return;
             }
-
+            
              _height = StringToDouble(heightValueString);
         }
 
@@ -64,7 +64,7 @@ namespace SectionConverterPlugin
         private bool TrySetActiveAnyRevertedInputControl()
         {
             bool result = false;
-
+            
             if (retb_Height.Reverted)
             {
                 this.ActiveControl = retb_Height;

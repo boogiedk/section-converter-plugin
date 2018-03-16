@@ -16,8 +16,12 @@ namespace SectionConverterPlugin.Forms
     // Экспортировать данные о сечениях
     public partial class ExportSectionsDataForm : Form
     {
+        // Obsolete
         double _fuctPassDeviantionAmplitude;
+
         bool _factPassEnable;
+        private double _factPossNoizeUpperBound;
+        private double _factPossNoizeLowerBound;
 
         private bool _dataReverted;
 
@@ -27,13 +31,13 @@ namespace SectionConverterPlugin.Forms
 
             InitializeComponent();
 
-            retb_FactValue.SetRegExp(new Regex(@"^\d+([,\.]\d+)?$"));
+            retb__FactPossNoizeLowerBound.SetRegExp(new Regex(@"^\d+([,\.]\d+)?$"));
 
-            retb_FactValue.Value = "0";
+            retb__FactPossNoizeLowerBound.Value = "0";
             _dataReverted = false;
 
             this.Enabled = true;
-            this.ActiveControl = retb_FactValue;
+            this.ActiveControl = retb__FactPossNoizeLowerBound;
         }
 
         private double StringToDouble(string s)
@@ -43,9 +47,9 @@ namespace SectionConverterPlugin.Forms
 
         private void UpdateFactValue()
         {
-            _dataReverted = retb_FactValue.Reverted;
+            _dataReverted = retb__FactPossNoizeLowerBound.Reverted;
 
-            var factValueeString = retb_FactValue.Value;
+            var factValueeString = retb__FactPossNoizeLowerBound.Value;
 
             // skip for initialization
             if (factValueeString == null)
@@ -87,12 +91,28 @@ namespace SectionConverterPlugin.Forms
                 return;
             }
 
+            #region Bad Blocks Cleanup
+            string[] prefixes = { "axisPoint_", "heightPoint_", "redPoint_", "blackPoint_" };
+            int recordsErased;
+            int referencesErased;
+
+            AcadTools.ClenUpDatabaseFromBadBlocks(
+                prefixes,
+                out recordsErased,
+                out referencesErased);
+
+            if (referencesErased != 0)
+            {
+                MessageBox.Show("Копий блоков удалено: " + referencesErased);
+            }
+            #endregion 
+
             using (var dialog = new SaveFileDialog())
             {
                 dialog.InitialDirectory = AcadTools.GetAbsolutePath();
-                dialog.Title = @"Экспортировать в ";
+                dialog.Title = @"Экспортировать в...";
 
-                dialog.FileName=GenerateNameForFolder();
+                dialog.FileName = GenerateNameForFolder();
 
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
@@ -100,7 +120,22 @@ namespace SectionConverterPlugin.Forms
                     string savePath = dialog.FileName.Replace(GenerateNameForFolder(), "");
 
                     CreateNewFolder(savePath);
-                    GenerateNewXmlFile(savePath+ "\\data.xml");
+
+                    Func<Vector3d> GetFactPossNoizeAddition = null;
+                    if (_factPassEnable)
+                    {
+                        var randomGen = new Random();
+                        var factPossNoizeAmplitude =
+                            _factPossNoizeUpperBound - _factPossNoizeLowerBound / 2.0;
+                        Func<double> GetNoize = () =>
+                        {
+                            return _factPossNoizeLowerBound +
+                                   factPossNoizeAmplitude * randomGen.NextDouble();
+                        };
+
+                        GetFactPossNoizeAddition = () => new Vector3d(GetNoize(), GetNoize(), .0);
+                    }
+                    GenerateNewXmlFile(savePath + "\\data.xml", GetFactPossNoizeAddition);
 
                     string savePathNameSettings = savePath + "\\settings.xml";
 
@@ -124,8 +159,17 @@ namespace SectionConverterPlugin.Forms
             }
         }  //button
 
-        public void GenerateNewXmlFile(string fileName) 
+        public void GenerateNewXmlFile(
+            string fileName,
+            Func<Vector3d> GetFactPositionNoizeAddition = null)
         {
+            bool factPossEnabled = true;
+            if (GetFactPositionNoizeAddition == null)
+            {
+                GetFactPositionNoizeAddition = () => new Vector3d();
+                factPossEnabled = false;
+            }
+
             var pluginSettings = PluginSettings.GetInstance();
             var sectionMaxSize = pluginSettings.SectionMaxSize;
 
@@ -152,9 +196,7 @@ namespace SectionConverterPlugin.Forms
             var extractedSectionDataDoc = new XDocument(
                 new XElement(
                     "road_sections",
-                    new XAttribute(
-                        "fact_enabled",
-                        _factPassEnable),
+                    new XAttribute("fact_enabled", factPossEnabled),
                     sectionsData
                         .Select(sd =>
                             new XElement(
@@ -178,7 +220,7 @@ namespace SectionConverterPlugin.Forms
                                         .Select(redPoint =>
                                             GetPointElement(
                                                 AcadTools.GetBlockPosition(redPoint),
-                                                AcadTools.GetBlockPosition(redPoint),
+                                                AcadTools.GetBlockPosition(redPoint) + GetFactPositionNoizeAddition(),
                                                 RoadSectionParametersExtractor.GetPointNumberFromPointBlock(redPoint)))),
 
                                     new XElement(
@@ -187,10 +229,8 @@ namespace SectionConverterPlugin.Forms
                                         .Select(blackPoint =>
                                             GetPointElement(
                                                 AcadTools.GetBlockPosition(blackPoint),
-                                                AcadTools.GetBlockPosition(blackPoint),
+                                                AcadTools.GetBlockPosition(blackPoint) + GetFactPositionNoizeAddition(),
                                                 RoadSectionParametersExtractor.GetPointNumberFromPointBlock(blackPoint))))
-
-
                                     ))));
 
             extractedSectionDataDoc.Save(fileName);
@@ -330,7 +370,5 @@ namespace SectionConverterPlugin.Forms
                 MessageBox.Show("Failed to execute");
             }
         }
-
-
     }
 }
