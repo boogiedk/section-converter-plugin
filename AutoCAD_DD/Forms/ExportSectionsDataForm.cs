@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Autodesk.AutoCAD.Geometry;
-
 using SectionConverterPlugin.HandlerEntity;
 using System.IO;
 using System.Xml;
@@ -84,7 +82,7 @@ namespace SectionConverterPlugin.Forms
             {
                 _dataReverted = false;
 
-                MessageBox.Show("Invalid input");
+                MessageBox.Show(@"Invalid input");
 
                 return;
             }
@@ -92,7 +90,7 @@ namespace SectionConverterPlugin.Forms
             using (var dialog = new SaveFileDialog())
             {
                 dialog.InitialDirectory = AcadTools.GetAbsolutePath();
-                dialog.Title = "Экспортировать в ";
+                dialog.Title = @"Экспортировать в ";
 
                 dialog.FileName=GenerateNameForFolder();
 
@@ -101,19 +99,17 @@ namespace SectionConverterPlugin.Forms
                     string saveName = Path.GetFileName(dialog.FileName);
                     string savePath = dialog.FileName.Replace(GenerateNameForFolder(), "");
 
-                    CreateANeWFolder(savePath);  // path
-
-                    GenerateANewXmlFile(savePath+ "\\data.xml");   //path+name
+                    CreateNewFolder(savePath);
+                    GenerateNewXmlFile(savePath+ "\\data.xml");
 
                     string savePathNameSettings = savePath + "\\settings.xml";
 
                     GenerateASettingXmlFile(
                         savePathNameSettings,
-                        "roadSectionsDataPath", savePath + "\\data.xml",
-                        "roadSectionsListPath",
-                        savePath+"\\"+ GenerateNameForTsvFile() + ".tsv",
-                        "blueprintTemplatePath", savePath +"\\"+ GenerateNameForDxfFile()+".dxf",
-                        "roadSectionsBlueprintPath",savePath+"\\"+"data_blueprint"+".dxf"
+                         savePath + "\\data.xml",
+                        savePath+"\\"+ GenerateNameForListTsvFile(saveName) + ".tsv",
+                        Path.Combine(AcadTools.GetAcadLocation(), "SectionConverterPlugin\\SectionListGenerator\\BlueprintTemplate" + ".dxf")
+                        ,savePath+"\\"+GenerateNameForBlueprintTsvFile(saveName)+".tsv"
                         );
 
                     StartProcessForCreateTsvFile(savePathNameSettings);
@@ -128,7 +124,7 @@ namespace SectionConverterPlugin.Forms
             }
         }  //button
 
-        public void GenerateANewXmlFile(string fileName) 
+        public void GenerateNewXmlFile(string fileName) 
         {
             var pluginSettings = PluginSettings.GetInstance();
             var sectionMaxSize = pluginSettings.SectionMaxSize;
@@ -203,13 +199,9 @@ namespace SectionConverterPlugin.Forms
 
         public void GenerateASettingXmlFile(
             string fileName,
-            string keyXml,
             string valueXml,
-            string keyTsv,
             string valueTsv,
-            string keyDxf,
             string valueDxf,
-            string keyBluePrint,
             string valueBluePrint)
         {
             var extractedSectionDataDoc = new XDocument(
@@ -217,27 +209,27 @@ namespace SectionConverterPlugin.Forms
                           "settings",
                           new XElement(
                               "add",
-                          new XAttribute("key",keyXml),
+                          new XAttribute("key", "roadSectionsDataPath"),
                            new XAttribute("value", valueXml)),
                           new XElement("add",
-                              new XAttribute("key",keyTsv),
+                              new XAttribute("key", "roadSectionsListPath"),
                               new XAttribute("value",valueTsv)),
                           new XElement("add",
-                              new XAttribute("key", keyDxf),
+                              new XAttribute("key", "blueprintTemplatePath"),
                               new XAttribute("value", valueDxf)),
                          new XElement("add",
-                              new XAttribute("key", keyBluePrint),
+                              new XAttribute("key", "roadSectionsBlueprintPath"),
                               new XAttribute("value", valueBluePrint))
                                            ));
 
             extractedSectionDataDoc.Save(fileName);
         }
 
-        public bool CreateANeWFolder(string pathFolder)
+        public bool CreateNewFolder(string pathFolder)
         {
                 bool result = false;
 
-                 string folderName = GenerateNameForFolder();
+                var folderName = GenerateNameForFolder();
 
                 if ((folderName == "default"))
                 {
@@ -248,7 +240,7 @@ namespace SectionConverterPlugin.Forms
                 {
                     if (Directory.Exists(pathFolder+folderName))
                     {
-                        MessageBox.Show("Такая папка уже существует!");
+                        MessageBox.Show(@"Такая папка уже существует!");
                         return false;
                     }
 
@@ -261,37 +253,44 @@ namespace SectionConverterPlugin.Forms
 
         public string GenerateNameForFolder()
         {
-            string drawingName = Path.GetFileNameWithoutExtension(AcadTools.GetAbsolutePathWithName());
+            var drawingName = Path.GetFileNameWithoutExtension(AcadTools.GetAbsolutePathWithName());
 
-            string folderName = "default";
+            const string folderName = "default";
 
-            if (drawingName == "" || drawingName == null)
+            if (string.IsNullOrEmpty(drawingName))
             {
                 return folderName;
             }
             else
-                return drawingName + "_" + DateTime.Now.ToString("dd.MM.yyy_hh.mm.ss");
+                return drawingName + "_" + DateTime.Now.ToString("dd.MM.yyyy_hh.mm.ss");
         }
 
-        public string GenerateNameForDxfFile()
+        public string GenerateNameForDxfFile(string fileName)
         {
             string dfxName = Path.GetFileNameWithoutExtension(AcadTools.GetAbsolutePathWithName());
 
-            return dfxName + "_" + "blueprint_" + DateTime.Now.ToString("dd.MM.yyy_hh.mm.ss");
+            return dfxName + "_" + "blueprint_" + fileName;
         }
 
-        public string GenerateNameForTsvFile()
+        public string GenerateNameForListTsvFile(string fileName)
         {
             string tsvName = Path.GetFileNameWithoutExtension(AcadTools.GetAbsolutePathWithName());
 
-            return tsvName + "_list_" + DateTime.Now.ToString("dd.MM.yyy_hh.mm.ss");
+            return tsvName + "_list_" + fileName;
+        }
+
+        public string GenerateNameForBlueprintTsvFile(string fileName)
+        {
+            string tsvName = Path.GetFileNameWithoutExtension(AcadTools.GetAbsolutePathWithName());
+
+            return tsvName + "_blueprint_" + fileName;
         }
 
         private void StartProcessForCreateTsvFile(string pathSettingsXml)
         {
             try
             {
-                Process process = new Process();
+                var process = new Process();
 
                 var processStartInfo = new ProcessStartInfo()
                 {
@@ -300,7 +299,6 @@ namespace SectionConverterPlugin.Forms
                 };
 
                 process = Process.Start(processStartInfo);
-
 
                 process.WaitForExit();
             }
@@ -313,8 +311,8 @@ namespace SectionConverterPlugin.Forms
         private void StartProcessForCreateDxfFile(string pathSettingsXml)
         {
             try
-            {
-                Process process = new Process();
+            {       
+                var process = new Process();
 
                 var processStartInfo = new ProcessStartInfo()
                 {
@@ -323,14 +321,16 @@ namespace SectionConverterPlugin.Forms
                 };
 
                 process = Process.Start(processStartInfo);
-
-
+                                                       
                 process.WaitForExit();
+
             }
             catch
             {
                 MessageBox.Show("Failed to execute");
             }
         }
+
+
     }
 }

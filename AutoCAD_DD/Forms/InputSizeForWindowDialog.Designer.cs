@@ -177,7 +177,8 @@
             this.MinimizeBox = false;
             this.Name = "InputSizeForWindowDialog";
             this.ShowIcon = false;
-            this.Text = "Введите ...";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Введите";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);

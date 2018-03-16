@@ -7,7 +7,7 @@ namespace SectionConverterPlugin.Forms
 {
     public partial class InputStationDialog : Form
     {
-        public Regex _stationRegex;
+        private Regex _stationRegex;
 
         double _station;
 
@@ -131,3 +131,4 @@ namespace SectionConverterPlugin.Forms
         }
     }
 }
+    

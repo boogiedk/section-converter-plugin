@@ -36,7 +36,7 @@ namespace SectionConverterPlugin.HandlerEntity
             return blocks;
         }
 
-        private static bool CheckPrefixNameOfBlock(string prefix, string blockName)
+        public static bool CheckPrefixNameOfBlock(string prefix, string blockName)
         {
             if (!(blockName == null && blockName == ""))
                 if (blockName.Substring(0, blockName.IndexOf('_') + 1) == prefix)
@@ -101,29 +101,25 @@ namespace SectionConverterPlugin.HandlerEntity
                 .ToArray();
         }
 
-        //TODO: fix refular expr ^
         public static double GetStationValue(string mtext)
         {
-            var _stationRegex =
+            var stationRegex =
      new Regex(@"^(((?<hundreds>\d+)\+(?<units>\d{1,2}))|(?<all_units>\d+))([,\.](?<fractional>\d+))?$");
 
-            MatchCollection mc = _stationRegex.Matches(mtext.Substring(3, mtext.Length - 3));
+            MatchCollection mc = stationRegex.Matches(mtext.Substring(3, mtext.Length - 3));
 
             var match = mc[0];
 
             double station = .0;
 
-            double unit = .0;
-            double hungred = .0;
-
             if (match.Groups["hundreds"].Length > 0)
             {
-                hungred = 100 * StringToDouble(match.Groups["hundreds"].Value);
-                unit = StringToDouble(match.Groups["units"].Value);
+                station += StringToDouble(match.Groups["hundreds"].Value);
+                         station+=StringToDouble(match.Groups["units"].Value);
             }
             else
             {
-                unit += StringToDouble(match.Groups["all_units"].Value);
+                station += StringToDouble(match.Groups["all_units"].Value);
             }
             if (match.Groups["fractional"].Length > 0)
             {
@@ -134,13 +130,8 @@ namespace SectionConverterPlugin.HandlerEntity
                     fractional /= 10.0;
                 }
 
-                unit += fractional;
-            }
-
-            var sign = Math.Sign(unit);
-            var abs = Math.Abs(hungred);
-
-            station = sign * (abs / 100) + (abs % 100);
+               station += fractional;
+            }       
 
             return station;
         }

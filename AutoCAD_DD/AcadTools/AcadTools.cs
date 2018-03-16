@@ -12,6 +12,7 @@ using Autodesk.AutoCAD.Colors;
 
 using acadApp = Autodesk.AutoCAD.ApplicationServices.Application;
 using Autodesk.AutoCAD.Runtime;
+using SectionConverterPlugin.HandlerEntity;
 
 namespace SectionConverterPlugin
 {
@@ -29,11 +30,12 @@ namespace SectionConverterPlugin
             {
                 blockName = GetAnyIniqueBlockName();
             }
+
             return blockName;
         }
 
         #endregion
-        
+
         #region GUI Dialogs
 
         public static bool GetPointAcadDialog(Editor editor, out Point3d point3D)
@@ -56,6 +58,7 @@ namespace SectionConverterPlugin
 
             return result;
         }
+
         public static bool GetStationDialog(out double station)
         {
             bool result = false;
@@ -74,6 +77,7 @@ namespace SectionConverterPlugin
 
             return result;
         }
+
         public static bool GetHeightDialog(out double height)
         {
             bool result = false;
@@ -92,6 +96,7 @@ namespace SectionConverterPlugin
 
             return result;
         }
+
         public static bool GetPointNumberDialog(out int pointNumber)
         {
             bool result = false;
@@ -138,6 +143,7 @@ namespace SectionConverterPlugin
 
             return block;
         }
+
         public static BlockTableRecord GetHeightPointTemplate(Database documentDatabase)
         {
             var entities = new List<Entity>();
@@ -162,6 +168,7 @@ namespace SectionConverterPlugin
 
             return block;
         }
+
         public static BlockTableRecord GetBlackPointTemplate(Database documentDatabase)
         {
             var entities = new List<Entity>();
@@ -186,6 +193,7 @@ namespace SectionConverterPlugin
 
             return block;
         }
+
         public static BlockTableRecord GetRedPointTemplate(Database documentDatabase)
         {
             var entities = new List<Entity>();
@@ -221,9 +229,9 @@ namespace SectionConverterPlugin
             BlockTableRecord block = null;
 
             using (var transaction =
-                    documentDatabase.TransactionManager.StartTransaction())
+                documentDatabase.TransactionManager.StartTransaction())
             {
-                var blockTable = (BlockTable)transaction.GetObject(
+                var blockTable = (BlockTable) transaction.GetObject(
                     documentDatabase.BlockTableId,
                     OpenMode.ForWrite);
 
@@ -235,7 +243,7 @@ namespace SectionConverterPlugin
                 var blockTableID = blockTable.Add(block);
                 transaction.AddNewlyCreatedDBObject(block, true);
 
-                BlockTableRecord modelSpaceTableRecord = (BlockTableRecord)transaction.GetObject(
+                BlockTableRecord modelSpaceTableRecord = (BlockTableRecord) transaction.GetObject(
                     blockTable[BlockTableRecord.ModelSpace],
                     OpenMode.ForWrite);
 
@@ -259,13 +267,13 @@ namespace SectionConverterPlugin
             Point3d position = new Point3d(double.NaN, double.NaN, double.NaN);
 
             using (var transaction =
-                    documentDatabase.TransactionManager.StartTransaction())
+                documentDatabase.TransactionManager.StartTransaction())
             {
-                var blockTable = (BlockTable)transaction.GetObject(
+                var blockTable = (BlockTable) transaction.GetObject(
                     documentDatabase.BlockTableId,
                     OpenMode.ForRead);
 
-                var blockReference = (BlockReference)transaction.GetObject(
+                var blockReference = (BlockReference) transaction.GetObject(
                     block.GetBlockReferenceIds(true, true)[0],
                     OpenMode.ForRead);
 
@@ -276,6 +284,7 @@ namespace SectionConverterPlugin
 
             return position;
         }
+
         public static void SetBlockPosition(
             BlockTableRecord block,
             Point3d position)
@@ -283,13 +292,13 @@ namespace SectionConverterPlugin
             Database documentDatabase = block.Database;
 
             using (var transaction =
-                    documentDatabase.TransactionManager.StartTransaction())
+                documentDatabase.TransactionManager.StartTransaction())
             {
-                var blockTable = (BlockTable)transaction.GetObject(
+                var blockTable = (BlockTable) transaction.GetObject(
                     documentDatabase.BlockTableId,
                     OpenMode.ForWrite);
 
-                var blockReference = (BlockReference)transaction.GetObject(
+                var blockReference = (BlockReference) transaction.GetObject(
                     block.GetBlockReferenceIds(true, true)[0],
                     OpenMode.ForWrite);
 
@@ -304,6 +313,7 @@ namespace SectionConverterPlugin
         {
             return block.Name;
         }
+
         public static void SetBlockName(
             BlockTableRecord block,
             string name)
@@ -311,13 +321,13 @@ namespace SectionConverterPlugin
             Database documentDatabase = block.Database;
 
             using (var transaction =
-                    documentDatabase.TransactionManager.StartTransaction())
+                documentDatabase.TransactionManager.StartTransaction())
             {
-                var blockTable = (BlockTable)transaction.GetObject(
+                var blockTable = (BlockTable) transaction.GetObject(
                     documentDatabase.BlockTableId,
                     OpenMode.ForWrite);
 
-                var blockTableRecord = (BlockTableRecord)transaction.GetObject(
+                var blockTableRecord = (BlockTableRecord) transaction.GetObject(
                     block.Id,
                     OpenMode.ForWrite);
 
@@ -334,17 +344,17 @@ namespace SectionConverterPlugin
             List<Entity> entities = new List<Entity>();
 
             using (var transaction =
-                    documentDatabase.TransactionManager.StartTransaction())
+                documentDatabase.TransactionManager.StartTransaction())
             {
-                var blockTable = (BlockTable)transaction.GetObject(
+                var blockTable = (BlockTable) transaction.GetObject(
                     documentDatabase.BlockTableId,
                     OpenMode.ForRead);
 
                 foreach (var entityID in block)
                 {
-                    var entity = (Entity)transaction.GetObject(
-                    entityID,
-                    OpenMode.ForRead);
+                    var entity = (Entity) transaction.GetObject(
+                        entityID,
+                        OpenMode.ForRead);
 
                     entities.Add(entity);
                 }
@@ -362,13 +372,13 @@ namespace SectionConverterPlugin
             Database documentDatabase = block.Database;
 
             using (var transaction =
-                    documentDatabase.TransactionManager.StartTransaction())
+                documentDatabase.TransactionManager.StartTransaction())
             {
-                var blockTable = (BlockTable)transaction.GetObject(
+                var blockTable = (BlockTable) transaction.GetObject(
                     documentDatabase.BlockTableId,
                     OpenMode.ForWrite);
 
-                var blockTableRecord = (BlockTableRecord)transaction.GetObject(
+                var blockTableRecord = (BlockTableRecord) transaction.GetObject(
                     block.Id,
                     OpenMode.ForWrite);
 
@@ -396,13 +406,12 @@ namespace SectionConverterPlugin
             Database documentDatabase = block.Database;
 
             using (var transaction =
-                    documentDatabase.TransactionManager.StartTransaction())
+                documentDatabase.TransactionManager.StartTransaction())
             {
-                var blockReference = (BlockReference)transaction.GetObject(
+                var blockReference = (BlockReference) transaction.GetObject(
                     block.GetBlockReferenceIds(true, true)[0],
                     OpenMode.ForWrite);
 
-                // REQUED FOR UPDATE!!!!
                 blockReference.Position = blockReference.Position;
 
                 transaction.Commit();
@@ -417,18 +426,17 @@ namespace SectionConverterPlugin
                 .Select(e => e as MText)
                 .Where(e => e != null);
 
-            return startWith == "" ?
-                mtexts.First() :
-                mtexts.First(mt => mt.Text.StartsWith(startWith));
+            return startWith == "" ? mtexts.First() : mtexts.First(mt => mt.Text.StartsWith(startWith));
         }
+
         public static void ApplyFunction(Entity entity, Action<Entity> Function)
         {
             var documentDatabase = entity.Database;
 
             using (var transaction =
-                    documentDatabase.TransactionManager.StartTransaction())
+                documentDatabase.TransactionManager.StartTransaction())
             {
-                var entityOpened = (Entity)transaction.GetObject(
+                var entityOpened = (Entity) transaction.GetObject(
                     entity.Id,
                     OpenMode.ForWrite);
 
@@ -448,15 +456,17 @@ namespace SectionConverterPlugin
             return String.Format(
                 System.Globalization.CultureInfo.InvariantCulture,
                 "ПК {0}+{1:00.000}",
-                sign * (int)abs / 100,
+                sign * (int) abs / 100,
                 abs % 100);
         }
+
         public static string FormatHeight(double height)
         {
             return String.Format(
                 System.Globalization.CultureInfo.InvariantCulture,
                 "{0:0.000}м", height);
         }
+
         public static string FormatPointNumber(int pointNumber)
         {
             return String.Format("{0}", pointNumber);
@@ -476,7 +486,7 @@ namespace SectionConverterPlugin
                 GetAnyMText(AcadTools.GetBlockEntities(block), paramsTextPrefix),
                 e =>
                 {
-                    var text = (MText)e;
+                    var text = (MText) e;
                     text.Contents = GetParamsText();
                 });
 
@@ -515,6 +525,7 @@ namespace SectionConverterPlugin
 
             return result;
         }
+
         public static bool CreateHeightPointBlock(Document document)
         {
             bool result = false;
@@ -548,6 +559,7 @@ namespace SectionConverterPlugin
 
             return result;
         }
+
         public static bool CreateBlackPointBlock(Document document, int pointNumber)
         {
             bool result = false;
@@ -570,14 +582,15 @@ namespace SectionConverterPlugin
             SetBlockPosition(block, blockPosition);
 
             SetTextParams(
-               block,
-               paramsTextPrefix, () => FormatPointNumber(pointNumber));
+                block,
+                paramsTextPrefix, () => FormatPointNumber(pointNumber));
 
             result = true;
 
             //ManageColorsForEntity(document);
             return result;
         }
+
         public static bool CreateRedPointBlock(Document document, int pointNumber)
         {
             bool result = false;
@@ -600,8 +613,8 @@ namespace SectionConverterPlugin
             SetBlockPosition(block, blockPosition);
 
             SetTextParams(
-              block,
-              paramsTextPrefix, () => FormatPointNumber(pointNumber));
+                block,
+                paramsTextPrefix, () => FormatPointNumber(pointNumber));
 
             result = true;
             return result;
@@ -636,29 +649,34 @@ namespace SectionConverterPlugin
                 }
             }
         }
+
         public static bool CheckAvailabilityLayers(Document document)
         {
             var database = document.Database;
             {
                 using (Transaction transaction = database.TransactionManager.StartTransaction())
                 {
-                    LayerTable layerTable = (LayerTable)transaction.GetObject(database.LayerTableId, OpenMode.ForRead, false);
+                    LayerTable layerTable =
+                        (LayerTable) transaction.GetObject(database.LayerTableId, OpenMode.ForRead, false);
 
                     foreach (ObjectId entity in layerTable)
                     {
-                        LayerTableRecord LayerTableRecord = (LayerTableRecord)transaction.GetObject(entity, OpenMode.ForRead);
+                        LayerTableRecord LayerTableRecord =
+                            (LayerTableRecord) transaction.GetObject(entity, OpenMode.ForRead);
                         if (LayerTableRecord.Name == "selection_converter")
                             return true;
                     }
+
                     transaction.Commit();
                     return false;
                 }
             }
         }
+
         public static void ChangeCurrentLayers()
         {
             var document = Autodesk.AutoCAD.ApplicationServices
-   .Application.DocumentManager.MdiActiveDocument;
+                .Application.DocumentManager.MdiActiveDocument;
             var database = document.Database;
 
             using (var transaction = database.TransactionManager.StartTransaction())
@@ -702,7 +720,7 @@ namespace SectionConverterPlugin
             return filePath = acadApp.GetSystemVariable("DWGPREFIX").ToString();
         }
 
-        public static  string GetAcadCurVerKey()
+        public static string GetAcadCurVerKey()
         {
             RegistryKey registryKey = Registry.CurrentUser;
 
@@ -721,7 +739,7 @@ namespace SectionConverterPlugin
         public static string GetAcadLocation()
         {
             var document = Autodesk.AutoCAD.ApplicationServices
-     .Application.DocumentManager.MdiActiveDocument;
+                .Application.DocumentManager.MdiActiveDocument;
 
             var database = document.Database;
 
@@ -733,10 +751,172 @@ namespace SectionConverterPlugin
             string path = GetAcadCurVerKey();
             using (RegistryKey registryKeyCurrent = registryKey.OpenSubKey(path))
             {
-                s = (string)registryKeyCurrent.GetValue("AcadLocation");
+                s = (string) registryKeyCurrent.GetValue("AcadLocation");
 
                 return s;
             }
         }
+
+        [CommandMethod("TestEraseBlk")]
+        public void TestEraseBlk()
+        {
+            string[] prefixes = {"axisPoint_", "heightPoint_", "redPoint_", "blackPoint_"};
+
+            var document = Autodesk.AutoCAD.ApplicationServices
+                .Application.DocumentManager.MdiActiveDocument;
+
+            Database db = document.Database;
+            Editor ed = document.Editor;
+
+            for (int i = 0; i < prefixes.Length; i++)
+            {
+                var blockList = RoadSectionParametersExtractor.GetListBlocksByPrefix(prefixes[i]);
+                var blkName = "Ter";
+
+                try
+                {
+                    var blkId = GetBlkId(db, blkName);
+
+                    if (blkId.IsNull)
+                        throw new System.Exception(string.Format("\n Block not found: {0}", blkName));
+
+                    if (!EraseBlkRefs(blkId))
+                        throw new System.Exception(
+                            string.Format("\n Failed to Erase BlockReferences for: {0}", blkName));
+
+                    if (!EraseBlk(blkId))
+                        throw new System.Exception(string.Format("\n Failed to Erase Block: {0}", blkName));
+
+                    ed.WriteMessage("\n Block Erased: {0}", blkName);
+                }
+                catch (System.Exception ex)
+                {
+                    ed.WriteMessage(ex.Message);
+                }
+            }
+        }
+
+        public static ObjectId GetBlkId(Database db, string blkName)
+        {
+
+            ObjectId blkId = ObjectId.Null;
+
+            if (db == null)
+                return ObjectId.Null;
+
+            if (string.IsNullOrWhiteSpace(blkName))
+                return ObjectId.Null;
+
+            using (Transaction tr = db.TransactionManager.StartTransaction())
+            {
+                BlockTable bt = (BlockTable) tr.GetObject(db.BlockTableId, OpenMode.ForRead);
+                if (bt.Has(blkName))
+                    blkId = bt[blkName];
+                tr.Commit();
+            }
+
+            return blkId;
+        }
+
+        public static bool EraseBlkRefs(ObjectId blkId)
+        {
+            bool blkRefsErased = false;
+
+            if (blkId.IsNull)
+                return false;
+
+            Database db = blkId.Database;
+            if (db == null)
+                return false;
+
+            using (Transaction tr = db.TransactionManager.StartTransaction())
+            {
+                BlockTableRecord blk = (BlockTableRecord) tr.GetObject(blkId, OpenMode.ForRead);
+                var blkRefs = blk.GetBlockReferenceIds(true, true);
+                if (blkRefs != null && blkRefs.Count > 0)
+                {
+                    foreach (ObjectId blkRefId in blkRefs)
+                    {
+                        BlockReference blkRef = (BlockReference) tr.GetObject(blkRefId, OpenMode.ForWrite);
+                        blkRef.Erase();
+                    }
+
+                    blkRefsErased = true;
+                }
+
+                tr.Commit();
+            }
+
+            return blkRefsErased;
+        }
+
+        public static bool EraseBlk(ObjectId blkId)
+        {
+            bool blkIsErased = false;
+
+            if (blkId.IsNull)
+                return false;
+
+            Database db = blkId.Database;
+            if (db == null)
+                return false;
+
+            using (Transaction tr = db.TransactionManager.StartTransaction())
+            {
+
+                BlockTableRecord blk = (BlockTableRecord) tr.GetObject(blkId, OpenMode.ForRead);
+                var blkRefs = blk.GetBlockReferenceIds(true, true);
+                if (blkRefs == null || blkRefs.Count == 0)
+                {
+                    blk.UpgradeOpen();
+                    blk.Erase();
+                    blkIsErased = true;
+                }
+
+                tr.Commit();
+            }
+
+            return blkIsErased;
+        }
+
+        private void CleanUpDatabaseFromBadBlocks(string[] prefixes)
+        {
+            for (int i = 0; i < prefixes.Length; i++)
+            {
+                var blockListRecords = HandlerEntity.RoadSectionParametersExtractor.GetListBlocksByPrefix(prefixes[i]);
+
+                var blockListReferense = GetListBlockReferense(blockListRecords[i]);
+
+
+            }
+        }
+
+        public List<BlockReference> GetListBlockReferense(BlockTableRecord block)
+        {
+            Database documentDatabase = block.Database;
+
+            List<BlockReference> listReferences = new List<BlockReference>();
+
+            using (var transaction =
+                documentDatabase.TransactionManager.StartTransaction())
+            {
+                foreach (ObjectId id in block)
+                {
+                    if (id.ObjectClass == block)
+                    {
+                        listReferences.Add((BlockReference)transaction.GetObject(id, OpenMode.ForRead));
+                    }
+
+                 //   ObjectIdCollection curBtrRefIds = block.GetBlockReferenceIds(true, true);
+
+                    transaction.Commit();
+                }
+                return listReferences;
+            }
+        }
     }
 }
+
+    
+
+
