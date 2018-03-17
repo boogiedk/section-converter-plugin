@@ -16,12 +16,10 @@ namespace SectionConverterPlugin.Forms
     // Экспортировать данные о сечениях
     public partial class ExportSectionsDataForm : Form
     {
-        // Obsolete
-        double _fuctPassDeviantionAmplitude;
+        bool _factPosEnable;
 
-        bool _factPassEnable;
-        private double _factPossNoizeUpperBound;
-        private double _factPossNoizeLowerBound;
+        private double _factPosNoizeUpperBound;
+        private double _factPosNoizeLowerBound;
 
         private bool _dataReverted;
 
@@ -31,13 +29,14 @@ namespace SectionConverterPlugin.Forms
 
             InitializeComponent();
 
-            retb__FactPossNoizeLowerBound.SetRegExp(new Regex(@"^\d+([,\.]\d+)?$"));
+            retb__FactPosNoizeUpperBound.SetRegExp(new Regex(@"^\d+([,\.]\d+)?$"));
+            retb__FactPosNoizeLowerBound.SetRegExp(new Regex(@"^\d+([,\.]\d+)?$"));
 
-            retb__FactPossNoizeLowerBound.Value = "0";
+            retb__FactPosNoizeLowerBound.Value = "0";
+            retb__FactPosNoizeUpperBound.Value = "0";
             _dataReverted = false;
 
             this.Enabled = true;
-            this.ActiveControl = retb__FactPossNoizeLowerBound;
         }
 
         private double StringToDouble(string s)
@@ -45,11 +44,12 @@ namespace SectionConverterPlugin.Forms
             return Double.Parse(s.Replace(',', '.'), CultureInfo.InvariantCulture);
         }
 
-        private void UpdateFactValue()
-        {
-            _dataReverted = retb__FactPossNoizeLowerBound.Reverted;
 
-            var factValueeString = retb__FactPossNoizeLowerBound.Value;
+        private void UpdateFactPosNoizeUpperBound()
+        {
+            _dataReverted = retb__FactPosNoizeUpperBound.Reverted;
+
+            var factValueeString = retb__FactPosNoizeUpperBound.Value;
 
             // skip for initialization
             if (factValueeString == null)
@@ -57,25 +57,55 @@ namespace SectionConverterPlugin.Forms
                 return;
             }
 
-            _fuctPassDeviantionAmplitude = StringToDouble(factValueeString);
+            _factPosNoizeUpperBound = StringToDouble(factValueeString);
         }
 
-        public double FactValue
+        private void UpdateFactPosNoizeLowerBound()
+        {
+            _dataReverted = retb__FactPosNoizeLowerBound.Reverted;
+
+            var factValueeString = retb__FactPosNoizeLowerBound.Value;
+
+            // skip for initialization
+            if (factValueeString == null)
+            {
+                return;
+            }
+
+            _factPosNoizeLowerBound = StringToDouble(factValueeString);
+        }
+
+
+        public double FactPosNoizeUpperBound
         {
             get
             {
-                return _fuctPassDeviantionAmplitude;
+                return _factPosNoizeUpperBound;
             }
         }
 
-        private void retb_FactValue_ValueChanged(object sender, EventArgs e)
+        public double FactPosNoizeLowerBound
         {
-            UpdateFactValue();
+            get
+            {
+                return _factPosNoizeLowerBound;
+            }
+        }
+
+
+        private void retb__FactPosNoizeUpperBound_ValueChanged(object sender, EventArgs e)
+        {
+            UpdateFactPosNoizeUpperBound();
+        }
+
+        private void retb__FactPosNoizeLowerBound_ValueChanged(object sender, EventArgs e)
+        {
+            UpdateFactPosNoizeLowerBound();
         }
 
         private void cb_FactValueMistake_CheckedChanged(object sender, EventArgs e)
         {
-            _factPassEnable = cb_ActualValueMistake.Checked;
+            _factPosEnable = cb_ActualValueMistake.Checked;
         }
 
         private void btn_ExportPoints_Click(object sender, EventArgs e)
@@ -122,24 +152,24 @@ namespace SectionConverterPlugin.Forms
                     CreateNewFolder(savePath);
 
                     Func<Vector3d> GetFactPossNoizeAddition = null;
-                    if (_factPassEnable)
+                    if (_factPosEnable)
                     {
                         var randomGen = new Random();
                         var factPossNoizeAmplitude =
-                            _factPossNoizeUpperBound - _factPossNoizeLowerBound / 2.0;
+                            _factPosNoizeUpperBound - _factPosNoizeLowerBound / 2.0;
                         Func<double> GetNoize = () =>
                         {
-                            return _factPossNoizeLowerBound +
+                            return _factPosNoizeLowerBound +
                                    factPossNoizeAmplitude * randomGen.NextDouble();
                         };
 
                         GetFactPossNoizeAddition = () => new Vector3d(GetNoize(), GetNoize(), .0);
                     }
-                    GenerateNewXmlFile(savePath + "\\data.xml", GetFactPossNoizeAddition);
+                    GenerateDataXmlFile(savePath + "\\data.xml", GetFactPossNoizeAddition);
 
                     string savePathNameSettings = savePath + "\\settings.xml";
 
-                    GenerateASettingXmlFile(
+                    GenerateSettingXmlFile(
                         savePathNameSettings,
                          savePath + "\\data.xml",
                         savePath+"\\"+ GenerateNameForListTsvFile(saveName) + ".tsv",
@@ -159,7 +189,7 @@ namespace SectionConverterPlugin.Forms
             }
         }  //button
 
-        public void GenerateNewXmlFile(
+        public void GenerateDataXmlFile(
             string fileName,
             Func<Vector3d> GetFactPositionNoizeAddition = null)
         {
@@ -237,7 +267,7 @@ namespace SectionConverterPlugin.Forms
 
         }
 
-        public void GenerateASettingXmlFile(
+        public void GenerateSettingXmlFile(
             string fileName,
             string valueXml,
             string valueTsv,

@@ -9,10 +9,10 @@ using System.Linq;
 using System.Globalization;
 using SectionConverterPlugin.Forms;
 using Autodesk.AutoCAD.Colors;
+using Autodesk.AutoCAD.Runtime;
 
 using acadApp = Autodesk.AutoCAD.ApplicationServices.Application;
-using Autodesk.AutoCAD.Runtime;
-using SectionConverterPlugin.HandlerEntity;
+
 
 namespace SectionConverterPlugin
 {
@@ -429,7 +429,7 @@ namespace SectionConverterPlugin
             return startWith == "" ? mtexts.First() : mtexts.First(mt => mt.Text.StartsWith(startWith));
         }
 
-        public static void ApplyFunction(Entity entity, Action<Entity> Function)
+        public static void ApplyFunction(Entity entity, Action<Entity> function)
         {
             var documentDatabase = entity.Database;
 
@@ -440,7 +440,7 @@ namespace SectionConverterPlugin
                     entity.Id,
                     OpenMode.ForWrite);
 
-                Function(entityOpened);
+                function(entityOpened);
 
                 transaction.Commit();
             }
@@ -703,8 +703,7 @@ namespace SectionConverterPlugin
 
         public static string GetAbsolutePathWithName()
         {
-            var document = Autodesk.AutoCAD.ApplicationServices
-                .Application.DocumentManager.MdiActiveDocument;
+            var document = acadApp.DocumentManager.MdiActiveDocument;
 
             var database = document.Database;
 
@@ -738,8 +737,7 @@ namespace SectionConverterPlugin
 
         public static string GetAcadLocation()
         {
-            var document = Autodesk.AutoCAD.ApplicationServices
-                .Application.DocumentManager.MdiActiveDocument;
+            var document = acadApp.DocumentManager.MdiActiveDocument;
 
             var database = document.Database;
 
@@ -757,12 +755,11 @@ namespace SectionConverterPlugin
             }
         }
 
-        [CommandMethod("TestEraseBlk")]
         public void CleanUpDatabaseFromBadBlocks()
         {
             string[] prefixes = { "axisPoint_", "heightPoint_", "redPoint_", "blackPoint_" };
-            int recordsErased;
-            int referencesErased;
+            int recordsErased = 0;
+            int referencesErased = 0;
 
             ClenUpDatabaseFromBadBlocks(prefixes, out recordsErased, out referencesErased);
 
@@ -784,7 +781,7 @@ namespace SectionConverterPlugin
 
                     if (blockListReferense.Count == 0)
                     {
-                        EraseDBObject(blockListRecords[blockRecIndex].ObjectId);
+                        EraseDbObject(blockListRecords[blockRecIndex].ObjectId);
                         recordsErased++;
                     }
 
@@ -792,7 +789,7 @@ namespace SectionConverterPlugin
                     {
                         for (int blockRefIndex = 1; blockRefIndex < blockListReferense.Count; blockRefIndex++)
                         {
-                            EraseDBObject(blockListReferense[blockRefIndex].ObjectId);
+                            EraseDbObject(blockListReferense[blockRefIndex].ObjectId);
                             referencesErased++;
                         }
                     }
@@ -823,10 +820,9 @@ namespace SectionConverterPlugin
             return listReferences;
         }
 
-        public static void EraseDBObject(ObjectId id)
+        public static void EraseDbObject(ObjectId id)
         {
-            var document = Autodesk.AutoCAD.ApplicationServices
-                .Application.DocumentManager.MdiActiveDocument;
+            var document = acadApp.DocumentManager.MdiActiveDocument;
 
             var database = document.Database;
 

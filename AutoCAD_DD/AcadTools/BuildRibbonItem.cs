@@ -5,10 +5,7 @@ using System.Windows.Media.Imaging;
 using System.Drawing;
 using System.IO;
 using System.Drawing.Imaging;
-using System.ComponentModel;
 using System.Windows.Input;
-using System.Windows;
-using System.Windows.Media;
 
 
 using acadApp = Autodesk.AutoCAD.ApplicationServices.Application;
@@ -22,16 +19,13 @@ namespace SectionConverterPlugin
 
         #region command
 
-        string buildAxis = "BuildAxis";
-        string buildHeight = "BuildHeight";
-        string buildRed = "BuildRed";
-        string buildBlack = "BuildBlack";
-
-        string exportSelectionsDataForm = "ExportSelectionsDataForm";
-
-        string showPointStyleDialog = "_ptype";
-
-        string showSizeWindowDialog = "ShowSizeWindowDialog";
+       const string buildAxis = "BuildAxis";
+       const string buildHeight = "BuildHeight";
+       const string buildRed = "BuildRed";
+       const string buildBlack = "BuildBlack";   
+       const string exportSelectionsDataForm = "ExportSelectionsDataForm";       
+       const string showPointStyleDialog = "_ptype";     
+       const string showSizeWindowDialog = "ShowSizeWindowDialog";
 
         #endregion
 
@@ -47,7 +41,7 @@ namespace SectionConverterPlugin
 
         public void BuildRibbonTab()
         {
-            if (!isLoaded())
+            if (!IsLoaded())
             {
                 CreateRibbonTab();
 
@@ -55,7 +49,7 @@ namespace SectionConverterPlugin
             }
         }
 
-        bool isLoaded()
+        bool IsLoaded()
         {
             bool _loaded = false;
             RibbonControl ribbonControl = ComponentManager.Ribbon;
@@ -117,7 +111,7 @@ namespace SectionConverterPlugin
                 ribbonTab.Id = tabID;
                 ribbonControl.Tabs.Add(ribbonTab);
 
-                addPluginContent(ribbonTab);
+                AddPluginContent(ribbonTab);
 
                 ribbonControl.UpdateLayout();
             }
@@ -127,7 +121,7 @@ namespace SectionConverterPlugin
             }
         }
 
-        public void addPluginContent(RibbonTab ribbonTab)
+        public void AddPluginContent(RibbonTab ribbonTab)
         {
             try
             {          
@@ -270,10 +264,10 @@ namespace SectionConverterPlugin
             }
         }
 
-        BitmapImage LoadImage(string ImageName)
+        BitmapImage LoadImage(string imageName)
         {
             return new BitmapImage(
-                new Uri("pack://application:,,,/AutoCAD_DD;component/" + ImageName + ".png"));
+                new Uri("pack://application:,,,/AutoCAD_DD;component/" + imageName + ".png"));
         }
 
         public BitmapImage GetBitmap(Bitmap image)

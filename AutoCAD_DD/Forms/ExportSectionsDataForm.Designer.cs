@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.retb__FactPossNoizeLowerBound = new SectionConverterPlugin.CustomControls.RegExedTextBox();
+            this.retb__FactPosNoizeLowerBound = new SectionConverterPlugin.CustomControls.RegExedTextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label_mistake = new System.Windows.Forms.Label();
             this.cb_ActualValueMistake = new System.Windows.Forms.CheckBox();
@@ -39,24 +39,24 @@
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label5 = new System.Windows.Forms.Label();
-            this.retb__FactPossNoizeUpperBound = new SectionConverterPlugin.CustomControls.RegExedTextBox();
+            this.retb__FactPosNoizeUpperBound = new SectionConverterPlugin.CustomControls.RegExedTextBox();
             this.tableLayoutPanel5.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // retb__FactPossNoizeLowerBound
+            // retb__FactPosNoizeLowerBound
             // 
-            this.retb__FactPossNoizeLowerBound.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.retb__FactPossNoizeLowerBound.Enabled = false;
-            this.retb__FactPossNoizeLowerBound.Location = new System.Drawing.Point(180, 63);
-            this.retb__FactPossNoizeLowerBound.Margin = new System.Windows.Forms.Padding(0);
-            this.retb__FactPossNoizeLowerBound.MatchOnKeyInput = false;
-            this.retb__FactPossNoizeLowerBound.Name = "retb__FactPossNoizeLowerBound";
-            this.retb__FactPossNoizeLowerBound.Silent = true;
-            this.retb__FactPossNoizeLowerBound.Size = new System.Drawing.Size(88, 24);
-            this.retb__FactPossNoizeLowerBound.TabIndex = 0;
-            this.retb__FactPossNoizeLowerBound.Value = null;
-            this.retb__FactPossNoizeLowerBound.ValueChanged += new System.EventHandler(this.retb_FactValue_ValueChanged);
+            this.retb__FactPosNoizeLowerBound.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.retb__FactPosNoizeLowerBound.Enabled = false;
+            this.retb__FactPosNoizeLowerBound.Location = new System.Drawing.Point(180, 63);
+            this.retb__FactPosNoizeLowerBound.Margin = new System.Windows.Forms.Padding(0);
+            this.retb__FactPosNoizeLowerBound.MatchOnKeyInput = false;
+            this.retb__FactPosNoizeLowerBound.Name = "retb__FactPosNoizeLowerBound";
+            this.retb__FactPosNoizeLowerBound.Silent = true;
+            this.retb__FactPosNoizeLowerBound.Size = new System.Drawing.Size(88, 24);
+            this.retb__FactPosNoizeLowerBound.TabIndex = 0;
+            this.retb__FactPosNoizeLowerBound.Value = null;
+            this.retb__FactPosNoizeLowerBound.ValueChanged += new System.EventHandler(this.retb__FactPosNoizeLowerBound_ValueChanged);
             // 
             // label1
             // 
@@ -164,8 +164,8 @@
             this.tableLayoutPanel1.Controls.Add(this.label5, 3, 2);
             this.tableLayoutPanel1.Controls.Add(this.label3, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.label1, 1, 2);
-            this.tableLayoutPanel1.Controls.Add(this.retb__FactPossNoizeLowerBound, 2, 2);
-            this.tableLayoutPanel1.Controls.Add(this.retb__FactPossNoizeUpperBound, 2, 1);
+            this.tableLayoutPanel1.Controls.Add(this.retb__FactPosNoizeLowerBound, 2, 2);
+            this.tableLayoutPanel1.Controls.Add(this.retb__FactPosNoizeUpperBound, 2, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 33);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -187,19 +187,19 @@
             this.label5.TabIndex = 9;
             this.label5.Text = "м";
             // 
-            // retb__FactPossNoizeUpperBound
+            // retb__FactPosNoizeUpperBound
             // 
-            this.retb__FactPossNoizeUpperBound.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.retb__FactPossNoizeUpperBound.Enabled = false;
-            this.retb__FactPossNoizeUpperBound.Location = new System.Drawing.Point(180, 31);
-            this.retb__FactPossNoizeUpperBound.Margin = new System.Windows.Forms.Padding(0);
-            this.retb__FactPossNoizeUpperBound.MatchOnKeyInput = false;
-            this.retb__FactPossNoizeUpperBound.Name = "retb__FactPossNoizeUpperBound";
-            this.retb__FactPossNoizeUpperBound.Silent = true;
-            this.retb__FactPossNoizeUpperBound.Size = new System.Drawing.Size(88, 28);
-            this.retb__FactPossNoizeUpperBound.TabIndex = 0;
-            this.retb__FactPossNoizeUpperBound.Value = null;
-            this.retb__FactPossNoizeUpperBound.ValueChanged += new System.EventHandler(this.retb_FactValue_ValueChanged);
+            this.retb__FactPosNoizeUpperBound.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.retb__FactPosNoizeUpperBound.Enabled = false;
+            this.retb__FactPosNoizeUpperBound.Location = new System.Drawing.Point(180, 31);
+            this.retb__FactPosNoizeUpperBound.Margin = new System.Windows.Forms.Padding(0);
+            this.retb__FactPosNoizeUpperBound.MatchOnKeyInput = false;
+            this.retb__FactPosNoizeUpperBound.Name = "retb__FactPosNoizeUpperBound";
+            this.retb__FactPosNoizeUpperBound.Silent = true;
+            this.retb__FactPosNoizeUpperBound.Size = new System.Drawing.Size(88, 28);
+            this.retb__FactPosNoizeUpperBound.TabIndex = 0;
+            this.retb__FactPosNoizeUpperBound.Value = null;
+            this.retb__FactPosNoizeUpperBound.ValueChanged += new System.EventHandler(this.retb__FactPosNoizeUpperBound_ValueChanged);
             // 
             // ExportSectionsDataForm
             // 
@@ -227,7 +227,7 @@
 
         #endregion
 
-        private CustomControls.RegExedTextBox retb__FactPossNoizeLowerBound;
+        private CustomControls.RegExedTextBox retb__FactPosNoizeLowerBound;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label_mistake;
         private System.Windows.Forms.CheckBox cb_ActualValueMistake;
@@ -238,6 +238,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label label5;
-        private CustomControls.RegExedTextBox retb__FactPossNoizeUpperBound;
+        private CustomControls.RegExedTextBox retb__FactPosNoizeUpperBound;
     }
 }
