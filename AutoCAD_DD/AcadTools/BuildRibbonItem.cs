@@ -6,7 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Drawing.Imaging;
 using System.Windows.Input;
-
+using System.Windows.Forms;
 
 using acadApp = Autodesk.AutoCAD.ApplicationServices.Application;
 
@@ -90,13 +90,21 @@ namespace SectionConverterPlugin
 
         void acadApp_SystemVariableChanged(object sender, SystemVariableChangedEventArgs e)
         {
-            if (e.Name.Equals("WSCURRENT"))
+            try
             {
-                var document = Autodesk.AutoCAD.ApplicationServices
-                    .Application.DocumentManager.MdiActiveDocument;
+                if (e.Name.Equals("WSCURRENT"))
+                {
+                    var document = Autodesk.AutoCAD.ApplicationServices
+                        .Application.DocumentManager.MdiActiveDocument;
 
-                AcadTools.CreateLayersForPluginTool(document);
-                new BuildRibbonItem().CreateRibbonTab();
+                    AcadTools.CreateLayersForPluginTool(document);
+                    new BuildRibbonItem().CreateRibbonTab();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                throw;
             }
         }
 
@@ -266,8 +274,16 @@ namespace SectionConverterPlugin
 
         BitmapImage LoadImage(string imageName)
         {
-            return new BitmapImage(
-                new Uri("pack://application:,,,/AutoCAD_DD;component/" + imageName + ".png"));
+            try
+            {
+                return new BitmapImage(
+                    new Uri("pack://application:,,,/AutoCAD_DD;component/" + imageName + ".png"));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                return null;
+            }
         }
 
         public BitmapImage GetBitmap(Bitmap image)

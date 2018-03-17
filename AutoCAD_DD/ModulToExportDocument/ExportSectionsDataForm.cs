@@ -113,7 +113,7 @@ namespace SectionConverterPlugin.HandlerEntity
         public static double GetStationValue(string mtext)
         {
             var stationRegex =
-     new Regex(@"^(((?<hundreds>\d+)\+(?<units>\d{1,2}))|(?<all_units>\d+))([,\.](?<fractional>\d+))?$");
+                new Regex(@"^(((?<hundreds>\d+)\+(?<units>\d{1,2}))|(?<all_units>\d+))([,\.](?<fractional>\d+))?$");
 
             MatchCollection mc = stationRegex.Matches(mtext.Substring(3, mtext.Length - 3));
 
@@ -123,7 +123,7 @@ namespace SectionConverterPlugin.HandlerEntity
 
             if (match.Groups["hundreds"].Length > 0)
             {
-                station += StringToDouble(match.Groups["hundreds"].Value);
+                station += 100 * StringToDouble(match.Groups["hundreds"].Value);
                          station+=StringToDouble(match.Groups["units"].Value);
             }
             else

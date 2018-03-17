@@ -7,8 +7,6 @@ using System.Windows.Forms;
 using Autodesk.AutoCAD.Geometry;
 using SectionConverterPlugin.HandlerEntity;
 using System.IO;
-using System.Xml;
-using System.Text;
 using System.Diagnostics;
 
 namespace SectionConverterPlugin.Forms
@@ -16,7 +14,7 @@ namespace SectionConverterPlugin.Forms
     // Экспортировать данные о сечениях
     public partial class ExportSectionsDataForm : Form
     {
-        bool _factPosEnable;
+       private bool _factPosEnable;
 
         private double _factPosNoizeUpperBound;
         private double _factPosNoizeLowerBound;
@@ -29,17 +27,18 @@ namespace SectionConverterPlugin.Forms
 
             InitializeComponent();
 
-            retb__FactPosNoizeUpperBound.SetRegExp(new Regex(@"^\d+([,\.]\d+)?$"));
-            retb__FactPosNoizeLowerBound.SetRegExp(new Regex(@"^\d+([,\.]\d+)?$"));
+            retb__FactPosNoizeUpperBound.SetRegExp(new Regex(@"^[-\+]?\d+([,\.]\d+)?$"));
+            retb__FactPosNoizeLowerBound.SetRegExp(new Regex(@"^[-\+]?\d+([,\.]\d+)?$"));
 
             retb__FactPosNoizeLowerBound.Value = "0";
             retb__FactPosNoizeUpperBound.Value = "0";
+
             _dataReverted = false;
 
             this.Enabled = true;
         }
 
-        private double StringToDouble(string s)
+        private static double StringToDouble(string s)
         {
             return Double.Parse(s.Replace(',', '.'), CultureInfo.InvariantCulture);
         }
@@ -142,11 +141,13 @@ namespace SectionConverterPlugin.Forms
                 dialog.InitialDirectory = AcadTools.GetAbsolutePath();
                 dialog.Title = @"Экспортировать в...";
 
-                dialog.FileName = GenerateNameForFolder();
+                string saveTime = GenerateNameForFolder();
+
+                dialog.FileName = Path.GetFileNameWithoutExtension(AcadTools.GetAbsolutePathWithName()) +
+                                  "_" + saveTime;
 
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    string saveName = Path.GetFileName(dialog.FileName);
                     string savePath = dialog.FileName.Replace(GenerateNameForFolder(), "");
 
                     CreateNewFolder(savePath);
@@ -165,6 +166,7 @@ namespace SectionConverterPlugin.Forms
 
                         GetFactPossNoizeAddition = () => new Vector3d(GetNoize(), GetNoize(), .0);
                     }
+
                     GenerateDataXmlFile(savePath + "\\data.xml", GetFactPossNoizeAddition);
 
                     string savePathNameSettings = savePath + "\\settings.xml";
@@ -172,9 +174,9 @@ namespace SectionConverterPlugin.Forms
                     GenerateSettingXmlFile(
                         savePathNameSettings,
                          savePath + "\\data.xml",
-                        savePath+"\\"+ GenerateNameForListTsvFile(saveName) + ".tsv",
+                        savePath+"\\"+ GenerateNameForListTsvFile(saveTime) + ".tsv",
                         Path.Combine(AcadTools.GetAcadLocation(), "SectionConverterPlugin\\SectionListGenerator\\BlueprintTemplate" + ".dxf")
-                        ,savePath+"\\"+GenerateNameForBlueprintTsvFile(saveName)+".tsv"
+                        ,savePath+"\\"+ GenerateNameForDxfFile(saveTime) +".dxf"
                         );
 
                     StartProcessForCreateTsvFile(savePathNameSettings);
@@ -191,12 +193,12 @@ namespace SectionConverterPlugin.Forms
 
         public void GenerateDataXmlFile(
             string fileName,
-            Func<Vector3d> GetFactPositionNoizeAddition = null)
+            Func<Vector3d> getFactPositionNoizeAddition = null)
         {
             bool factPossEnabled = true;
-            if (GetFactPositionNoizeAddition == null)
+            if (getFactPositionNoizeAddition == null)
             {
-                GetFactPositionNoizeAddition = () => new Vector3d();
+                getFactPositionNoizeAddition = () => new Vector3d();
                 factPossEnabled = false;
             }
 
@@ -250,7 +252,7 @@ namespace SectionConverterPlugin.Forms
                                         .Select(redPoint =>
                                             GetPointElement(
                                                 AcadTools.GetBlockPosition(redPoint),
-                                                AcadTools.GetBlockPosition(redPoint) + GetFactPositionNoizeAddition(),
+                                                AcadTools.GetBlockPosition(redPoint) + getFactPositionNoizeAddition(),
                                                 RoadSectionParametersExtractor.GetPointNumberFromPointBlock(redPoint)))),
 
                                     new XElement(
@@ -259,7 +261,7 @@ namespace SectionConverterPlugin.Forms
                                         .Select(blackPoint =>
                                             GetPointElement(
                                                 AcadTools.GetBlockPosition(blackPoint),
-                                                AcadTools.GetBlockPosition(blackPoint) + GetFactPositionNoizeAddition(),
+                                                AcadTools.GetBlockPosition(blackPoint) + getFactPositionNoizeAddition(),
                                                 RoadSectionParametersExtractor.GetPointNumberFromPointBlock(blackPoint))))
                                     ))));
 
@@ -299,7 +301,9 @@ namespace SectionConverterPlugin.Forms
         {
                 bool result = false;
 
-                var folderName = GenerateNameForFolder();
+                 var drawingName = Path.GetFileNameWithoutExtension(AcadTools.GetAbsolutePathWithName());
+
+                  var folderName = drawingName + "_" + GenerateNameForFolder();
 
                 if ((folderName == "default"))
                 {
@@ -332,7 +336,7 @@ namespace SectionConverterPlugin.Forms
                 return folderName;
             }
             else
-                return drawingName + "_" + DateTime.Now.ToString("dd.MM.yyyy_hh.mm.ss");
+                return DateTime.Now.ToString("dd.MM.yyyy_hh.mm.ss");
         }
 
         public string GenerateNameForDxfFile(string fileName)

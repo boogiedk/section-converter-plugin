@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.lbl_input = new System.Windows.Forms.Label();
-            this.btn_Ok = new System.Windows.Forms.Button();
-            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.retb_Height = new SectionConverterPlugin.CustomControls.RegExedTextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.lbl_input = new System.Windows.Forms.Label();
+            this.btn_Ok = new System.Windows.Forms.Button();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
@@ -57,6 +57,42 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(298, 136);
             this.tableLayoutPanel1.TabIndex = 9;
+            // 
+            // retb_Height
+            // 
+            this.retb_Height.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.retb_Height.Enabled = false;
+            this.retb_Height.Location = new System.Drawing.Point(180, 5);
+            this.retb_Height.Margin = new System.Windows.Forms.Padding(0);
+            this.retb_Height.MatchOnKeyInput = false;
+            this.retb_Height.Name = "retb_Height";
+            this.retb_Height.Silent = true;
+            this.retb_Height.Size = new System.Drawing.Size(88, 20);
+            this.retb_Height.TabIndex = 0;
+            this.retb_Height.Value = null;
+            this.retb_Height.ValueChanged += new System.EventHandler(this.retb_height_ValueChanged);
+            // 
+            // label1
+            // 
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.label1.Location = new System.Drawing.Point(33, 7);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(63, 15);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Значение";
+            // 
+            // label2
+            // 
+            this.label2.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.label2.Location = new System.Drawing.Point(271, 7);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(16, 15);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "м";
             // 
             // lbl_input
             // 
@@ -96,41 +132,6 @@
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(304, 202);
             this.tableLayoutPanel3.TabIndex = 12;
-            // 
-            // retb_Height
-            // 
-            this.retb_Height.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.retb_Height.Enabled = false;
-            this.retb_Height.Location = new System.Drawing.Point(180, 5);
-            this.retb_Height.Margin = new System.Windows.Forms.Padding(0);
-            this.retb_Height.MatchOnKeyInput = false;
-            this.retb_Height.Name = "retb_Height";
-            this.retb_Height.Silent = true;
-            this.retb_Height.Size = new System.Drawing.Size(88, 20);
-            this.retb_Height.TabIndex = 0;
-            this.retb_Height.Value = null;
-            // 
-            // label1
-            // 
-            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.label1.Location = new System.Drawing.Point(33, 7);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(63, 15);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Значение";
-            // 
-            // label2
-            // 
-            this.label2.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.label2.Location = new System.Drawing.Point(271, 7);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(16, 15);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "м";
             // 
             // InputHeightDialog
             // 
