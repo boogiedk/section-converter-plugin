@@ -1,4 +1,4 @@
-# section-converter-plugin-for-AutoCAD
+# Section-converter-plugin-for-AutoCAD
 This is my first big project, the meaning of which is to work with the api AutoCAD app. Details can be found in the ReadMe.
 
 
@@ -8,7 +8,7 @@ This is my first big project, the meaning of which is to work with the api AutoC
 
 1. Загрузка плагина при старте работы Автокада.
 
- Чтобы плагин загружался при запуске автокада, я добавил в папку с автокадом "acadoc.lsp" файл с параметрами загрузки dll сборки.
+ Чтобы плагин загружался при запуске автокада, я добавил в папку с автокадом "acaddoc.lsp" файл с параметрами загрузки dll сборки.
 Код lisp файла выглядел примерно так:
 
 
