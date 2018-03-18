@@ -175,7 +175,7 @@ namespace SectionConverterPlugin.Forms
                         savePathNameSettings,
                          savePath + "\\data.xml",
                         savePath+"\\"+ GenerateNameForListTsvFile(saveTime) + ".tsv",
-                        Path.Combine(AcadTools.GetAcadLocation(), "SectionConverterPlugin\\SectionListGenerator\\BlueprintTemplate" + ".dxf")
+                        Path.Combine(AcadTools.GetAcadLocation(), "SectionConverterPlugin\\SectionsBlueprintGenerator\\BlueprintTemplate" + ".dxf")
                         ,savePath+"\\"+ GenerateNameForDxfFile(saveTime) +".dxf"
                         );
 
@@ -368,7 +368,8 @@ namespace SectionConverterPlugin.Forms
 
                 var processStartInfo = new ProcessStartInfo()
                 {
-                    FileName = Path.Combine(AcadTools.GetAcadLocation(), @"SectionConverterPlugin\SectionListGenerator\SectionListGenerator.exe"),
+                    FileName = Path.Combine(AcadTools.GetAcadLocation(),
+                        @"SectionConverterPlugin\SectionsListGenerator\SectionListGenerator.exe"),
                     Arguments = "\"" + pathSettingsXml + "\""
                 };
 
@@ -390,7 +391,8 @@ namespace SectionConverterPlugin.Forms
 
                 var processStartInfo = new ProcessStartInfo()
                 {
-                    FileName = Path.Combine(AcadTools.GetAcadLocation(), @"SectionConverterPlugin\SectionListGenerator\SectionBlueprintGenerator.exe"),
+                    FileName = Path.Combine(AcadTools.GetAcadLocation(),
+                        @"SectionConverterPlugin\SectionsBlueprintGenerator\SectionsBlueprintGenerator.exe"),
                     Arguments = "\"" + pathSettingsXml + "\""
                 };
 
